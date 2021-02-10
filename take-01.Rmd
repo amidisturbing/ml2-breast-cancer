@@ -7,8 +7,8 @@ author: ['Silke Meiner','Rafaela Neff'] # alphabetical order
 Proposed data set for the Machine Learning 2 project.
 
 ```{r}
-# Silke Laptop
-setwd("~/Documents/ds/sem3/Tim/project")
+wd = getwd()
+setwd(wd)
 ds <- read.csv('data.csv')
 dim(ds)
 str(ds)
