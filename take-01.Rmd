@@ -3,8 +3,14 @@ title: 'ML2 project: breast cancer'
 output: html_notebook
 author: ['Silke Meiner','Rafaela Neff'] # alphabetical order
 ---
+#Dataset
 
-Proposed data set for the Machine Learning 2 project.
+Proposed dataset for the Machine Learning 2 project:
+
+[Breast Cancer Wisconsin (Diagnostic) Data Set](https://www.kaggle.com/uciml/breast-cancer-wisconsin-data)
+
+Predict whether the cancer is benign or malignant
+
 
 ```{r}
 #change working directory to current dir
@@ -98,3 +104,25 @@ vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
 boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
 ```
  We need to scale our data. Though I am not sure how. The variable names like area, mean, se (standard error?!), worst (lowest value? check that for each row the worst values are below the mean? or sometimes above is worse??) seem to suggest something, some meaning. This may be destroyed by normalising / standardising?! Is this relevant?
+ 
+# Proposed Methods
+ 
+## ML1
+ 
+### Logistic regression
+ 
+ As first method we propose  **Logistic Regression** as a supervised Machine Learning approach.
+ 
+#### Evaluation
+## ML2
+### Binary Classifier
+ As second method we'd propose a Neural Network for binary classification.
+ 
+ The proposed classes are **M = malignant** and  **B = benign**. For computataion reasons those values could be encoded as Integers, respectively **0 = M = malignant** or **1 = B = benign**.
+ 
+#### Evaluation 
+ 
+ Confusion Matrix
+ 
+ F1 score
+ 
