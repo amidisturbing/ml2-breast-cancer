@@ -11,7 +11,7 @@ Proposed data set for the Machine Learning 2 project.
 wd = getwd()
 setwd(wd)
 #read data
-ds <- read.csv('data.csv')
+ds <- read.csv('data/data.csv')
 dim(ds)
 str(ds)
 # summary(ds)
@@ -35,9 +35,15 @@ Our data is not exactly fully balanced but it could be much worse. We are not in
 ```{r}
 library(mice)
 mice(ds)
-# mice(ds[3:32])
+mice(ds[3:32])
 ```
 I don't understand this output. X is only NA, but diagnosis has no NA.
+
+#Checking for duplicates
+```{r}
+duplicated(ds)
+```
+There are no duplicates in the data set
 
 # Dataset description
 We have a data set of 33 variables, of which
