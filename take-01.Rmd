@@ -34,12 +34,12 @@ Our data is not exactly fully balanced but it could be much worse. We are not in
 # Checking for missing data
 ```{r}
 library(mice)
-mice(ds)
-mice(ds[3:32])
+md.pattern(ds, rotate.names = TRUE)
 ```
-I don't understand this output. X is only NA, but diagnosis has no NA.
+For the variable X all data is missing. We will remove this variable. 
+There are no further missing values. 
 
-#Checking for duplicates
+# Checking for duplicates
 ```{r}
 duplicated(ds)
 ```
