@@ -7,8 +7,10 @@ author: ['Silke Meiner','Rafaela Neff'] # alphabetical order
 Proposed data set for the Machine Learning 2 project.
 
 ```{r}
+#change working directory to current dir
 wd = getwd()
 setwd(wd)
+#read data
 ds <- read.csv('data.csv')
 dim(ds)
 str(ds)
