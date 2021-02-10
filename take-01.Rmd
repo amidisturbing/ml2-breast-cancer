@@ -1,0 +1,92 @@
+---
+title: 'ML2 project: breast cancer'
+output: html_notebook
+author: ['Silke Meiner','Rafaela Neff'] # alphabetical order
+---
+
+Proposed data set for the Machine Learning 2 project.
+
+```{r}
+# Silke Laptop
+setwd("~/Documents/ds/sem3/Tim/project")
+ds <- read.csv('data.csv')
+dim(ds)
+str(ds)
+# summary(ds)
+```
+
+```{r fig.height=3, fig.width=3}
+barplot(table(ds$diagnosis), main='blubs')
+```
+
+exact numbers
+```{r}
+# ds %>% count(diagnosis)
+table(ds$diagnosis)
+sum(table(ds$diagnosis))
+```
+No missing values in the diagnosis, the target value.
+
+Our data is not exactly fully balanced but it could be much worse. We are not in an unbalanced situation as in the usual fraud detection setting.
+
+# Checking for missing data
+```{r}
+library(mice)
+mice(ds)
+# mice(ds[3:32])
+```
+I don't understand this output. X is only NA, but diagnosis has no NA.
+
+# Dataset description
+We have a data set of 33 variables, of which
+
+* binary variable diagnosis will be the target variable
+
+* 30 numerical predictor variables / features 
+
+* the ID is not a predictor / feature
+
+* X will be removed because it is empty
+ 
+ 
+# Correlation
+```{r fig.height=8, fig.width=8}
+# install.packages("ggcorrplot")
+library(ggcorrplot)
+corr <- round(cor(ds[,3:32]), 3)
+# ggcorrplot(corr)
+ggcorrplot(corr, hc.order = TRUE, outline.col = "white") # uses hierarchical clustering to order variables
+```
+Some variables seem highly (pos.) correlated and the number of variables can maybe be reduced.
+
+# Scaling
+Our variables are at very different scalings (Größenordnungen).
+```{r}
+boxplot(ds[,3:33])
+```
+Look into variables with the largest medians:
+```{r}
+# get a closer look at the variables with a large median
+
+# apply(ds[,3:32], 2, mean)
+vars1 <- which(apply(ds[,3:32], 2, mean) > 300)
+#vars1
+boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
+```
+```{r}
+# of those the ones with a relatively large median, around 100
+# boxplot(ds[,c(5,16,25)])
+```
+```{r}
+# max values (outliers) below 50
+# boxplot(ds[,c(3:4,7:15,17:24,27:33)])
+```
+and look into the variables with the smallest maximal values
+```{r}
+# and the small medians only
+# apply(ds[,3:32], 2, mean)
+vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
+#vars1
+boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
+```
+ We need to scale our data. Though I am not sure how. The variable names like area, mean, se (standard error?!), worst (lowest value? check that for each row the worst values are below the mean? or sometimes above is worse??) seem to suggest something, some meaning. This may be destroyed by normalising / standardising?! Is this relevant?
