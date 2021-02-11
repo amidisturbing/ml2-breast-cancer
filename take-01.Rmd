@@ -107,25 +107,27 @@ vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
 #vars1
 boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
 ```
- We need to scale our data. Though I am not sure how. The variable names like area, mean, se (standard error?!), worst (lowest value? check that for each row the worst values are below the mean? or sometimes above is worse??) seem to suggest something, some meaning. This may be destroyed by normalising / standardising?! Is this relevant?
- 
-Rafa: Sacling data by factor *a*, means mean, sd (...) are also scaled by this factor *a* (variance would be scaled by *a^2*).
+ We need to scale our data. This could be done with min-/max-scaling, for example.
  
 # Proposed Methods
  
 ## Logistic regression
  
- The first methode propose  is _Logistic Regression_. The hypothesis model calculates the probability of the Diagnosis outcome being 0 or 1.  This is a supervised Machine Learning approach.
+ The first methode proposed  is _Logistic Regression_. The hypothesis model calculates the probability of the Diagnosis outcome being 0 or 1.  This is a supervised Machine Learning approach.
  
 ### Evaluation
 
 ## Neural Network
 
- As second method we'd propose a Neural Network for binary classification.
+ As second method we'd propose a _Neural Network_ for binary classification, for example implemented using the library nnet.
 
  
 ### Evaluation 
+
+We will evaluate both approaches as follows:
  
- Confusion Matrix
+ - Confusion Matrix
  
- F1 score
+ - F1 score
+ 
+ - Accuracy
