@@ -28,7 +28,7 @@ str(ds)
 ```
 
 ```{r fig.height=3, fig.width=3}
-barplot(table(ds$diagnosis), main='blubs')
+barplot(table(ds$diagnosis), main='balance of target variable')
 ```
 
 exact numbers
@@ -87,9 +87,9 @@ Look into variables with the largest medians:
 # get a closer look at the variables with a large median
 
 # apply(ds[,3:32], 2, mean)
-vars1 <- which(apply(ds[,3:32], 2, mean) > 300)
+vars1 <- which(apply(ds[,3:32], 2, median) > 300)
 #vars1
-boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
+boxplot(ds[,2+vars1],'highest median variables') # 2+ because we initially removed the first 2 variables
 ```
 ```{r}
 # of those the ones with a relatively large median, around 100
@@ -102,10 +102,10 @@ boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
 and look into the variables with the smallest maximal values
 ```{r}
 # and the small medians only
-# apply(ds[,3:32], 2, mean)
+# apply(ds[,3:32], 2, median)
 vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
 #vars1
-boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
+boxplot(ds[,2+vars1],main='variables with the smallest maximal values') # 2+ because we initially removed the first 2 variables
 ```
  We need to scale our data. This could be done using min-/max-scaling.
  
@@ -119,7 +119,7 @@ boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
 
 ## Neural Network
 
- As second method we'd propose a _Neural Network_ for binary classification, for example implemented using the library nnet.
+ As second method we'd propose a _Neural Network_ for binary classification, for example implemented using the library nnet or Keras.
 
  
 ### Evaluation 
