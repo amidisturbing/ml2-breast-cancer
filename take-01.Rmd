@@ -78,7 +78,7 @@ ggcorrplot(corr, hc.order = TRUE, outline.col = "white") # uses hierarchical clu
 Some variables seem highly (pos.) correlated and the number of variables can maybe be reduced.
 
 # Scaling
-Our variables are at very different scalings (Größenordnungen).
+Our variables are at very different scalings (orders of magnitude).
 ```{r}
 boxplot(ds[,3:33])
 ```
@@ -107,13 +107,13 @@ vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
 #vars1
 boxplot(ds[,2+vars1]) # 2+ because we initially removed the first 2 variables
 ```
- We need to scale our data. This could be done with min-/max-scaling, for example.
+ We need to scale our data. This could be done using min-/max-scaling.
  
 # Proposed Methods
  
 ## Logistic regression
  
- The first methode proposed  is _Logistic Regression_. The hypothesis model calculates the probability of the Diagnosis outcome being 0 or 1.  This is a supervised Machine Learning approach.
+ The first methode proposed  is _Logistic Regression_. The hypothesis model calculates the probability of the Diagnosis outcome being 0 or 1.
  
 ### Evaluation
 
