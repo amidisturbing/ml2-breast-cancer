@@ -12,16 +12,6 @@ output:
     toc: yes
     fig_caption: yes
 ---
-Read data without ID and empty X variables.
-```{r}
-#change working directory to current dir
-wd = getwd()
-setwd(wd)
-#read data
-ds <- read.csv('data/data.csv')[c(-33,-1)] # exclude ID and X
-dim(ds)
-str(ds)
-```
 Install keras if necesssary
 ```{r}
 #install.packages("keras")
@@ -35,6 +25,21 @@ library(tensorflow)
 #output should be: tf.Tensor(b'Hellow Tensorflow', shape=(), dtype=string)
 tf$constant("Hellow Tensorflow")
 ```
+Read data without ID and empty X variables.
+```{r}
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+#read data
+ds <- read.csv('data/data.csv')[c(-33,-1)] # exclude ID and X
+dim(ds)
+#str(ds)
+```
+Convert column diagnosis
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+#str(ds)
+```
 Custom function for min-max-normalization
 Fehler in match.fun(FUN) : Argument "FUN" fehlt (ohne Standardwert)
 ```{r}
@@ -43,10 +48,21 @@ normalize <- function(x) {
   denom <- max(x) - min(x)
   return (num/denom)
 }
-
-ds_norm[,31] <- as.data.frame(lapply(ds[,31]), normalize)
+#not quite sure what is happening here since I cannot use it as data frame
+ds_norm <- apply(ds[2:31],2,normalize)
+#ds_norm <- as.data.frame(lapply(ds[2:31]), normalize)
+str(ds_norm)
 ```
 Normalize with keras
+To use keras we have to transform our data to a matrix or an array
+see: https://www.datacamp.com/community/tutorials/keras-r-deep-learning
 ```{r}
-
+ds[,31] <- as.numeric(ds[,31])-1
+#turn ds into a matrix
+#str(ds)
+ds <- as.matrix(ds)
+dimnames(ds) <- NULL
+#str(ds)
+ds_norm <- normalize(ds[2:31])
 ```
+
