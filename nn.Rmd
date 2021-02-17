@@ -1,0 +1,52 @@
+---
+title: "neural network v1"
+author:
+- Silke Meiner
+- Rafaela Neff
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+---
+Read data without ID and empty X variables.
+```{r}
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+#read data
+ds <- read.csv('data/data.csv')[c(-33,-1)] # exclude ID and X
+dim(ds)
+str(ds)
+```
+Install keras if necesssary
+```{r}
+#install.packages("keras")
+#use keras
+library(keras)
+# Install TensorFlow
+#install.packages("tensorflow")
+#install_tensorflow()
+library(tensorflow)
+#test if working
+#output should be: tf.Tensor(b'Hellow Tensorflow', shape=(), dtype=string)
+tf$constant("Hellow Tensorflow")
+```
+Custom function for min-max-normalization
+Fehler in match.fun(FUN) : Argument "FUN" fehlt (ohne Standardwert)
+```{r}
+normalize <- function(x) {
+  num <- x - min(x)
+  denom <- max(x) - min(x)
+  return (num/denom)
+}
+
+ds_norm[,31] <- as.data.frame(lapply(ds[,31]), normalize)
+```
+Normalize with keras
+```{r}
+
+```
