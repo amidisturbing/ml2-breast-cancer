@@ -36,33 +36,31 @@ dim(ds)
 #str(ds)
 ```
 Convert column diagnosis
+Encode as Integers: 0 = M = malignant or 1 = B = benign.
 ```{r}
 ds$diagnosis <- as.factor(ds$diagnosis)
-#str(ds)
+levels(ds$diagnosis) <- c('0','1')
+str(ds)
 ```
 Custom function for min-max-normalization
-Fehler in match.fun(FUN) : Argument "FUN" fehlt (ohne Standardwert)
 ```{r}
 normalize <- function(x) {
   num <- x - min(x)
   denom <- max(x) - min(x)
   return (num/denom)
 }
-#not quite sure what is happening here since I cannot use it as data frame
-ds_norm <- apply(ds[2:31],2,normalize)
-#ds_norm <- as.data.frame(lapply(ds[2:31]), normalize)
-str(ds_norm)
+dataset_n<-as.data.frame(lapply(ds[2:31] ,normalize))
+str(dataset_n)
 ```
 Normalize with keras
 To use keras we have to transform our data to a matrix or an array
 see: https://www.datacamp.com/community/tutorials/keras-r-deep-learning
 ```{r}
-ds[,31] <- as.numeric(ds[,31])-1
+ds_matrix <- as.numeric(ds[,31])-1
 #turn ds into a matrix
-#str(ds)
-ds <- as.matrix(ds)
-dimnames(ds) <- NULL
-#str(ds)
-ds_norm <- normalize(ds[2:31])
+ds_matrix <- as.matrix(ds_matrix)
+dimnames(ds_matrix) <- NULL
+ds_norm_keras <- normalize(ds_matrix[2:31])
+str(ds_norm_keras)
 ```
 
