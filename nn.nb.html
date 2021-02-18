@@ -240,23 +240,31 @@ summary {
 
 <!-- rnb-text-begin -->
 <p>Install keras if necesssary</p>
+<p>If I am running this and also run library(caret), R Studio is shutting down</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJrZXJhc1wiKVxuI3VzZSBrZXJhc1xubGlicmFyeShrZXJhcylcbiMgSW5zdGFsbCBUZW5zb3JGbG93XG4jaW5zdGFsbC5wYWNrYWdlcyhcInRlbnNvcmZsb3dcIilcbiNpbnN0YWxsX3RlbnNvcmZsb3coKVxubGlicmFyeSh0ZW5zb3JmbG93KVxuI3Rlc3QgaWYgd29ya2luZ1xuI291dHB1dCBzaG91bGQgYmU6IHRmLlRlbnNvcihiJ0hlbGxvdyBUZW5zb3JmbG93Jywgc2hhcGU9KCksIGR0eXBlPXN0cmluZylcbnRmJGNvbnN0YW50KFwiSGVsbG93IFRlbnNvcmZsb3dcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJrZXJhc1wiKVxuI3VzZSBrZXJhc1xubGlicmFyeShrZXJhcylcbiMgSW5zdGFsbCBUZW5zb3JGbG93XG4jaW5zdGFsbC5wYWNrYWdlcyhcInRlbnNvcmZsb3dcIilcbiNpbnN0YWxsX3RlbnNvcmZsb3coKVxubGlicmFyeSh0ZW5zb3JmbG93KVxuYGBgIn0= -->
 <pre class="r"><code>#install.packages(&quot;keras&quot;)
 #use keras
 library(keras)
 # Install TensorFlow
 #install.packages(&quot;tensorflow&quot;)
 #install_tensorflow()
-library(tensorflow)
-#test if working
+library(tensorflow)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hlIFBha2V0OiDigJh0ZW5zb3JmbG934oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0IGlzIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6Y2FyZXTigJk6XG5cbiAgICB0cmFpblxuIn0= -->
+<pre><code>
+Attache Paket: ‘tensorflow’
+
+The following object is masked from ‘package:caret’:
+
+    train</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3Rlc3QgaWYgd29ya2luZ1xuI291dHB1dCBzaG91bGQgYmU6IHRmLlRlbnNvcihiJ0hlbGxvdyBUZW5zb3JmbG93Jywgc2hhcGU9KCksIGR0eXBlPXN0cmluZylcbnRmJGNvbnN0YW50KFwiSGVsbG93IFRlbnNvcmZsb3dcIilcbmBgYCJ9 -->
+<pre class="r"><code>#test if working
 #output should be: tf.Tensor(b'Hellow Tensorflow', shape=(), dtype=string)
 tf$constant(&quot;Hellow Tensorflow&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGYuVGVuc29yKGInSGVsbG93IFRlbnNvcmZsb3cnLCBzaGFwZT0oKSwgZHR5cGU9c3RyaW5nKVxuIn0= -->
-<pre><code>tf.Tensor(b'Hellow Tensorflow', shape=(), dtype=string)</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Read data without ID and empty X variables.</p>
@@ -322,17 +330,19 @@ str(ds)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<div id="normalize-with-udf" class="section level2">
+<h2>Normalize with UDF</h2>
 <p>Custom function for min-max-normalization</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubm9ybWFsaXplIDwtIGZ1bmN0aW9uKHgpIHtcbiAgbnVtIDwtIHggLSBtaW4oeClcbiAgZGVub20gPC0gbWF4KHgpIC0gbWluKHgpXG4gIHJldHVybiAobnVtL2Rlbm9tKVxufVxuZGF0YXNldF9uPC1hcy5kYXRhLmZyYW1lKGxhcHBseShkc1syOjMxXSAsbm9ybWFsaXplKSlcbnN0cihkYXRhc2V0X24pXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubm9ybWFsaXplIDwtIGZ1bmN0aW9uKHgpIHtcbiAgbnVtIDwtIHggLSBtaW4oeClcbiAgZGVub20gPC0gbWF4KHgpIC0gbWluKHgpXG4gIHJldHVybiAobnVtL2Rlbm9tKVxufVxuZGF0YXNldF9ub3JtPC1hcy5kYXRhLmZyYW1lKGxhcHBseShkc1syOjMxXSAsbm9ybWFsaXplKSlcbnN0cihkYXRhc2V0X25vcm0pXG5gYGAifQ== -->
 <pre class="r"><code>normalize &lt;- function(x) {
   num &lt;- x - min(x)
   denom &lt;- max(x) - min(x)
   return (num/denom)
 }
-dataset_n&lt;-as.data.frame(lapply(ds[2:31] ,normalize))
-str(dataset_n)</code></pre>
+dataset_norm&lt;-as.data.frame(lapply(ds[2:31] ,normalize))
+str(dataset_norm)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0NTY5IG9icy4gb2YgIDMwIHZhcmlhYmxlczpcbiAkIHJhZGl1c19tZWFuICAgICAgICAgICAgOiBudW0gIDAuNTIxIDAuNjQzIDAuNjAxIDAuMjEgMC42MyAuLi5cbiAkIHRleHR1cmVfbWVhbiAgICAgICAgICAgOiBudW0gIDAuMDIyNyAwLjI3MjYgMC4zOTAzIDAuMzYwOCAwLjE1NjYgLi4uXG4gJCBwZXJpbWV0ZXJfbWVhbiAgICAgICAgIDogbnVtICAwLjU0NiAwLjYxNiAwLjU5NiAwLjIzNCAwLjYzMSAuLi5cbiAkIGFyZWFfbWVhbiAgICAgICAgICAgICAgOiBudW0gIDAuMzY0IDAuNTAyIDAuNDQ5IDAuMTAzIDAuNDg5IC4uLlxuICQgc21vb3RobmVzc19tZWFuICAgICAgICA6IG51bSAgMC41OTQgMC4yOSAwLjUxNCAwLjgxMSAwLjQzIC4uLlxuICQgY29tcGFjdG5lc3NfbWVhbiAgICAgICA6IG51bSAgMC43OTIgMC4xODIgMC40MzEgMC44MTEgMC4zNDggLi4uXG4gJCBjb25jYXZpdHlfbWVhbiAgICAgICAgIDogbnVtICAwLjcwMyAwLjIwNCAwLjQ2MyAwLjU2NiAwLjQ2NCAuLi5cbiAkIGNvbmNhdmUucG9pbnRzX21lYW4gICAgOiBudW0gIDAuNzMxIDAuMzQ5IDAuNjM2IDAuNTIzIDAuNTE4IC4uLlxuICQgc3ltbWV0cnlfbWVhbiAgICAgICAgICA6IG51bSAgMC42ODYgMC4zOCAwLjUxIDAuNzc2IDAuMzc4IC4uLlxuICQgZnJhY3RhbF9kaW1lbnNpb25fbWVhbiA6IG51bSAgMC42MDYgMC4xNDEgMC4yMTEgMSAwLjE4NyAuLi5cbiAkIHJhZGl1c19zZSAgICAgICAgICAgICAgOiBudW0gIDAuMzU2IDAuMTU2IDAuMjMgMC4xMzkgMC4yMzQgLi4uXG4gJCB0ZXh0dXJlX3NlICAgICAgICAgICAgIDogbnVtICAwLjEyMDUgMC4wODI2IDAuMDk0MyAwLjE3NTkgMC4wOTMxIC4uLlxuICQgcGVyaW1ldGVyX3NlICAgICAgICAgICA6IG51bSAgMC4zNjkgMC4xMjQgMC4xOCAwLjEyNyAwLjIyMSAuLi5cbiAkIGFyZWFfc2UgICAgICAgICAgICAgICAgOiBudW0gIDAuMjczOCAwLjEyNTcgMC4xNjI5IDAuMDM4MiAwLjE2MzcgLi4uXG4gJCBzbW9vdGhuZXNzX3NlICAgICAgICAgIDogbnVtICAwLjE1OSAwLjExOSAwLjE1MSAwLjI1MSAwLjMzMiAuLi5cbiAkIGNvbXBhY3RuZXNzX3NlICAgICAgICAgOiBudW0gIDAuMzUxNCAwLjA4MTMgMC4yODQgMC41NDMyIDAuMTY3OSAuLi5cbiAkIGNvbmNhdml0eV9zZSAgICAgICAgICAgOiBudW0gIDAuMTM1NyAwLjA0NyAwLjA5NjggMC4xNDMgMC4xNDM2IC4uLlxuICQgY29uY2F2ZS5wb2ludHNfc2UgICAgICA6IG51bSAgMC4zMDEgMC4yNTQgMC4zOSAwLjM1NCAwLjM1NyAuLi5cbiAkIHN5bW1ldHJ5X3NlICAgICAgICAgICAgOiBudW0gIDAuMzExNiAwLjA4NDUgMC4yMDU3IDAuNzI4MSAwLjEzNjIgLi4uXG4gJCBmcmFjdGFsX2RpbWVuc2lvbl9zZSAgIDogbnVtICAwLjE4MyAwLjA5MTEgMC4xMjcgMC4yODcyIDAuMTQ1OCAuLi5cbiAkIHJhZGl1c193b3JzdCAgICAgICAgICAgOiBudW0gIDAuNjIxIDAuNjA3IDAuNTU2IDAuMjQ4IDAuNTIgLi4uXG4gJCB0ZXh0dXJlX3dvcnN0ICAgICAgICAgIDogbnVtICAwLjE0MiAwLjMwNCAwLjM2IDAuMzg2IDAuMTI0IC4uLlxuICQgcGVyaW1ldGVyX3dvcnN0ICAgICAgICA6IG51bSAgMC42NjggMC41NCAwLjUwOCAwLjI0MSAwLjUwNyAuLi5cbiAkIGFyZWFfd29yc3QgICAgICAgICAgICAgOiBudW0gIDAuNDUxIDAuNDM1IDAuMzc1IDAuMDk0IDAuMzQyIC4uLlxuICQgc21vb3RobmVzc193b3JzdCAgICAgICA6IG51bSAgMC42MDEgMC4zNDggMC40ODQgMC45MTUgMC40MzcgLi4uXG4gJCBjb21wYWN0bmVzc193b3JzdCAgICAgIDogbnVtICAwLjYxOSAwLjE1NSAwLjM4NSAwLjgxNCAwLjE3MiAuLi5cbiAkIGNvbmNhdml0eV93b3JzdCAgICAgICAgOiBudW0gIDAuNTY5IDAuMTkzIDAuMzYgMC41NDkgMC4zMTkgLi4uXG4gJCBjb25jYXZlLnBvaW50c193b3JzdCAgIDogbnVtICAwLjkxMiAwLjYzOSAwLjgzNSAwLjg4NSAwLjU1OCAuLi5cbiAkIHN5bW1ldHJ5X3dvcnN0ICAgICAgICAgOiBudW0gIDAuNTk4IDAuMjM0IDAuNDA0IDEgMC4xNTggLi4uXG4gJCBmcmFjdGFsX2RpbWVuc2lvbl93b3JzdDogbnVtICAwLjQxOSAwLjIyMyAwLjIxMyAwLjc3NCAwLjE0MyAuLi5cbiJ9 -->
 <pre><code>'data.frame':   569 obs. of  30 variables:
@@ -369,21 +379,51 @@ str(dataset_n)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Normalize with keras To use keras we have to transform our data to a matrix or an array see: <a href="https://www.datacamp.com/community/tutorials/keras-r-deep-learning" class="uri">https://www.datacamp.com/community/tutorials/keras-r-deep-learning</a></p>
+</div>
+<div id="normalize-with-keras" class="section level2">
+<h2>Normalize with keras</h2>
+<p>To use keras we have to transform our data to a matrix or an array see: <a href="https://www.datacamp.com/community/tutorials/keras-r-deep-learning" class="uri">https://www.datacamp.com/community/tutorials/keras-r-deep-learning</a> I just did this to check out keras as well as the tutorial mentioned in the lecture Since noone seems to really use it and the tutorial was a pain in the a** I am still planning on using nnet, so I would use the UDF Normalizaion.</p>
+<p>No need to run the following cell, but also no harm.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKGRzX25vcm1fa2VyYXMpXG5cbmBgYCJ9 -->
-<pre class="r"><code>str(ds_norm_keras)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHNfbWF0cml4IDwtIGFzLm51bWVyaWMoZHNbLDMxXSktMVxuI3R1cm4gZHMgaW50byBhIG1hdHJpeFxuZHNfbWF0cml4IDwtIGFzLm1hdHJpeChkc19tYXRyaXgpXG5kaW1uYW1lcyhkc19tYXRyaXgpIDwtIE5VTExcbmRzX25vcm1fa2VyYXMgPC0gbm9ybWFsaXplKGRzX21hdHJpeFsyOjMxXSlcbnN0cihkc19ub3JtX2tlcmFzKVxuYGBgIn0= -->
+<pre class="r"><code>ds_matrix &lt;- as.numeric(ds[,31])-1
+#turn ds into a matrix
+ds_matrix &lt;- as.matrix(ds_matrix)
+dimnames(ds_matrix) &lt;- NULL
+ds_norm_keras &lt;- normalize(ds_matrix[2:31])
+str(ds_norm_keras)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiIG51bSBbMTozMF0gMC4xODA4IDAuMTcwOCAwLjc2MTUgMC4wOTYyIDAuNDI1NCAuLi5cbiJ9 -->
 <pre><code> num [1:30] 0.1808 0.1708 0.7615 0.0962 0.4254 ...</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="dataset-split" class="section level2">
+<h2>Dataset split</h2>
+<p>Split dataset in train/test while maintaining the same percentage of event rate. see: <a href="https://www.listendata.com/2015/02/splitting-data-into-training-and-test.html" class="uri">https://www.listendata.com/2015/02/splitting-data-into-training-and-test.html</a></p>
+<p>The df <strong>dataset_norm</strong> is used for splitting the data.</p>
+<div id="issue-if-i-load-caret-tgether-with-tensorflow-and-keras-rstudio-is-shutting-down" class="section level3">
+<h3>ISSUE: If I load caret tgether with tensorflow and keras, RStudio is shutting down</h3>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2ludHNhbGwgaWYgbmVjZXNzYXJ5XG4jaW5zdGFsbC5wYWNrYWdlcyhcImNhcmV0XCIpXG5saWJyYXJ5KGNhcmV0KVxuc2V0LnNlZWQoNDIpXG50cmFpbkluZGV4IDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oZHMkZGlhZ25vc2lzLCBwID0gLjgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGlzdCA9IEZBTFNFLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbWVzID0gMSlcblRyYWluIDwtIGRzW3RyYWluSW5kZXgsXVxuVGVzdCA8LSB0cmFpbiA8LSBkc1stdHJhaW5JbmRleCxdXG5gYGAifQ== -->
+<pre class="r"><code>#intsall if necessary
+#install.packages(&quot;caret&quot;)
+library(caret)
+set.seed(42)
+trainIndex &lt;- createDataPartition(ds$diagnosis, p = .8,
+                                  list = FALSE,
+                                  times = 1)
+Train &lt;- ds[trainIndex,]
+Test &lt;- train &lt;- ds[-trainIndex,]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+</div>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAibmV1cmFsIG5ldHdvcmsgdjEiCmF1dGhvcjoKLSBTaWxrZSBNZWluZXIKLSBSYWZhZWxhIE5lZmYKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHllcwogICAgZGZfcHJpbnQ6IHBhZ2VkCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAogIHBkZl9kb2N1bWVudDoKICAgIHRvYzogeWVzCiAgICBmaWdfY2FwdGlvbjogeWVzCi0tLQpJbnN0YWxsIGtlcmFzIGlmIG5lY2Vzc3NhcnkKYGBge3J9CiNpbnN0YWxsLnBhY2thZ2VzKCJrZXJhcyIpCiN1c2Uga2VyYXMKbGlicmFyeShrZXJhcykKIyBJbnN0YWxsIFRlbnNvckZsb3cKI2luc3RhbGwucGFja2FnZXMoInRlbnNvcmZsb3ciKQojaW5zdGFsbF90ZW5zb3JmbG93KCkKbGlicmFyeSh0ZW5zb3JmbG93KQojdGVzdCBpZiB3b3JraW5nCiNvdXRwdXQgc2hvdWxkIGJlOiB0Zi5UZW5zb3IoYidIZWxsb3cgVGVuc29yZmxvdycsIHNoYXBlPSgpLCBkdHlwZT1zdHJpbmcpCnRmJGNvbnN0YW50KCJIZWxsb3cgVGVuc29yZmxvdyIpCmBgYApSZWFkIGRhdGEgd2l0aG91dCBJRCBhbmQgZW1wdHkgWCB2YXJpYWJsZXMuCmBgYHtyfQojY2hhbmdlIHdvcmtpbmcgZGlyZWN0b3J5IHRvIGN1cnJlbnQgZGlyCndkID0gZ2V0d2QoKQpzZXR3ZCh3ZCkKI3JlYWQgZGF0YQpkcyA8LSByZWFkLmNzdignZGF0YS9kYXRhLmNzdicpW2MoLTMzLC0xKV0gIyBleGNsdWRlIElEIGFuZCBYCmRpbShkcykKI3N0cihkcykKYGBgCkNvbnZlcnQgY29sdW1uIGRpYWdub3NpcwpFbmNvZGUgYXMgSW50ZWdlcnM6IDAgPSBNID0gbWFsaWduYW50IG9yIDEgPSBCID0gYmVuaWduLgpgYGB7cn0KZHMkZGlhZ25vc2lzIDwtIGFzLmZhY3RvcihkcyRkaWFnbm9zaXMpCmxldmVscyhkcyRkaWFnbm9zaXMpIDwtIGMoJzAnLCcxJykKc3RyKGRzKQpgYGAKQ3VzdG9tIGZ1bmN0aW9uIGZvciBtaW4tbWF4LW5vcm1hbGl6YXRpb24KYGBge3J9Cm5vcm1hbGl6ZSA8LSBmdW5jdGlvbih4KSB7CiAgbnVtIDwtIHggLSBtaW4oeCkKICBkZW5vbSA8LSBtYXgoeCkgLSBtaW4oeCkKICByZXR1cm4gKG51bS9kZW5vbSkKfQpkYXRhc2V0X248LWFzLmRhdGEuZnJhbWUobGFwcGx5KGRzWzI6MzFdICxub3JtYWxpemUpKQpzdHIoZGF0YXNldF9uKQpgYGAKTm9ybWFsaXplIHdpdGgga2VyYXMKVG8gdXNlIGtlcmFzIHdlIGhhdmUgdG8gdHJhbnNmb3JtIG91ciBkYXRhIHRvIGEgbWF0cml4IG9yIGFuIGFycmF5CnNlZTogaHR0cHM6Ly93d3cuZGF0YWNhbXAuY29tL2NvbW11bml0eS90dXRvcmlhbHMva2VyYXMtci1kZWVwLWxlYXJuaW5nCmBgYHtyfQpkc19tYXRyaXggPC0gYXMubnVtZXJpYyhkc1ssMzFdKS0xCiN0dXJuIGRzIGludG8gYSBtYXRyaXgKZHNfbWF0cml4IDwtIGFzLm1hdHJpeChkc19tYXRyaXgpCmRpbW5hbWVzKGRzX21hdHJpeCkgPC0gTlVMTApkc19ub3JtX2tlcmFzIDwtIG5vcm1hbGl6ZShkc19tYXRyaXhbMjozMV0pCnN0cihkc19ub3JtX2tlcmFzKQpgYGAKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAibmV1cmFsIG5ldHdvcmsgdjEiCmF1dGhvcjoKLSBTaWxrZSBNZWluZXIKLSBSYWZhZWxhIE5lZmYKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHllcwogICAgZGZfcHJpbnQ6IHBhZ2VkCiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAogIHBkZl9kb2N1bWVudDoKICAgIHRvYzogeWVzCiAgICBmaWdfY2FwdGlvbjogeWVzCi0tLQpJbnN0YWxsIGtlcmFzIGlmIG5lY2Vzc3NhcnkKCklmIEkgYW0gcnVubmluZyB0aGlzIGFuZCBhbHNvIHJ1bgpsaWJyYXJ5KGNhcmV0KSwgUiBTdHVkaW8gaXMgc2h1dHRpbmcgZG93bgpgYGB7cn0KI2luc3RhbGwucGFja2FnZXMoImtlcmFzIikKI3VzZSBrZXJhcwojbGlicmFyeShrZXJhcykKIyBJbnN0YWxsIFRlbnNvckZsb3cKI2luc3RhbGwucGFja2FnZXMoInRlbnNvcmZsb3ciKQojaW5zdGFsbF90ZW5zb3JmbG93KCkKI2xpYnJhcnkodGVuc29yZmxvdykKI3Rlc3QgaWYgd29ya2luZwojb3V0cHV0IHNob3VsZCBiZTogdGYuVGVuc29yKGInSGVsbG93IFRlbnNvcmZsb3cnLCBzaGFwZT0oKSwgZHR5cGU9c3RyaW5nKQojdGYkY29uc3RhbnQoIkhlbGxvdyBUZW5zb3JmbG93IikKYGBgClJlYWQgZGF0YSB3aXRob3V0IElEIGFuZCBlbXB0eSBYIHZhcmlhYmxlcy4KYGBge3J9CiNjaGFuZ2Ugd29ya2luZyBkaXJlY3RvcnkgdG8gY3VycmVudCBkaXIKd2QgPSBnZXR3ZCgpCnNldHdkKHdkKQojcmVhZCBkYXRhCmRzIDwtIHJlYWQuY3N2KCdkYXRhL2RhdGEuY3N2JylbYygtMzMsLTEpXSAjIGV4Y2x1ZGUgSUQgYW5kIFgKZGltKGRzKQojc3RyKGRzKQpgYGAKQ29udmVydCBjb2x1bW4gZGlhZ25vc2lzCkVuY29kZSBhcyBJbnRlZ2VyczogMCA9IE0gPSBtYWxpZ25hbnQgb3IgMSA9IEIgPSBiZW5pZ24uCmBgYHtyfQpkcyRkaWFnbm9zaXMgPC0gYXMuZmFjdG9yKGRzJGRpYWdub3NpcykKbGV2ZWxzKGRzJGRpYWdub3NpcykgPC0gYygnMCcsJzEnKQpzdHIoZHMpCmBgYAojIyBOb3JtYWxpemUgd2l0aCBVREYKQ3VzdG9tIGZ1bmN0aW9uIGZvciBtaW4tbWF4LW5vcm1hbGl6YXRpb24KYGBge3J9Cm5vcm1hbGl6ZSA8LSBmdW5jdGlvbih4KSB7CiAgbnVtIDwtIHggLSBtaW4oeCkKICBkZW5vbSA8LSBtYXgoeCkgLSBtaW4oeCkKICByZXR1cm4gKG51bS9kZW5vbSkKfQpkYXRhc2V0X25vcm08LWFzLmRhdGEuZnJhbWUobGFwcGx5KGRzWzI6MzFdICxub3JtYWxpemUpKQpzdHIoZGF0YXNldF9ub3JtKQpgYGAKIyMgTm9ybWFsaXplIHdpdGgga2VyYXMKVG8gdXNlIGtlcmFzIHdlIGhhdmUgdG8gdHJhbnNmb3JtIG91ciBkYXRhIHRvIGEgbWF0cml4IG9yIGFuIGFycmF5CnNlZTogaHR0cHM6Ly93d3cuZGF0YWNhbXAuY29tL2NvbW11bml0eS90dXRvcmlhbHMva2VyYXMtci1kZWVwLWxlYXJuaW5nCkkganVzdCBkaWQgdGhpcyB0byBjaGVjayBvdXQga2VyYXMgYXMgd2VsbCBhcyB0aGUgdHV0b3JpYWwgbWVudGlvbmVkIGluIHRoZSBsZWN0dXJlClNpbmNlIG5vb25lIHNlZW1zIHRvIHJlYWxseSB1c2UgaXQgYW5kIHRoZSB0dXRvcmlhbCB3YXMgYSBwYWluIGluIHRoZSBhKiogSSBhbSBzdGlsbCBwbGFubmluZyBvbiB1c2luZyBubmV0LApzbyBJIHdvdWxkIHVzZSB0aGUgVURGIE5vcm1hbGl6YWlvbi4KCk5vIG5lZWQgdG8gcnVuIHRoZSBmb2xsb3dpbmcgY2VsbCwgYnV0IGFsc28gbm8gaGFybS4KYGBge3J9CiMgZHNfbWF0cml4IDwtIGFzLm51bWVyaWMoZHNbLDMxXSktMQojICN0dXJuIGRzIGludG8gYSBtYXRyaXgKIyBkc19tYXRyaXggPC0gYXMubWF0cml4KGRzX21hdHJpeCkKIyBkaW1uYW1lcyhkc19tYXRyaXgpIDwtIE5VTEwKIyBkc19ub3JtX2tlcmFzIDwtIG5vcm1hbGl6ZShkc19tYXRyaXhbMjozMV0pCiMgc3RyKGRzX25vcm1fa2VyYXMpCmBgYAojIyBEYXRhc2V0IHNwbGl0ClNwbGl0IGRhdGFzZXQgaW4gdHJhaW4vdGVzdCB3aGlsZSBtYWludGFpbmluZyB0aGUgc2FtZSBwZXJjZW50YWdlIG9mIGV2ZW50IHJhdGUuCnNlZTogaHR0cHM6Ly93d3cubGlzdGVuZGF0YS5jb20vMjAxNS8wMi9zcGxpdHRpbmctZGF0YS1pbnRvLXRyYWluaW5nLWFuZC10ZXN0Lmh0bWwKClRoZSBkZiAqKmRhdGFzZXRfbm9ybSoqIGlzIHVzZWQgZm9yIHNwbGl0dGluZyB0aGUgZGF0YS4KCgojIyMgSVNTVUU6IElmIEkgbG9hZCBjYXJldCB0Z2V0aGVyIHdpdGggdGVuc29yZmxvdyBhbmQga2VyYXMsIFJTdHVkaW8gaXMgc2h1dHRpbmcgZG93bgpgYGB7cn0KI2ludHNhbGwgaWYgbmVjZXNzYXJ5CiNpbnN0YWxsLnBhY2thZ2VzKCJjYXJldCIpCmxpYnJhcnkoY2FyZXQpCnNldC5zZWVkKDQyKQp0cmFpbkluZGV4IDwtIGNyZWF0ZURhdGFQYXJ0aXRpb24oZHMkZGlhZ25vc2lzLCBwID0gLjgsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaXN0ID0gRkFMU0UsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aW1lcyA9IDEpClRyYWluIDwtIGRzW3RyYWluSW5kZXgsXQpUZXN0IDwtIHRyYWluIDwtIGRzWy10cmFpbkluZGV4LF0KYGBgCg==</div>
 
 
 

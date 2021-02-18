@@ -13,17 +13,20 @@ output:
     fig_caption: yes
 ---
 Install keras if necesssary
+
+If I am running this and also run
+library(caret), R Studio is shutting down
 ```{r}
 #install.packages("keras")
 #use keras
-library(keras)
+#library(keras)
 # Install TensorFlow
 #install.packages("tensorflow")
 #install_tensorflow()
-library(tensorflow)
+#library(tensorflow)
 #test if working
 #output should be: tf.Tensor(b'Hellow Tensorflow', shape=(), dtype=string)
-tf$constant("Hellow Tensorflow")
+#tf$constant("Hellow Tensorflow")
 ```
 Read data without ID and empty X variables.
 ```{r}
@@ -42,6 +45,7 @@ ds$diagnosis <- as.factor(ds$diagnosis)
 levels(ds$diagnosis) <- c('0','1')
 str(ds)
 ```
+## Normalize with UDF
 Custom function for min-max-normalization
 ```{r}
 normalize <- function(x) {
@@ -49,18 +53,41 @@ normalize <- function(x) {
   denom <- max(x) - min(x)
   return (num/denom)
 }
-dataset_n<-as.data.frame(lapply(ds[2:31] ,normalize))
-str(dataset_n)
+dataset_norm<-as.data.frame(lapply(ds[2:31] ,normalize))
+str(dataset_norm)
 ```
-Normalize with keras
+## Normalize with keras
 To use keras we have to transform our data to a matrix or an array
 see: https://www.datacamp.com/community/tutorials/keras-r-deep-learning
-```{r}
-ds_matrix <- as.numeric(ds[,31])-1
-#turn ds into a matrix
-ds_matrix <- as.matrix(ds_matrix)
-dimnames(ds_matrix) <- NULL
-ds_norm_keras <- normalize(ds_matrix[2:31])
-str(ds_norm_keras)
-```
+I just did this to check out keras as well as the tutorial mentioned in the lecture
+Since noone seems to really use it and the tutorial was a pain in the a** I am still planning on using nnet,
+so I would use the UDF Normalizaion.
 
+No need to run the following cell, but also no harm.
+```{r}
+# ds_matrix <- as.numeric(ds[,31])-1
+# #turn ds into a matrix
+# ds_matrix <- as.matrix(ds_matrix)
+# dimnames(ds_matrix) <- NULL
+# ds_norm_keras <- normalize(ds_matrix[2:31])
+# str(ds_norm_keras)
+```
+## Dataset split
+Split dataset in train/test while maintaining the same percentage of event rate.
+see: https://www.listendata.com/2015/02/splitting-data-into-training-and-test.html
+
+The df **dataset_norm** is used for splitting the data.
+
+
+### ISSUE: If I load caret tgether with tensorflow and keras, RStudio is shutting down
+```{r}
+#intsall if necessary
+#install.packages("caret")
+library(caret)
+set.seed(42)
+trainIndex <- createDataPartition(ds$diagnosis, p = .8,
+                                  list = FALSE,
+                                  times = 1)
+Train <- ds[trainIndex,]
+Test <- train <- ds[-trainIndex,]
+```
