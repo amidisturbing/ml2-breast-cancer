@@ -4,7 +4,7 @@ setwd(wd)
 #read data
 train <- read.csv('data/train80.csv')[c(-1)] # exclude ID
 dim(train)
-str(train)
+#str(train)
 
 #Change column diagnosis to factor:
 #0 for benign, 1 for malignant
@@ -22,14 +22,24 @@ normalize <- function(x) {
   return (num/denom)
 }
 dataset_norm<-as.data.frame(lapply(train[2:31] ,normalize))
-str(dataset_norm)
 dataset_norm <- cbind(train$diagnosis,dataset_norm)
-colnames(dataset_norm)[1] <- "diagnosis"
-
+#str(dataset_norm)
 
 library(nnet)
+#use one layer in order to compare thee activations in the network 
+#to simpler approaches
+hidden_layers = 1
 #fit
 NN <-nnet(diagnosis ~. ,
-          data= dataset_norm,
-          size=10
+          data= train,
+          size=hidden_layers
 );
+
+prop.table(table(train$diagnosis))
+
+# Predictions on the training set
+nnet_predictions_train <-predict(NN, train)
+
+# Confusion matrix on training data
+table(train$diagnosis, nnet_predictions_train)
+#(278+125)/nrow(train)   
