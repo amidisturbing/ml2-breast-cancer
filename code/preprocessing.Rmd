@@ -21,7 +21,7 @@ setwd(wd)
 print(wd)
 
 #read data
-ds <- read.csv('../data/data.csv')[c(-33,-1)] # exclude ID and X
+ds <- read.csv('../data/data.csv')[c(-33)] # exclude X
 dim(ds)
 str(ds)
 ```
@@ -51,6 +51,6 @@ sum(as.integer(test$diagnosis)-1) / nrow(test)
 ```
 create a test and train file for clean separation
 ```{r}
-write.csv(train, '../data/train.csv')
-write.csv(test, '../data/test.csv')
+write.csv(train, '../data/train80.csv', row.names=FALSE)
+write.csv(test, '../data/test20.csv', row.names = FALSE)
 ```
