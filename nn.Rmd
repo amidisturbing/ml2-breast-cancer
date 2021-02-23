@@ -42,7 +42,8 @@ Convert column diagnosis
 Encode as Integers: 0 = M = malignant or 1 = B = benign.
 ```{r}
 ds$diagnosis <- as.factor(ds$diagnosis)
-levels(ds$diagnosis) <- c('0','1')
+#levels(ds$diagnosis) <- c('0','1')
+levels(ds$diagnosis) <- list("0"="B", "1"="M")
 str(ds)
 ```
 ## Normalize with UDF
