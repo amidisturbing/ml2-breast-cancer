@@ -1,0 +1,56 @@
+---
+title: "preprocessing v1"
+author:
+- Silke Meiner
+- Rafaela Neff
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+---
+Read data without ID and empty X variables.
+```{r}
+rm(list=ls())
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+print(wd)
+
+#read data
+ds <- read.csv('../data/data.csv')[c(-33,-1)] # exclude ID and X
+dim(ds)
+str(ds)
+```
+Make diagnosis a 0/1 variable:
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+levels(ds$diagnosis) <- list("0"="B", "1"="M")
+```
+
+# train / test split
+We should have a separate folder (or just a separate data frame) for the test data. This should be the same for both methods to allow for a correct comparison.
+
+```{r}
+#install.packages("caTools")
+library(caTools)
+# set seed for reproducibility
+set.seed(0)
+train_rows = sample.split(ds$diagnosis, SplitRatio=0.8)
+train = ds[ train_rows,]
+test  = ds[!train_rows,]
+
+# check for stratification 
+# -1 is required : level 0 -> integer 1, and level 1 -> integer 2
+sum(as.integer(ds$diagnosis)-1) / nrow(ds)
+sum(as.integer(train$diagnosis)-1) / nrow(train)
+sum(as.integer(test$diagnosis)-1) / nrow(test)
+```
+create a test and train file for clean separation
+```{r}
+write.csv(train, '../data/train.csv')
+write.csv(test, '../data/test.csv')
+```
