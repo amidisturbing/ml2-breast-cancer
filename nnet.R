@@ -72,7 +72,7 @@ library(caret)
 evaluate <- function(pred, ref){
   u <- union(pred, ref)
   t <- table(factor(pred, u), factor(ref, u))
-  confusionMatrix(t)
+  confusionMatrix(t, positive = "1", mode = "everything")
 }
 
 # Predictions on the training set
