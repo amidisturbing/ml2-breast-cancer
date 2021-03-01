@@ -47,14 +47,14 @@ NN <-nnet(diagnosis ~. ,
           data = dataset_norm,
           size = numUnits
 );
-summary(NN)
+#summary(NN)
 
 NN_1 <-nnet(diagnosis ~. ,
           data = dataset_norm,
           size = numUnits,
           decay = 0.1
 );
-summary(NN_1)
+#summary(NN_1)
 
 NN_skip <-nnet(diagnosis ~. ,
             data = dataset_norm,
@@ -62,7 +62,7 @@ NN_skip <-nnet(diagnosis ~. ,
             decay = 0.1,
             skip = TRUE
 );
-summary(NN_skip)
+#summary(NN_skip)
 #summary(NN$residuals)
 
 prop.table(table(train$diagnosis))
@@ -88,3 +88,10 @@ evaluate(nnet_predictions_test_1, test$diagnosis)
 #best acchieved accuracy so far for num_of_units = 1 NN_skip ~83% on test data
 nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
 evaluate(nnet_predictions_test_skip, test$diagnosis)
+
+#import the function from Github
+library(devtools)
+source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
+
+#plot model
+plot.nnet(NN)
