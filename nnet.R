@@ -30,12 +30,12 @@ dataset_norm<-as.data.frame(lapply(train[2:31] ,normalize))
 dataset_norm <- cbind(diagnosis=train$diagnosis,dataset_norm)
 #str(dataset_norm)
 test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
-test_norm <- cbind(diagnosis=test$diagnosis,dataset_norm)
+test_norm <- cbind(diagnosis=test$diagnosis,test_norm)
 
 library(nnet)
 set.seed(42)
 #nnet: size  = number of units in the hidden layer.
-numUnits = 1
+numUnits = 10
 #fit
 #model overfitting on trainingdata
 #add dropout?
@@ -67,10 +67,6 @@ summary(NN_skip)
 
 prop.table(table(train$diagnosis))
 
-# Predictions on the training set
-nnet_predictions_train <-predict(NN, dataset_norm, type = "class")
-evaluate(nnet_predictions_train, dataset_norm$diagnosis)
-
 # Confusion matrix on training data
 library(caret)
 evaluate <- function(pred, ref){
@@ -79,12 +75,16 @@ evaluate <- function(pred, ref){
   confusionMatrix(t)
 }
 
+# Predictions on the training set
+nnet_predictions_train <-predict(NN, dataset_norm, type = "class")
+evaluate(nnet_predictions_train, dataset_norm$diagnosis)
+
 nnet_predictions_test <-predict(NN, test_norm, type = "class")
 evaluate(nnet_predictions_test, test$diagnosis)
 
-#best acchieved accuracy so far for NN_1 ~81% on test data
+#best acchieved accuracy for num_of_units = 1 NN_1 ~81% on test data
 nnet_predictions_test_1 <-predict(NN_1, test_norm, type = "class")
 evaluate(nnet_predictions_test_1, test$diagnosis)
-#best acchieved accuracy so far for NN_skip ~83% on test data
+#best acchieved accuracy so far for num_of_units = 1 NN_skip ~83% on test data
 nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
 evaluate(nnet_predictions_test_skip, test$diagnosis)
