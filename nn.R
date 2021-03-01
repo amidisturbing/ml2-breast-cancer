@@ -47,13 +47,13 @@ NN <-nnet(diagnosis ~. ,
           data = dataset_norm,
           size = numUnits
 );
+summary(NN)
 
 NN_1 <-nnet(diagnosis ~. ,
           data = dataset_norm,
           size = numUnits,
           decay = 0.1
 );
-summary(NN)
 summary(NN_1)
 #summary(NN$residuals)
 
@@ -61,7 +61,6 @@ prop.table(table(train$diagnosis))
 
 # Predictions on the training set
 nnet_predictions_train <-predict(NN, dataset_norm, type = "class")
-nnet_predictions_test <-predict(NN, test_norm, type = "class")
 #table(test$diagnosis, nnet_predictions_test)
 
 # Confusion matrix on training data
@@ -74,5 +73,9 @@ evaluate <- function(pred, ref){
 
 evaluate(nnet_predictions_train, dataset_norm$diagnosis)
 
+nnet_predictions_test <-predict(NN, test_norm, type = "class")
 evaluate(nnet_predictions_test, test$diagnosis)
 
+#best acchieved accuracy so far for NN_1 ~81% on test data
+nnet_predictions_test_1 <-predict(NN_1, test_norm, type = "class")
+evaluate(nnet_predictions_test_1, test$diagnosis)
