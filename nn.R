@@ -33,16 +33,20 @@ test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
 test_norm <- cbind(diagnosis=test$diagnosis,dataset_norm)
 
 library(nnet)
-#use one layer in order to compare thee activations in the network 
-#to simpler approaches
-hidden_layers = 1
+set.seed(42)
+#nnet: size  = number of units in the hidden layer.
+numUnits = 1
 #fit
 #model overfitting on trainingdata
 #add dropout?
-#loss function?
+#If the response in formula is a factor, an appropriate classification network is constructed;
+#this has one output and entropy fit if the number of levels is two
+#note: entropy and softmax are mutually exclusive.
+#decay: https://towardsdatascience.com/this-thing-called-weight-decay-a7cd4bcfccab
 NN <-nnet(diagnosis ~. ,
-          data= dataset_norm,
-          size=hidden_layers
+          data = dataset_norm,
+          size = numUnits,
+          decay = 0.1
 );
 summary(NN)
 #summary(NN$residuals)
