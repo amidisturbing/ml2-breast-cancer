@@ -55,13 +55,21 @@ NN_1 <-nnet(diagnosis ~. ,
           decay = 0.1
 );
 summary(NN_1)
+
+NN_skip <-nnet(diagnosis ~. ,
+            data = dataset_norm,
+            size = numUnits,
+            decay = 0.1,
+            skip = TRUE
+);
+summary(NN_skip)
 #summary(NN$residuals)
 
 prop.table(table(train$diagnosis))
 
 # Predictions on the training set
 nnet_predictions_train <-predict(NN, dataset_norm, type = "class")
-#table(test$diagnosis, nnet_predictions_test)
+evaluate(nnet_predictions_train, dataset_norm$diagnosis)
 
 # Confusion matrix on training data
 library(caret)
@@ -71,11 +79,12 @@ evaluate <- function(pred, ref){
   confusionMatrix(t)
 }
 
-evaluate(nnet_predictions_train, dataset_norm$diagnosis)
-
 nnet_predictions_test <-predict(NN, test_norm, type = "class")
 evaluate(nnet_predictions_test, test$diagnosis)
 
 #best acchieved accuracy so far for NN_1 ~81% on test data
 nnet_predictions_test_1 <-predict(NN_1, test_norm, type = "class")
 evaluate(nnet_predictions_test_1, test$diagnosis)
+#best acchieved accuracy so far for NN_skip ~83% on test data
+nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
+evaluate(nnet_predictions_test_skip, test$diagnosis)
