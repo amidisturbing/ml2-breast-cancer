@@ -45,10 +45,16 @@ numUnits = 1
 #decay: https://towardsdatascience.com/this-thing-called-weight-decay-a7cd4bcfccab
 NN <-nnet(diagnosis ~. ,
           data = dataset_norm,
+          size = numUnits
+);
+
+NN_1 <-nnet(diagnosis ~. ,
+          data = dataset_norm,
           size = numUnits,
           decay = 0.1
 );
 summary(NN)
+summary(NN_1)
 #summary(NN$residuals)
 
 prop.table(table(train$diagnosis))
@@ -60,10 +66,13 @@ nnet_predictions_test <-predict(NN, test_norm, type = "class")
 
 # Confusion matrix on training data
 library(caret)
-u <- union(nnet_predictions_train, dataset_norm$diagnosis)
-t <- table(factor(nnet_predictions_train, u), factor(dataset_norm$diagnosis, u))
-confusionMatrix(t)   
+evaluate <- function(pred, ref){
+  u <- union(pred, ref)
+  t <- table(factor(pred, u), factor(ref, u))
+  confusionMatrix(t)
+}
 
-u_test <- union(nnet_predictions_test, test$diagnosis)
-t_test <- table(factor(nnet_predictions_test, u_test), factor(test$diagnosis, u_test))
-confusionMatrix(t_test)   
+evaluate(nnet_predictions_train, dataset_norm$diagnosis)
+
+evaluate(nnet_predictions_test, test$diagnosis)
+
