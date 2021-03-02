@@ -1,5 +1,5 @@
-#html rendering of task proposal
-take-01.nb.html
+#.Rmd html rendering
+*.html
 
 #MacOsX
 .DS_Store

@@ -13,7 +13,7 @@ _Predict whether the cancer is benign or malignant._
 
 Classes: **M = malignant** and  **B = benign**.
 
-For computational reasons those values are be encoded as Integers: **0 = M = malignant** or **1 = B = benign**.
+For computational reasons those values are be encoded as Integers: **1 = M = malignant** or **0 = B = benign**.
  
 
 ```{r}
