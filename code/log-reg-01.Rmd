@@ -17,152 +17,43 @@ Read data without ID and empty X variables.
 #change working directory to current dir
 wd = getwd()
 setwd(wd)
-
 #read data
 ds <- read.csv('data/data.csv')[c(-33,-1)] # exclude ID and X
 dim(ds)
 str(ds)
 ```
-Make diagnosis a 0/1 variable:
-```{r}
-ds$diagnosis <- as.factor(ds$diagnosis)
-levels(ds$diagnosis) <- list("0"="B", "1"="M")
-```
-
 # train / test split
 We should have a separate folder (or just a separate data frame) for the test data. This should be the same for both methods to allow for a correct comparison.
-
-```{r}
-#install.packages("caTools")
-library(caTools)
-# set seed for reproducibility
-set.seed(0)
-train_rows = sample.split(ds$diagnosis, SplitRatio=0.7)
-train = ds[ train_rows,]
-test  = ds[!train_rows,]
-```
 # mathematical explanation of method
 # preprocessing
 Normalization. Scaling.
 Should we check somewhere if our data is normal (normal distribution)? Does this matter? If so, put this in the math section
-
+Make diagnosis a 0/1 variable:
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+levels(ds$diagnosis) <- c('0','1')
+```
 # Baseline Model
 Run a logistic regression.
-```{r warning=FALSE}
-glm.1 <- glm(diagnosis~. , data=train, family='binomial')
+```{r}
+glm.1 <- glm(diagnosis~. , data=ds, family='binomial')
 summary(glm.1)
 ```
 
-This is really strange: huge values in the estimates, sd, an z-value columns. Really small p-values like all variables were highly significant.
-
 Error message: algorithm did not converge! That's not good.
-
-Fisher scoring iterations now 15, used to be 25 which meant no convergence. But this doesn't look like convergence either.
-
 cf https://stackoverflow.com/questions/61418709/warning-in-glm-analysis
 The underlying problem is called complete separation or perfect prediction: The underlying problem is too simple for an advanced algorithm like logistic regression.
 
-# Feature selection
-```{r message=FALSE, warning=FALSE}
-glm.2 <- step(glm.1,direction="both",trace=FALSE) # combination of forward selection and backwrds limination
+```{r}
+ds$diagnosis <- as.integer(ds$diagnosis) -1
+#levels(ds$diagnosis) <- c('0','1')
+glm.2 <- lm(diagnosis~. , data=ds)
 summary(glm.2)
 ```
-Feature selection has removed more than half of our variables (more like 2/3), we are left with 9 (other run: 10).
+The linear model works. But the result is not so good (RSE>0.2, R squared<0.8). Not exactly perfect prediction like. But the p-value in the end is real small: 2.2e-16?? wops, basically 0.
+We would need a test set to get a decision on how good the model is?!
 
-We have the maximal number of Fisher Scoring Iterations. We did not arrive at a convergence signal. This remains a problem. On the other hand the AIC of 20 (other run before setting the seed: 34) is rather small, and smaller is better. So our model may not have converged, but maybe it is running in good circles?
-
-Both models have really small residual deviance. Which should be a positive signal.
-
-We compare the nested models using ANOVA.
-```{r}
-anova(glm.1, glm.2)
-```
-This actually doesn't help me. I cannot interpret this.
-
-We now have 2 options: 
-
-* We believe that our data is collected from two perfectly separable classes. Then the logistic regression need not be the best method, we should rather go for finding a separating hyperplane or some other separating geometry directly. This could be done with LDA or SVM.
-
-* We believe that the population underlying our sample is not perfectly separable. This might stem from the relatively few samples in our data set and the high number of variables. We might be in a setting cursed by high dimensions. In that case we try to make our logistic regression work never the less.
-
-Which option are we more keen to believe in? Our data is about cancer, cancer is an illness, a malfunction on a cell basis. We might tend to the first option and model the illness as a sudden occurrence. Then it is correct, that healthy and ill are mutually exclusive. Or we might tend to the second option, there might be a path from health to illness but we might not have caught samples in their change. There might be a continuous flow from health to illness, but we have not observed it in our data. 
-
-We will try to follow both paths:
-* Find an explicit separation between the two classes. Use SVM od LDA
-
-* Make the logistic regression work. Try to prepare for (test) data in regions that are not populated by training data. 
-
-And we will run our model(s) and see what it yields on our test set.
-
+# Feature selection
 # Metrics and HPO
 Metrics: Accuracy, F1, precision and recall separately
-
-Hyperparameter(s): only the threshold?!
-```{r}
-preds.pr <- predict(glm.1, newdata=test, type="response") # probabilities for classes
-
-# iterate through preds
-  # if p > thresh
-    # predict class 1
-  # else 
-  # predict class 0
-
-preds.cl <- lapply(preds.pr, function(x) { as.integer(x>0.5) }) # predicted classes
-
-test$preds.pr <- unlist(preds.pr) 
-test$preds.cl <- unlist(preds.cl)
-test$eval= apply(test[c('diagnosis','preds.cl')], 1 , function(x) {as.integer(x[1]==x[2])})
-# accuracy
-sum(test$eval) / nrow(test)
-```
-
-```{r}
-# http://www.sthda.com/english/articles/36-classification-methods-essentials/143-evaluation-of-classification-model-accuracy-essentials/
-# first prt did not work for me, was about caret (a library)
-
-accuracy <- mean(test$diagnosis == test$preds.cl)
-print(c('accuracy : ' , accuracy))
-
-error <- mean(test$diagnosis != test$preds.cl)
-print(c('error : ' , error))
-
-table(test$diagnosis, test$preds.cl)
-```
-the smaller model
-```{r}
-preds.2.pr <- predict(glm.2, newdata=test, type="response") # probabilities for classes
-preds.2.cl <- lapply(preds.2.pr, function(x) { as.integer(x>0.5) }) # predicted classes
-test$preds.pr <- unlist(preds.2.pr) 
-test$preds.cl <- unlist(preds.2.cl)
-test$eval= apply(test[c('diagnosis','preds.cl')], 1 , function(x) {as.integer(x[1]==x[2])})
-# accuracy
-sum(test$eval) / nrow(test)
-```
-```{r}
-accuracy <- mean(test$diagnosis == test$preds.cl)
-print(c('accuracy : ' , accuracy))
-
-error <- mean(test$diagnosis != test$preds.cl)
-print(c('error : ' , error))
-
-table(test$diagnosis, test$preds.cl)
-```
-the smaller model gives an improved result, with 5 misclassifications avoided (in other runs without seed there were mostly just 2 or 3 misclassifications avoided.
-
-(Before setting a seed I had in a previous run only one (=1!) misclassified test datum for the smaller model.)
-
-We should give the ROC / AUC for both models in the same plot.
-```{r}
-library(pROC)
-# Compute roc
-res.roc <- roc(test$diagnosis, test$preds.pr)
-plot.roc(res.roc, print.auc = TRUE, print.thres = "best")
-```
-
-# Advanced logistic regression
-
-Try to modify the loss function in a Ridge Regression way or something else... to prepare the algorithm to work on not perfectly separated test data.
-
-# Visualise the separation
-
-Done in the other document on PCA. Could also work with LDA or SVM.
+Only hyperparameter: The threshold?!
