@@ -1,21 +1,37 @@
 #change working directory to current dir
 wd = getwd()
 setwd(wd)
+
+#libraries
+library(corrplot)
+library(devtools)
+library(caret)
+library(funModeling)
+
 #read data
-train <- read.csv('data/train80.csv')[c(-1)] # exclude ID
+train <- read.csv('../data/train80.csv')[c(-1)] # exclude ID
 dim(train)
-test <- read.csv('data/test20.csv')[c(-1)] # exclude ID
+test <- read.csv('../data/test20.csv')[c(-1)] # exclude ID
 dim(test)
 #str(train)
 
 #Change column diagnosis to factor:
 #0 for benign, 1 for malignant
 train$diagnosis <- as.factor(train$diagnosis)
-#levels(ds$diagnosis) <- c('0','1')
 levels(train$diagnosis) <- list("0"="B", "1"="M")
 
 test$diagnosis <- as.factor(test$diagnosis)
 levels(test$diagnosis) <- list("0"="B", "1"="M")
+
+# Data Analysis on Training Data
+#shouldn't I do this on the whole dataset (as well)?
+prop.table(table(train$diagnosis))
+trainingdata_status=df_status(train)
+plot_num(train)
+#Correlation Matrix ???
+#not running yet
+# corrplot <- cor(train[,3:ncol(train)])
+# corrplot(corrplot, order = "hclust", tl.cex = 0.65, addrect = 8)
 
 ## Normalize with UDF
 #Custom function for min-max-normalization
@@ -68,7 +84,6 @@ NN_skip <-nnet(diagnosis ~. ,
 prop.table(table(train$diagnosis))
 
 # Confusion matrix on training data
-library(caret)
 evaluate <- function(pred, ref){
   u <- union(pred, ref)
   t <- table(factor(pred, u), factor(ref, u))
@@ -90,7 +105,6 @@ nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
 evaluate(nnet_predictions_test_skip, test$diagnosis)
 
 #import the function from Github
-library(devtools)
 source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 
 #plot model
