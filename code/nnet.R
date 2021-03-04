@@ -8,6 +8,7 @@ library(devtools)
 library(caret)
 library(funModeling)
 library(nnet)
+#library(dplyr)
 
 #read data
 train <- read.csv('../data/train80.csv')[c(-1)] # exclude ID
@@ -27,8 +28,9 @@ levels(test$diagnosis) <- list("0"="B", "1"="M")
 # Data Analysis on Training Data
 #shouldn't I do this on the whole dataset (as well)?
 prop.table(table(train$diagnosis))
-trainingdata_status=df_status(train)
-plot_num(train)
+#UNCOMMENT following lines for plots and statistics
+#trainingdata_status=df_status(train)
+#plot_num(train)
 
 ## Normalize with UDF
 #Custom function for min-max-normalization
@@ -40,9 +42,8 @@ normalize <- function(x) {
 }
 #if the data is being normalized we get an ok-ish prediction
 #if not it sucks
-train_norm<-as.data.frame(lapply(train[2:31] ,normalize))
-train_norm<- cbind(diagnosis=train$diagnosis,train_norm
-                  )
+train_norm<-as.data.frame(lapply(test[2:31] ,normalize))
+train_norm <- cbind(diagnosis=train$diagnosis,train_norm)
 #str(dataset_norm)
 test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
 test_norm <- cbind(diagnosis=test$diagnosis,test_norm)
@@ -85,7 +86,7 @@ NN_skip <-nnet(diagnosis ~. ,
 #summary(NN_skip)
 #summary(NN$residuals)
 model_nnet <- nnet(diagnosis ~ .,
-                   data=train_norm,
+                   data=train,
                    size= 20,
                    decay= 0.01,
                    rang=0.6,
@@ -106,6 +107,24 @@ nnet_predictions_train <-predict(NN, train_norm
 evaluate(nnet_predictions_train, train_norm
         $diagnosis)
 
+#evaluate best model un NOT normalized training data
+model_nnet_predictions_train <-predict(model_nnet, train
+                                 , type = "class")
+evaluate(model_nnet_predictions_train, train
+         $diagnosis)
+#evaluate best model on NOT normalized test data
+nnet_predictions_test <-predict(model_nnet, test, type = "class")
+evaluate(nnet_predictions_test, test$diagnosis)
+
+#evaluate best model on normalized test data - DON'T hold back diagnosis
+model_nnet_predictions_test_norm <-predict(model_nnet, test_norm, type = "class")
+evaluate(model_nnet_predictions_test_norm, test_norm$diagnosis)
+
+#evaluate best model on normalized test data - hold back diagnosis
+nnet_predictions_test_norm <-predict(model_nnet, test_norm, type = "class")
+evaluate(nnet_predictions_test_norm, test_norm$diagnosis)
+
+#further evaluation
 nnet_predictions_test <-predict(NN, test_norm, type = "class")
 evaluate(nnet_predictions_test, test$diagnosis)
 
