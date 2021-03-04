@@ -42,7 +42,10 @@ normalize <- function(x) {
 }
 #if the data is being normalized we get an ok-ish prediction
 #if not it sucks
-train_norm<-as.data.frame(lapply(test[2:31] ,normalize))
+train_norm<-as.data.frame(lapply(train[2:31] ,normalize))
+#ERROR?
+#after normalizing training data all values are NA :()
+str(train_norm)
 train_norm <- cbind(diagnosis=train$diagnosis,train_norm)
 #str(dataset_norm)
 test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
