@@ -1,52 +1,38 @@
 #change working directory to current dir
 wd = getwd()
 setwd(wd)
-
-#libraries
-library(corrplot)
-library(devtools)
-library(caret)
-library(funModeling)
-library(nnet)
-
 #read data
-train <- read.csv('../data/train80.csv')[c(-1)] # exclude ID
+train <- read.csv('data/train80.csv')[c(-1)] # exclude ID
 dim(train)
-test <- read.csv('../data/test20.csv')[c(-1)] # exclude ID
+test <- read.csv('data/test20.csv')[c(-1)] # exclude ID
 dim(test)
 #str(train)
 
 #Change column diagnosis to factor:
 #0 for benign, 1 for malignant
 train$diagnosis <- as.factor(train$diagnosis)
+#levels(ds$diagnosis) <- c('0','1')
 levels(train$diagnosis) <- list("0"="B", "1"="M")
 
 test$diagnosis <- as.factor(test$diagnosis)
 levels(test$diagnosis) <- list("0"="B", "1"="M")
-
-# Data Analysis on Training Data
-#shouldn't I do this on the whole dataset (as well)?
-prop.table(table(train$diagnosis))
-trainingdata_status=df_status(train)
-plot_num(train)
 
 ## Normalize with UDF
 #Custom function for min-max-normalization
 normalize <- function(x) {
   num <- x - min(x)
   denom <- max(x) - min(x)
-  #str(min, max) #function (..., na.rm = FALSE)  ???
   return (num/denom)
 }
 #if the data is being normalized we get an ok-ish prediction
 #if not it sucks
-train_norm<-as.data.frame(lapply(train[2:31] ,normalize))
-train_norm<- cbind(diagnosis=train$diagnosis,train_norm
-                  )
+dataset_norm<-as.data.frame(lapply(train[2:31] ,normalize))
+dataset_norm <- cbind(diagnosis=train$diagnosis,dataset_norm)
 #str(dataset_norm)
 test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
 test_norm <- cbind(diagnosis=test$diagnosis,test_norm)
 
+library(nnet)
 set.seed(42)
 #nnet: size  = number of units in the hidden layer.
 numUnits = 10
@@ -57,43 +43,32 @@ numUnits = 10
 #this has one output and entropy fit if the number of levels is two
 #note: entropy and softmax are mutually exclusive.
 #decay: https://towardsdatascience.com/this-thing-called-weight-decay-a7cd4bcfccab
-# TODO:
-# Warnmeldung:
-#   In nnet.formula(diagnosis ~ ., data = dataset_norm, size = numUnits,  :
-#                     Gruppen ‘0’ ‘1’ sind leer
 NN <-nnet(diagnosis ~. ,
-          data = train_norm
-        ,
+          data = dataset_norm,
           size = numUnits
 );
-#summary(NN)
+summary(NN)
 
 NN_1 <-nnet(diagnosis ~. ,
-          data = train_norm
-        ,
-          size = numUnits,
-          decay = 0.1
+            data = dataset_norm,
+            size = numUnits,
+            decay = 0.1
 );
-#summary(NN_1)
+summary(NN_1)
 
 NN_skip <-nnet(diagnosis ~. ,
-            data = train_norm,
-            size = numUnits,
-            decay = 0.1,
-            skip = TRUE
+               data = dataset_norm,
+               size = numUnits,
+               decay = 0.1,
+               skip = TRUE
 );
-#summary(NN_skip)
+summary(NN_skip)
 #summary(NN$residuals)
-model_nnet <- nnet(diagnosis ~ .,
-                   data=train_norm,
-                   size= 20,
-                   decay= 0.01,
-                   rang=0.6,
-                   trace=TRUE,maxit=200 )
 
-prop.table(table(test$diagnosis))
+prop.table(table(train$diagnosis))
 
 # Confusion matrix on training data
+library(caret)
 evaluate <- function(pred, ref){
   u <- union(pred, ref)
   t <- table(factor(pred, u), factor(ref, u))
@@ -101,10 +76,8 @@ evaluate <- function(pred, ref){
 }
 
 # Predictions on the training set
-nnet_predictions_train <-predict(NN, train_norm
-                                , type = "class")
-evaluate(nnet_predictions_train, train_norm
-        $diagnosis)
+nnet_predictions_train <-predict(NN, dataset_norm, type = "class")
+evaluate(nnet_predictions_train, dataset_norm$diagnosis)
 
 nnet_predictions_test <-predict(NN, test_norm, type = "class")
 evaluate(nnet_predictions_test, test$diagnosis)
@@ -115,9 +88,3 @@ evaluate(nnet_predictions_test_1, test$diagnosis)
 #best acchieved accuracy so far for num_of_units = 1 NN_skip ~83% on test data
 nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
 evaluate(nnet_predictions_test_skip, test$diagnosis)
-
-#import the function from Github
-source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
-
-#plot model
-plot.nnet(NN)
