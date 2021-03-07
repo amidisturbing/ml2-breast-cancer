@@ -35,17 +35,20 @@ prop.table(table(train$diagnosis))
 ## Normalize with UDF
 #Custom function for min-max-normalization
 normalize <- function(x) {
+  #DEBUG
+  #str(x)
   num <- x - min(x)
+  #str(min(x),num)
   denom <- max(x) - min(x)
+  #DEBUG:
+  #str(x)
   #str(min, max) #function (..., na.rm = FALSE)  ???
   return (num/denom)
 }
 #if the data is being normalized we get an ok-ish prediction
 #if not it sucks
 train_norm<-as.data.frame(lapply(train[2:31] ,normalize))
-#ERROR?
-#after normalizing training data all values are NA :()
-str(train_norm)
+#str(train_norm)
 train_norm <- cbind(diagnosis=train$diagnosis,train_norm)
 #str(dataset_norm)
 test_norm<-as.data.frame(lapply(test[2:31] ,normalize))
@@ -111,8 +114,9 @@ evaluate(nnet_predictions_train, train_norm
         $diagnosis)
 
 #evaluate best model un NOT normalized training data
-model_nnet_predictions_train <-predict(model_nnet, train
-                                 , type = "class")
+model_nnet_predictions_train <-predict(model_nnet,
+                                       train,
+                                       type = "class")
 evaluate(model_nnet_predictions_train, train
          $diagnosis)
 #evaluate best model on NOT normalized test data
