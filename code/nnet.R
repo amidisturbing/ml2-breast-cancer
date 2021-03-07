@@ -113,7 +113,7 @@ nnet_predictions_train <-predict(NN, train_norm
 evaluate(nnet_predictions_train, train_norm
         $diagnosis)
 
-#evaluate best model un NOT normalized training data
+#evaluate best model on NOT normalized training data
 model_nnet_predictions_train <-predict(model_nnet,
                                        train,
                                        type = "class")
