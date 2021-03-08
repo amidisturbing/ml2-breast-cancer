@@ -31,7 +31,8 @@ prop.table(table(train$diagnosis))
 #UNCOMMENT following lines for plots and statistics
 #trainingdata_status=df_status(train)
 #plot_num(train)
-
+corrplot <- cor(train[,2:ncol(train)])
+corrplot(corrplot, order = "hclust", tl.cex = 0.65, addrect = 8)
 ## Normalize with UDF
 #Custom function for min-max-normalization
 normalize <- function(x) {
@@ -64,10 +65,6 @@ numUnits = 10
 #this has one output and entropy fit if the number of levels is two
 #note: entropy and softmax are mutually exclusive.
 #decay: https://towardsdatascience.com/this-thing-called-weight-decay-a7cd4bcfccab
-# TODO:
-# Warnmeldung:
-#   In nnet.formula(diagnosis ~ ., data = dataset_norm, size = numUnits,  :
-#                     Gruppen ‘0’ ‘1’ sind leer
 NN <-nnet(diagnosis ~. ,
           data = train_norm
         ,
