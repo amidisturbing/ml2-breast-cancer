@@ -35,6 +35,8 @@ corrplot <- cor(train[,2:ncol(train)])
 corrplot(corrplot, order = "hclust", tl.cex = 0.65, addrect = 8)
 ## Normalize with UDF
 #Custom function for min-max-normalization
+#NB: Use the scaling function on the training data
+#NOT the whole data
 normalize <- function(x) {
   #DEBUG
   #str(x)
