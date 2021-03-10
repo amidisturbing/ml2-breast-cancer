@@ -1,0 +1,37 @@
+---
+title: "Analytics"
+author: "Silke Meiner, Rafaela Neff"
+date: "10 3 2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Comparison of NN configurations on the Breast Cancer Wisconsin (Diagnostic) Data Set
+
+We will investigate the performances of our proposed neural network architectures on this dataset.
+
+For this project we've used the R-package nnet, with 1 hidden layer by default. This is not supposed to be changed through this project.
+
+The first three networks were trained on a 80% split of the dataset, keeping the proprtions of benign and malignant diagnoses as they were in the original dataset.
+
+For the last proposed architecture, se've decided to train it on both, the normalized as well as the original data training slit. Explanation and findings will be disussed in the section *interessting findings**:
+NN: One fully connected hidden layer with 10 nodes.
+Correct classification:
+error rate:
+
+NN_1: One fully connected hidden layer with 10 nodes and a weight decay (L2-Norm) of 0.1
+
+NN_skip:
+
+model_nnet:
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Interesting findings

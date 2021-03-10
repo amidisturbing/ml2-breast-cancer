@@ -21,7 +21,7 @@ For computational reasons those values are be encoded as Integers: **1 = M = mal
 wd = getwd()
 setwd(wd)
 #read data
-ds <- read.csv('data/data.csv')
+ds <- read.csv('../data/data.csv')
 dim(ds)
 str(ds)
 # summary(ds)
