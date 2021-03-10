@@ -24,14 +24,14 @@ error rate:
 
 NN_1: One fully connected hidden layer with 10 nodes and a weight decay (L2-Norm) of 0.1
 
-NN_skip:
+NN_skip: One hidden layer with 10 nodes and a weight decay (L2-Norm) of 0.1 and skip layers.
 
-model_nnet:
+model_nnet: One hidden layer wit 20 nodes, a weight decay of 0.01, a range of 0.6 (??? what'S that) and trace = TRUE (???? explain). The maximum iterations to be done are set to 200.
 
 
 
 ```{r cars}
-summary(cars)
+
 ```
 
 ## Interesting findings
