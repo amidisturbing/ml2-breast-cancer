@@ -10,20 +10,16 @@ set.seed(2)
 localH2O = h2o.init(ip="localhost", port = 54321, 
                     startH2O = TRUE, nthreads=-1)
 
-train <- h2o.importFile("../data/train80.csv")
-test <- h2o.importFile("../data/test20.csv")
+train_h2o <- h2o.importFile("../data/train80.csv")
+test_h2o <- h2o.importFile("../data/test20.csv")
 #test <- read.csv('../data/test20.csv')[c(-1)] # exclude ID
 
-train$diagnosis <- as.factor(train$diagnosis)
-levels(test$diagnosis) <- list("0"="B", "1"="M")
+train_h2o$diagnosis <- as.factor(train_h2o$diagnosis)
+levels(test_h2o$diagnosis) <- list("0"="B", "1"="M")
 
-test$diagnosis <- as.factor(test$diagnosis)
-levels(test$diagnosis) <- list("0"="B", "1"="M")
+test_h2o$diagnosis <- as.factor(test_h2o$diagnosis)
+levels(test_h2o$diagnosis) <- list("0"="B", "1"="M")
 
-#train_h2o <- as.h2o(train)
-#test_h2o <- as.h2o(test)
-train_h2o <- train
-test_h2o <- test
 #Set timer:
 timer <- proc.time()
 
