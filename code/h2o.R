@@ -20,13 +20,34 @@ train_rows = sample.split(ds$diagnosis, SplitRatio=0.8)
 train = ds[ train_rows,]
 validate  = ds[!train_rows,]
 
+#TODO:Add Crossvalidation: 
+#stratified:
+#http://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/algo-params/fold_assignment.html?highlight=stratified#example
+
 #start a local h2o cluster:
 localH2O = h2o.init(ip="localhost", port = 54321, 
                     startH2O = TRUE, nthreads=-1)
 
 train_h2o <- as.h2o(train)
-test_h2o <- as.h2o(validate)
+validate_h2o <- as.h2o(validate)
 
+target = names(train_h2o)[1]
+predictors = names(train_h2o)[2:31]
+
+# Build the first deep learning model, specifying the model_id so you
+# can indicate which model to use when you want to continue training.
+# We will use 4 epochs to start off with and then build an additional
+# 16 epochs with checkpointing.
+dl <- h2o.deeplearning(model_id = 'dl',
+                       x = 2:31,
+                       y = target,
+                       training_frame = train_h2o,
+                       validation_frame = validate_h2o,
+                       distribution = "multinomial",
+                       epochs = 4,
+                       activation = 'RectifierWithDropout',
+                       hidden_dropout_ratios = c(0, 0),
+                       seed = 1234)
 # #Set timer:
 # timer <- proc.time()
 # 
@@ -40,8 +61,8 @@ test_h2o <- as.h2o(validate)
 #   algorithm = "deeplearning",
 #   activation = "RectifierWithDropout",
 #   hyper_params = hyper_pars,
-#   x = 3:32,
-#   y = 2,
+#   x = 2:31,
+#   y = 1,
 #   training_frame = train_h2o,
 #   input_dropout_ratio = 0.2,
 #   balance_classes = T,
@@ -57,20 +78,6 @@ test_h2o <- as.h2o(validate)
 #   print(sprintf('CV set auc: %f', auc))
 # }
 
-# Build the first deep learning model, specifying the model_id so you
-# can indicate which model to use when you want to continue training.
-# We will use 4 epochs to start off with and then build an additional
-# 16 epochs with checkpointing.
-dl <- h2o.deeplearning(model_id = 'dl',
-                       x = predictors,
-                       y = target,
-                       training_frame = train,
-                       validation_frame = valid,
-                       distribution = 'multinomial',
-                       epochs = 4,
-                       activation = 'RectifierWithDropout',
-                       hidden_dropout_ratios = c(0, 0),
-                       seed = 1234)
 # # Methods for an H2O model
 # h2o.residual_analysis_plot()
 # h2o.varimp_plot()
@@ -80,4 +87,4 @@ dl <- h2o.deeplearning(model_id = 'dl',
 # h2o.ice_plot()
 
 #shut down H2O instance
-h2o.shutdown()
+#h2o.shutdown()
