@@ -1,0 +1,153 @@
+---
+title: "logistic regression v3"
+author:
+- Silke Meiner
+- Rafaela Neff
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+---
+Read data without ID and empty X variables.
+```{r}
+rm(list=ls())
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+print(wd)
+
+#read data
+ds <- read.csv('../data/train80.csv')[-1]
+ds$diagnosis <- as.factor(ds$diagnosis)
+dim(ds)
+str(ds)
+```
+Make diagnosis a 0/1 variable:
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+```
+
+# split the training set
+We can do the train / validation split in caret, too
+
+```{r}
+# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# install.packages('caret')
+library(caret)
+#install.packages('LogicReg')
+library(LogicReg)
+```
+
+```{r}
+# example in https://topepo.github.io/caret/data-splitting.html
+set.seed(998)
+inTraining <- createDataPartition(ds$diagnosis, p = .75, list = FALSE)
+train <- ds[ inTraining,]
+validate  <- ds[-inTraining,]
+
+```
+glm does not have internal hyper parameters that could be automatically optimized.
+
+# model comparison, overview
+
+We compare different models all input is scaled to be in the 0,1 interval.
+
+```{r}
+# install.packages('kernlab')
+library(kernlab)
+library(caret)
+
+set.seed(1234)
+#preproc <- c("center", "scale")
+preproc <- "range"
+control <- trainControl(method = "cv", number = 10)
+performance_metric <- "Accuracy"
+# Linear discriminant analysis (LDA)
+LDA <- train(diagnosis ~ ., data = ds, method = "lda", metric = performance_metric, trControl = control, preProcess = preproc)
+# Classification and regression trees (CART)
+Tree <- train(diagnosis ~ ., data = ds, method = "rpart", metric = performance_metric, trControl = control, preProcess = preproc)
+# Support vector machine (SVM)
+SVM <- train(diagnosis ~ ., data = ds, method = "svmRadial", metric = performance_metric, trControl = control, preProcess = preproc)
+# Logistic Regression (GLM)
+GLM <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = preproc)
+
+results <- resamples(list(LDA = LDA,  'classification Tree' = Tree, SVM = SVM, 'Logistic Regression' = GLM))
+summary(results)
+ggplot(results) + 
+  labs(y = "Accuracy") + 
+  theme_linedraw()
+```
+We will optimize our logistic regression model and keep the SVM (without further improvements) for comparison. We explore different pre-processing options.
+
+```{r warning=FALSE}
+set.seed(1234)
+control <- trainControl(method = "repeatedcv", number = 10, repeats = 50)
+#control <- trainControl(method = "cv", number = 10) # quicker, use when in hurry        
+performance_metric <- "Accuracy"
+# Support vector machine (SVM)
+SVM <- train(diagnosis ~ ., data = ds, method = "svmRadial", metric = performance_metric, trControl = control, preProcess = "range")
+# center and scale
+GLM1 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = c("center", "scale"))
+# PCA
+GLM2 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'pca')
+# [0,1]
+GLM3 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'range')
+GLM4 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'BoxCox')
+```
+
+```{r}
+results <- resamples(list('SVM with range' = SVM, 'GLM center, scale' = GLM1, 'GLM with pca'=GLM2, 'GLM with range 0,1' = GLM3, 'GLM with BoxCox'=GLM4))
+summary(results)
+ggplot(results) + 
+  labs(y = "Accuracy") + 
+  theme_linedraw()
+```
+As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing.
+
+```{r}
+summary(GLM2$finalModel)
+```
+
+# Test
+```{r}
+dst <- read.csv('../data/test20.csv')[-1]
+dst$diagnosis <- as.factor(dst$diagnosis)
+dim(dst)
+str(dst)
+```
+
+```{r}
+pred <- predict(GLM2, newdata=dst)
+confusionMatrix(pred, dst$diagnosis , positive='1')
+```
+
+```{r}
+#preProcValues <- preProcess(train, method = "pca")
+#trainTransformed <- predict(preProcValues, ds)
+#testTransformed <- predict(preProcValues, dst)
+```
+# Training the final model
+We train the final model on the full training data set. We use PCA as preprocessing.
+
+```{r warning=FALSE}
+model <- train(diagnosis ~., data = ds, method = "glm", family='binomial', preProcess = 'pca' ) # metric is default accuracy
+```
+
+```{r}
+importance <- varImp(model, scale=TRUE)
+print(importance)
+
+summary(model)
+```
+We finally got a model with some decent / great p-values. Variables were reduced automatically. And the model converged (only 10 iterations). This is all very well.
+```{r}
+pred <- predict(model, newdata=dst)
+print(confusionMatrix(data=pred, testTransformed$diagnosis , positive='1'))
+```
+## test evaluation / interpretation
+In our test data we see an accuracy of (only) 96.5% with an especially hurting sensitivity of only 93%: 3 out of 42 patients would have gotten the false signal of a begnin tumor when it was actually malignant. Comparing with the result from the 10 fold cross validation this is bad luck with the test set. 
+
