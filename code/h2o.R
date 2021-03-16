@@ -31,9 +31,31 @@ localH2O = h2o.init(ip="localhost", port = 54321,
 train_h2o <- as.h2o(train)
 validate_h2o <- as.h2o(validate)
 
+#load data with h2oand create stratified cross validation split
+data <- h2o.importFile('../data/train80.csv')[c(-1)]
+
+#Change column diagnosis to factor:
+#0 for benign, 1 for malignant
+data$diagnosis <- as.factor(data$diagnosis)
+levels(data$diagnosis) <- list("0"="B", "1"="M")
+
+# try using the fold_assignment parameter:
+# note you must set nfolds to use this parameter
+assignment_type <- 'Stratified'
+
 target = names(train_h2o)[1]
 predictors = names(train_h2o)[2:31]
 
+model <-  h2o.deeplearning(model_id = 'model_cv',
+                           x = 2:31,
+                           y = target,
+                           training_frame = data,
+                           fold_assignment = assignment_type,
+                           distribution = "multinomial",
+                           epochs = 4,
+                           activation = 'RectifierWithDropout',
+                           nfolds = 5,
+                           seed = 1234)
 # Build the first deep learning model, specifying the model_id so you
 # can indicate which model to use when you want to continue training.
 # We will use 4 epochs to start off with and then build an additional
