@@ -9,11 +9,13 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Comparison of NN configurations on the Breast Cancer Wisconsin (Diagnostic) Data Set
+# Comparison of NN configurations on the Breast Cancer Wisconsin (Diagnostic) Data Set
+## Beuth University for Applied Sciences, Machine Learning 2, Prof. Tim Downie, WS2020/2021
 
 We will investigate the performances of our proposed neural network architectures on this dataset.
 
-For this project we've used the R-package nnet, with 1 hidden layer by default. This is not supposed to be changed through this project.
+For this project we've used the R-Package nnet, as well as the R-Interface to Java's H2o-Package.
+The R package nnet comes with 1 hidden layer by default. This is not supposed to be changed through this project.
 
 The first three networks were trained on a 80% split of the dataset, keeping the proprtions of benign and malignant diagnoses as they were in the original dataset.
 
