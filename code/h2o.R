@@ -2,32 +2,15 @@
 wd = getwd()
 setwd(wd)
 #install.packages("h2o")
-library(caTools)
 
-#read data
-ds <- read.csv('../data/train80.csv')[c(-1)] # exclude ID
 library(h2o)
-
-#Change column diagnosis to factor:
-#0 for benign, 1 for malignant
-ds$diagnosis <- as.factor(ds$diagnosis)
-levels(ds$diagnosis) <- list("0"="B", "1"="M")
-
-#create validation split
-# set seed for reproducibility
-set.seed(2)
-train_rows = sample.split(ds$diagnosis, SplitRatio=0.8)
-train = ds[ train_rows,]
-validate  = ds[!train_rows,]
 
 #start a local h2o cluster:
 localH2O = h2o.init(ip="localhost", port = 5321, 
                     startH2O = TRUE, nthreads=-1)
 h2o.removeAll() ## clean slate - just in case the cluster was already running
 
-train_h2o <- as.h2o(train)
-validate_h2o <- as.h2o(validate)
-#load data with h2oand create stratified cross validation split
+#load data with h2o and create stratified cross validation split
 test <- h2o.importFile('../data/test20.csv')[c(-1)]
 
 #Change column diagnosis to factor:
@@ -47,9 +30,13 @@ levels(training$diagnosis) <- list("0"="B", "1"="M")
 # note you must set nfolds to use this parameter
 assignment_type <- 'Stratified'
 
-target = names(train_h2o)[1]
-predictors = names(train_h2o)[2:31]
+target = names(training)[1]
+predictors = names(training)[2:31]
 
+#Preprocessing is done implicitly by h2o
+#before even training your net it computes mean and standard deviation
+#of all the features you have, and replaces the original values with (x - mean) / stddev.
+#src: https://stackoverflow.com/questions/37798134/h2o-deep-learning-weights-and-normalization
 model <-  h2o.deeplearning(model_id = 'model_cv',
                            x = predictors,
                            y = target,
@@ -61,18 +48,6 @@ model <-  h2o.deeplearning(model_id = 'model_cv',
                            nfolds = 10,
                            seed = 1234)
 
-# Build the first deep learning model, specifying the model_id so you
-# can indicate which model to use if you want to continue training.
-dl <- h2o.deeplearning(model_id = 'dl',
-                       x = 2:31,
-                       y = target,
-                       training_frame = train_h2o,
-                       validation_frame = validate_h2o,
-                       distribution = "multinomial",
-                       epochs = 4,
-                       activation = 'RectifierWithDropout',
-                       hidden_dropout_ratios = c(0, 0),
-                       seed = 1234)
 #Set timer:
 timer <- proc.time()
 
@@ -88,7 +63,7 @@ model_grid <- h2o.grid(
   hyper_params = hyper_pars,
   x = predictors,
   y = target,
-  training_frame = train_h2o,
+  training_frame = training,
   input_dropout_ratio = 0.2,
   balance_classes = T,
   momentum_stable = 0.99,
@@ -112,8 +87,9 @@ for (model_id in model_grid@model_ids) {
   print("-----------------------------------")
 }
 
+best_model = h2o.getModel("Grid_DeepLearning_RTMP_sid_abf2_32_model_R_1615916806869_7398_model_18")
 # Get fitted values of breast cancer dataset
-cancer.fit = h2o.predict(object = model, newdata = test)
+cancer.fit = h2o.predict(object = best_model, newdata = test)
 summary(cancer.fit)
 # save the model
 # the model was chosoen using cross-validation
@@ -121,10 +97,10 @@ summary(cancer.fit)
 # model_path <- h2o.saveModel(object = current_model, path = getwd(), force = TRUE)
 # print(model_path)
 
-h2o.performance(model, test)
-h2o.varimp_plot(model)
+h2o.performance(best_model, test)
+h2o.varimp_plot(best_model)
 # Create the partial dependence plot
-h2o.pd_plot(model, validate_h2o, column = 'area_se')
-h2o.ice_plot(model, validate_h2o, column = 'texture_worst')
+h2o.pd_plot(best_model, test, column = 'area_se')
+h2o.ice_plot(best_model, test, column = 'smoothness_worst')
 #shut down H2O instance
 #h2o.shutdown()

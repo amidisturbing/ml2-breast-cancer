@@ -2,8 +2,8 @@
 wd = getwd()
 setwd(wd)
 
-X <- read.csv('../data/data.csv')[c(-1,-33)] # exclude ID and X
-grp <- X$diagnosis
+X <- read.csv('../data/train80.csv')[c(-1,-33)] # exclude ID and X
+grp <- as.factor(X$diagnosis)
 
 X=scale(X[,2:31])
 #k=length(unique(grp))
