@@ -177,7 +177,7 @@ evaluate(model_nnet_predictions_test_norm, test_norm$diagnosis)
 nnet_predictions_test_norm <-predict(model_nnet_norm, test, type = "class")
 evaluate(nnet_predictions_test_norm, test$diagnosis)
 
-#evaluate best model on normalized test data - hold back diagnosis
+#evaluate best model on normalized test data  ~83% on test data
 nnet_predictions_test_norm <-predict(model_nnet_norm, test_norm, type = "class")
 evaluate(nnet_predictions_test_norm, test_norm$diagnosis)
 
@@ -192,8 +192,12 @@ evaluate(nnet_predictions_test_1, test$diagnosis)
 nnet_predictions_test_skip <-predict(NN_skip, test_norm, type = "class")
 evaluate(nnet_predictions_test_skip, test$diagnosis)
 
+#choose best model by accuracy and least false negatives, save and re-load it
+saveRDS(model_nnet, file = "../models/model_nnet_norm.rda")
+best_model <- readRDS("../models/model_nnet_norm.rda")
+
 #import the function from Github
 #source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 
-#plot model
-#plot.nnet(NN)
+#plot best model                             
+plot.nnet(best_model)

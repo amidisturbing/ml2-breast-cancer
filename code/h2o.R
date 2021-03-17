@@ -35,7 +35,7 @@ test <- h2o.importFile('../data/test20.csv')[c(-1)]
 test $diagnosis <- as.factor(test$diagnosis)
 levels(test$diagnosis) <- list("0"="B", "1"="M")
 
-#load data with h2oand create stratified cross validation split
+#load data with h2o and create stratified cross validation split
 training <- h2o.importFile('../data/train80.csv')[c(-1)]
 
 #Change column diagnosis to factor:
@@ -99,15 +99,29 @@ model_grid <- h2o.grid(
   keep_cross_validation_predictions = T)
 
 for (model_id in model_grid@model_ids) {
+  current_model <- h2o.getModel(model_id)
+
   auc <- h2o.auc(h2o.getModel(model_id))
-  performance <-  h2o.performance(h2o.getModel(model_id))
+  # aucPR (Area Under PRECISION RECALL Curve)
+  aucpr <- h2o.aucpr(h2o.getModel(model_id))
+  #performance <-  h2o.performance(h2o.getModel(model_id))
+  print(model_id)
   print(sprintf('CV set auc: %f', auc))
-  print(performance)
+  print(aucpr)
+  #print(performance)
   print("-----------------------------------")
 }
 
-h2o.performance(model)
-# # Methods for an H2O model
+# Get fitted values of breast cancer dataset
+cancer.fit = h2o.predict(object = model, newdata = test)
+summary(cancer.fit)
+# save the model
+# the model was chosoen using cross-validation
+# we've picked the model with the highest AUC as well as aucPR, where the accievend value was still BELOW 1 (overfitting).
+# model_path <- h2o.saveModel(object = current_model, path = getwd(), force = TRUE)
+# print(model_path)
+
+h2o.performance(model, test)
 h2o.varimp_plot(model)
 # Create the partial dependence plot
 h2o.pd_plot(model, validate_h2o, column = 'area_se')
