@@ -8,7 +8,8 @@ output:
   bookdown::pdf_book:
     citation_package: biblatex
 
-bibliography: references.bib 
+bibliography: references.bib
+#csl: vancouver.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -119,10 +120,15 @@ Finding coefficients for logistic regression: https://stats.stackexchange.com/qu
 ## Artificial Neural Networks
 
 ### Model overview
-Artificial Neural Networks are forecasting methods based on simple mathematical models of the brain. They allow complex nonlinear relationships between the response variable and its predictors. (src: https://otexts.com/fpp2/nnetar.html) 
+Artificial Neural Networks are forecasting methods based on simple mathematical models of the brain. They allow complex nonlinear relationships between the response variable and its predictors. (\cite{otexts}) 
 
-<here IMG ANN>
-FIGURE 1. Sample artificial neural network architecture (not all weights are shown). (src: https://www.sciencedirect.com/topics/computer-science/artificial-neural-network)
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/ann.jpg}
+    \caption{Sample artificial neural network architecture (not all weights are shown) - (\cite{ann})}
+    \label{fig:ann}
+\end{figure}
+
 
 Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain.
 
@@ -147,7 +153,7 @@ The amount of dropout on the input layer can be specified for all activation fun
 Performing a grid-search we've chosen the model with the highest auc-value which isn't 1. This decision is based on preventing overfitting. The False-Positives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
 
 Considering all this we did arrive at the following architecture:
-<model_summary.png>
+
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{images/model_details.png}
@@ -158,7 +164,7 @@ Considering all this we did arrive at the following architecture:
 
 # Final Assessment
 
-We compare the logistic regression and the neural networks wrt accuracy and sensitivity and specificity on the test set. \cite{Abril07}
+We compare the logistic regression and the neural networks wrt accuracy and sensitivity and specificity on the test set.
 
 \begin{center}
  \begin{tabular}{|c | c |  c | c|} 
@@ -172,13 +178,19 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
 \end{tabular}
 \end{center}
 
-The neural network performs better in every criterion.\\
+The neural network performs better in every criterion.
 
-We should show AUC for both methods?!\\
+We should show AUC for both methods?!
 
 please, see the notebook for more details.
 
 # Deployment
 Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
+
+# How to insert References 
+\cite{nnet}
+
+\cite{otexts}
+
 
 # References
