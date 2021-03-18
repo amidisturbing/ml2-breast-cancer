@@ -104,14 +104,38 @@ In the beginning of running a logistic regression we ran into a 'problem' hintin
 
 
 Sources:
-Log Regression https://christophm.github.io/interpretable-ml-book/logistic.html \\
+Log Regression https://christophm.github.io/interpretable-ml-book/logistic.html
 
-for ignoring the problem of complete separation https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqwhat-is-complete-or-quasi-complete-separation-in-logistic-regression-and-what-are-some-strategies-to-deal-with-the-issue/ \\
+for ignoring the problem of complete separation https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqwhat-is-complete-or-quasi-complete-separation-in-logistic-regression-and-what-are-some-strategies-to-deal-with-the-issue/
 
 Finding coefficients for logistic regression: https://stats.stackexchange.com/questions/344309/why-using-newtons-method-for-logistic-regression-optimization-is-called-iterati
 
-## Neural Networks
-Explain this, too.
+## Artificial Neural Networks
+
+### Model overview
+Artificial Neural Networks are forecasting methods based on simple mathematical models of the brain. They allow complex nonlinear relationships between the response variable and its predictors. (src: https://otexts.com/fpp2/nnetar.html) 
+
+<here IMG ANN>
+FIGURE 1. Sample artificial neural network architecture (not all weights are shown). (src: https://www.sciencedirect.com/topics/computer-science/artificial-neural-network)
+
+Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain.
+
+Positive weights are used to excite other neurons in the network and negative weights are used to inhibit other neurons.
+
+Architecture: Topology of the network
+Activities: How do ANNs Neurons respond to one another to produce a certain behavior.
+Learning Rule: How should weights and connections change regarding the input, output, and error-rate.
+Deep Neural Network: Network with many hidden layers.
+
+ANN structure can be described as its Architecture, Activities, and Learning Rule.
+
+### Proposed Model architecture
+
+
+We arrived at the selected Hyperparameters by performing a grid-search.
+
+**hidden_dropout_ratios**: (Activation type: **RectifierWithDropout**) Specify the hidden layer dropout ratio to improve generalization. Specify one value per hidden layer. The range is >= 0 to <1, and the default is 0.5.
+
 
 # Final Assessment
 
