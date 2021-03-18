@@ -4,6 +4,7 @@ author: "Silke Meiner, Rafaela Neff"
 date: "10 3 2021"
 output:
   pdf_document:
+    toc: true
     citation_package: natbib
   bookdown::pdf_book:
     citation_package: biblatex
