@@ -5,10 +5,6 @@
 \runningtitle{ML2 project: breast cancer}
 \author{Silke Meiner, Rafaela Neff}
 
-# \begin{document}
-
-
-
 # Abstract 
 We present and compare machine learnt classification algorithms for diagnosing breast tumor cells as benign or malignant. The algorithms were trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates / biopsies.
 
