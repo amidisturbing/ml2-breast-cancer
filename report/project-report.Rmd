@@ -48,11 +48,11 @@ Sources :
 * https://www.verywellhealth.com/cancer-cells-vs-normal-cells-2248794 
 
 
-# Data sources and Data Understanding
+# Data Sources and Data Understanding
 
 The data for this project was collected in 1995 by the University of Wisconsin and made available to us through Prof. Dr. Nick Street of the University of Iowa. 
 
-The data can be downloaded from the University of California, Irvine, [ https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29 ]
+The data can be downloaded from the University of California, Irvine, https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29
 
 ## Data Understanding
 
@@ -67,6 +67,19 @@ When there is correlation of feature variables  with the target variable, it is 
 This visualisation of our data ba application of PCA  was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will become important later on. 
 
 ** put images A.png and B.png here **
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/A-training-full-PCA.png}
+    \caption{Caption A-training-full-PCA.png}
+    \label{fig:A-training-full-PCA}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/correlation-features.png}
+    \caption{Caption correlation-features.png}
+    \label{fig:correlation-feature}
+\end{figure}
 
 # Data Preparation
 
