@@ -2,7 +2,13 @@
 title: "Analytics"
 author: "Silke Meiner, Rafaela Neff"
 date: "10 3 2021"
-output: pdf_document
+output:
+  pdf_document:
+    citation_package: natbib
+  bookdown::pdf_book:
+    citation_package: biblatex
+
+bibliography: references.bib 
 ---
 
 ```{r setup, include=FALSE}
@@ -136,10 +142,23 @@ We arrived at the selected Hyperparameters by performing a grid-search.
 
 **hidden_dropout_ratios**: (Activation type: **RectifierWithDropout**) Specify the hidden layer dropout ratio to improve generalization. Specify one value per hidden layer. The range is >= 0 to <1, and the default is 0.5.
 
+The amount of dropout on the input layer can be specified for all activation functions, but hidden layer dropout is only supported is set to WithDropout. The default hidden dropout is 50%, so you don’t need to specify anything but the activation type to get good results, but you can set the hidden dropout values for each layer separately.
+
+Performing a grid-search we've chosen the model with the highest auc-value which isn't 1. This decision is based on preventing overfitting. The False-Positives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
+
+Considering all this we did arrive at the following architecture:
+<model_summary.png>
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{images/model_details.png}
+    \caption{Summary of the choosen Artificial Neural Network}
+    \label{fig:model_details}
+\end{figure}
+
 
 # Final Assessment
 
-We compare the logistic regression and the neural networks wrt accuracy and sensitivity and specificity on the test set.
+We compare the logistic regression and the neural networks wrt accuracy and sensitivity and specificity on the test set. \cite{Abril07}
 
 \begin{center}
  \begin{tabular}{|c | c |  c | c|} 
@@ -161,3 +180,5 @@ please, see the notebook for more details.
 
 # Deployment
 Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
+
+# References
