@@ -1,0 +1,229 @@
+---
+title: "logistic regression v3"
+author:
+- Silke Meiner
+- Rafaela Neff
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+---
+Read data without ID and empty X variables.
+```{r}
+rm(list=ls())
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+print(wd)
+
+#read data
+ds <- read.csv('../data/train80.csv')[-1]
+ds$diagnosis <- as.factor(ds$diagnosis)
+dim(ds)
+str(ds)
+```
+Make diagnosis a 0/1 variable:
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+```
+
+# split the training set
+We can do the train / validation split in caret, too
+
+```{r}
+# http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+# install.packages('caret')
+library(caret)
+#install.packages('LogicReg')
+library(LogicReg)
+```
+
+```{r}
+# example in https://topepo.github.io/caret/data-splitting.html
+set.seed(998)
+inTraining <- createDataPartition(ds$diagnosis, p = .75, list = FALSE)
+train <- ds[ inTraining,]
+validate  <- ds[-inTraining,]
+
+```
+glm does not have internal hyper parameters that could be automatically optimized.
+
+# model comparison, overview
+
+We have different options to preprocess our data. We will compare logistic regression models with the following pre-processing
+* none
+* center and scale each variable
+* transform each variable to the interval [0,1]
+* principal component analysis, rotate variables
+
+```{r warning=FALSE}
+set.seed(1234)
+control <- trainControl(method = "repeatedcv", number = 10, repeats = 50)
+#control <- trainControl(method = "cv", number = 10) # quicker, use when in hurry        
+performance_metric <- "Accuracy"
+# no pre-processing
+LogR0 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control)
+# center and scale
+LogR1 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = c("center", "scale"))
+# PCA
+LogR2 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'pca')
+# [0,1]
+LogR3 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'range')
+
+results <- resamples(list('LogR no preproc.'=LogR0 , 'LogR center, scale.'=LogR1, 'LogR with pca'=LogR2, 'LogR with range 0,1' = LogR3))
+summary(results)
+ggplot(results) + 
+  labs(y = "Accuracy") + 
+  theme_linedraw()
+```
+We test if removing correlated variables improves accuracy. This can happen because removing highly correlated variables can be seen as removing noise making it easier for the model to pick up relevant structures in the data.
+
+We look at different levels of correlation and reduce different numbers of variables accordingly.
+
+```{r}
+b99 <- findCorrelation(x=cor(ds[-1]), cutoff=.99, exact=TRUE)
+b97 <- findCorrelation(x=cor(ds[-1]), cutoff=.97, exact=TRUE)
+# b95  <- findCorrelation(x=cor(ds[-1]), cutoff=.95, exact=TRUE)
+c(1+b97, '*', 1+b97[-1]) # the 1+ is needed because we removed the 1st element in ds[-1] to find correlation in the numeric data, but use the full ds as data in train(...).
+```
+
+```{r warning=FALSE}
+set.seed(1234)
+control <- trainControl(method = "repeatedcv", number = 10, repeats = 5)
+#control <- trainControl(method = "cv", number = 10) # quicker, use when in hurry        
+performance_metric <- "Accuracy"
+# log reg , center, scale , all variables
+#GLM1 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = c("center", "scale"))
+# log reg, PCA , all variables
+#GLM2 <- train(diagnosis ~., data = ds, method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'pca')
+# log reg, center scale , without 99% cor
+LogR3 <- train(diagnosis ~., data = ds[-(1+b99[-1])], method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = c("center", "scale"))
+# log reg, PCA , without 99% cor
+LogR4 <- train(diagnosis ~., data = ds[-(1+b99[-1])], method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'pca')
+# log reg, center scale , without 97% cor
+LogR5 <- train(diagnosis ~., data = ds[-(1+b97[-1])], method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = c("center", "scale"))
+# log reg, PCA , without 97% cor
+LogR6 <- train(diagnosis ~., data = ds[-(1+b97[-1])], method = "glm", family='binomial', metric = performance_metric, trControl = control, preProcess = 'pca')
+```
+
+```{r}
+results <- resamples(list('center, scale, all vars' = LogR1, 'pca, all vars' = LogR2, 'center, scale, remove 99% cor' = LogR3, 'pca, remove 99% cor'=LogR4, 'center, scale, remove 97% cor'=LogR5, 'pca, remove 97% cor'= LogR6))
+summary(results)
+ggplot(results) + 
+  labs(y = "Accuracy") + 
+  theme_linedraw()
+```
+Results: 
+* Removing highly correlated variables improves accuracy for the logistic regression algorithm on data that has been pre-processed with centering and scaling.
+* Removing highly correlated variables lessens accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
+
+This makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance, in descending order. High correlation with previous principal components will not help with explaining remaining variance.
+
+As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing and the full set of variables.
+
+```{r}
+summary(LogR2$finalModel)
+```
+It seems that the caret training with PCA as pre-processing also reduced the variables to the first 10 principal components.
+```{r}
+# LogR2$modelType
+# LogR2$results
+# LogR2$control$preProcOptions
+LogR2$fittedValues
+
+```
+```{r}
+cutoffs <- seq(0.5,0.95,0.05)
+accuracy <- NULL
+for (i in seq(along = cutoffs)){
+    prediction <- ifelse(LogR2$fitted.values >= cutoffs[i], 1, 0) #Predicting for cut-off
+    accuracy <- c(accuracy,length(which(ds$diagnosis ==prediction))/length(prediction)*100)
+}
+
+```
+
+```{r}
+plot(cutoffs, accuracy, pch =19,type='b',col= "steelblue",
+     main ="Logistic Regression", xlab="Cutoff Level", ylab = "Accuracy %", ylim=c(0,1))
+```
+# Test
+```{r}
+dst <- read.csv('../data/test20.csv')[-1]
+dst$diagnosis <- as.factor(dst$diagnosis)
+dim(dst)
+str(dst)
+```
+
+```{r}
+pred <- predict(GLM2, newdata=dst)
+confusionMatrix(pred, dst$diagnosis , positive='1')
+```
+
+```{r}
+#preProcValues <- preProcess(train, method = "pca")
+#trainTransformed <- predict(preProcValues, ds)
+#testTransformed <- predict(preProcValues, dst)
+```
+# Training the final model
+We train the final model on the full training data set. We use PCA as preprocessing.
+
+```{r}
+levels(ds$diagnosis) <- c("M", "B")
+
+control <- trainControl(method = "cv", 
+                     classProbs = TRUE,
+                     savePredictions = "all",
+                     summaryFunction = twoClassSummary)
+
+model <- train(diagnosis ~., 
+               data = ds, 
+               method = "glm", 
+               family = 'binomial', 
+               preProcess = 'pca',
+               tuneLength = 4, 
+               metric = 'ROC',
+               trControl = control) # metric is default accuracy
+```
+```{r}
+#plot(model$pred$M, model$pred$B, col=(model$pred$obs==model$pred$pred)) # do this jittered!
+
+# THIS IS ON TRAINING DATA
+par(mfrow=c(1,2))
+n<- nrow(model$pred$pred)
+plot(model$pred$M , model$pred$B,col=model$pred$obs) # probabilities form a line, correct
+plot(model$pred$M + rnorm(456,0,0.1) , model$pred$B+ rnorm(456,0,0.1), col=model$pred$obs) # artificial jitter
+```
+```{r}
+model$predict
+```
+```{r}
+importance <- varImp(model, scale=TRUE)
+print(importance)
+
+summary(model)
+```
+```{r}
+confusionMatrix(model)
+````
+
+We finally got a model with some decent / great p-values. Variables were reduced automatically. And the model converged (only 10 iterations). This is all very well.
+
+# Testing the final model
+```{r}
+pred <- predict(model, newdata=dst)
+print(confusionMatrix(data=pred, dst$diagnosis , positive='1'))
+```
+
+```{r}
+model$control$preProcOptions
+```
+
+
+
+## test evaluation / interpretation
+In our test data we see an accuracy of (only) 96.5% with an especially hurting sensitivity of only 93%: 3 out of 42 patients would have gotten the false signal of a begnin tumor when it was actually malignant. Comparing with the result from the 10 fold cross validation this is bad luck with the test set. 
+
