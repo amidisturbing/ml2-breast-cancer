@@ -190,7 +190,7 @@ We did choose the R-Package h2o over nnet for it's great explainability.
 
 #### Expert Plots
 
-For deeper investigation of a fittet model it can be explored with a variety of plots. For an ANN a Partial Dependence Plot or the Individual Conditional Expectation Plot of a given column can be visualized.
+A deeper investigation of a fittet model can be explored with a variety of plots. For an ANN a Partial Dependence Plot or the Individual Conditional Expectation Plot of a given column can be visualized.
 
 \begin{figure}
     \centering
