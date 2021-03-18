@@ -213,11 +213,11 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
 \begin{center}
  \begin{tabular}{|c | c |  c | c|} 
  \hline
- Model & Accuracy & Sensitivity & Specificity \\ [0.5ex] 
+ Model & Accuracy & Sensitivity/Recall & Specificity \\ [0.5ex] 
  \hline
  Logistic regression & .95 & .95 & .95 \\ 
  \hline
- Neural Network & .98 & .98 & 1 \\
+ Neural Network & .98 & 1 & 1 \\
  \hline
 \end{tabular}
 \end{center}
