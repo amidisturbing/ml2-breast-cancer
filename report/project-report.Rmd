@@ -144,13 +144,14 @@ Artificial Neural Networks are forecasting methods based on simple mathematical 
 \end{figure}
 
 
-Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain.
-
-Positive weights are used to excite other neurons in the network and negative weights are used to inhibit other neurons.
+Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain. Positive weights are used to excite neurons in the network and negative weights are used to inhibit other neurons.
 
 Architecture: Topology of the network
+
 Activities: How do ANNs Neurons respond to one another to produce a certain behavior.
+
 Learning Rule: How should weights and connections change regarding the input, output, and error-rate.
+
 Deep Neural Network: Network with many hidden layers.
 
 ANN structure can be described as its Architecture, Activities, and Learning Rule.
@@ -164,7 +165,7 @@ We arrived at the selected Hyperparameters by performing a grid-search.
 
 The amount of dropout on the input layer can be specified for all activation functions, but hidden layer dropout is only supported is set to WithDropout. The default hidden dropout is 50%, so you don’t need to specify anything but the activation type to get good results, but you can set the hidden dropout values for each layer separately.
 
-Performing a grid-search we've chosen the model with the highest auc-value which isn't 1. This decision is based on preventing overfitting. The False-Positives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
+Performing a grid-search we've chosen the model with the highest auc-value which isn't 1. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
 
 Considering all this we did arrive at the following architecture:
 
