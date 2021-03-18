@@ -175,6 +175,35 @@ Considering all this we did arrive at the following architecture:
     \label{fig:model_details}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/variable_importance.png}
+    \caption{Variable Importance of the choosen Artificial Neural Network}
+    \label{fig:variable_importance}
+\end{figure}
+
+### Criteria
+#### Explainibility
+
+We did choose the R-Package h2o over nnet for it's great explainability.
+
+#### Expert Plots
+
+For deeper investigation of a fittet model it can be explored with a variety of plots. For an ANN a Partial Dependence Plot or the Individual Conditional Expectation Plot of a given column can be visualized.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/pd_plot.png}
+    \caption{Partial Dependence Plot wrt area\_worts}
+    \label{fig:pd_plot}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/ice_plot.png}
+    \caption{Conditional Expectation Plot wrt area\_worst}
+    \label{fig:ice_plot}
+\end{figure}
 
 # Final Assessment
 
@@ -187,7 +216,7 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
  \hline
  Logistic regression & .95 & .95 & .95 \\ 
  \hline
- Neural Network & .98 & .98 & .98 \\
+ Neural Network & .98 & .98 & 1 \\
  \hline
 \end{tabular}
 \end{center}
@@ -195,6 +224,13 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
 The neural network performs better in every criterion.
 
 We should show AUC for both methods?!
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/h2o_model_performance.png}
+    \caption{Metrices of the choosen Artificial Neural Network}
+    \label{fig:h2o_model_performance}
+\end{figure}
 
 please, see the notebook for more details.
 
