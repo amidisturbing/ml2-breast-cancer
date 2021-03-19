@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Abstract 
 We present and compare machine learnt classification algorithms for diagnosing breast tumor cells as benign or malignant. The algorithms were trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates / biopsies.
 
-We get reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of ...,  sensitivity of ... and specificity ... is being audited at the German Gesundheitsministerium to become a state approved diagnostic tool.
+We get reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%,  sensitivity of 1 and specificity 1 is being audited at the German Gesundheitsministerium to become a state approved diagnostic tool.
 
 # Business Understanding
 
@@ -262,13 +262,6 @@ please, see the notebook for more details.
 
 # Deployment
 Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
-
-# How to insert References 
-\cite{nnet}
-
-\cite{otexts}
-
-#Figures I wasn'T sure were to insert
 
 \begin{figure}
     \centering
