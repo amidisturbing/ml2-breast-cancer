@@ -107,7 +107,7 @@ This visualisation of our data by application of PCA  was developed after a firs
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{images/A-training-full-PCA.png}
-    \caption{Caption A-training-full-PCA.png}
+    \caption{PCA for the full training data}
     \label{fig:A-training-full-PCA}
 \end{figure}
 
@@ -117,7 +117,7 @@ Since there were no missing data in our set we did not impute anything. Data was
 
 Data was separated into training and test sets, each with a separate file. The data was split 80/20 and with stratification wrt to the diagnosis.
 
-For further details, please look into our notebook on data preparation.
+For further details, please look into our notebook data-preparation.Rmd .
 
 # Modeling
 To solve the classification task we applied two machine learning methods: Logistic regression and neural networks.
