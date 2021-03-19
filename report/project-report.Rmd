@@ -146,15 +146,33 @@ Artificial Neural Networks are forecasting methods based on simple mathematical 
 
 Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain. Positive weights are used to excite neurons in the network and negative weights are used to inhibit other neurons.
 
-Architecture: Topology of the network
+**Architecture**: Topology of the network
 
-Activities: How do ANNs Neurons respond to one another to produce a certain behavior.
+**Activities**: How do ANNs Neurons respond to one another to produce a certain behavior.
 
-Learning Rule: How should weights and connections change regarding the input, output, and error-rate.
+**Learning Rule**: How should weights and connections change regarding the input, output, and error-rate.
 
-Deep Neural Network: Network with many hidden layers.
+**Deep Neural Network**: Network with many hidden layers.
 
 ANN structure can be described as its Architecture, Activities, and Learning Rule.
+
+### Implementation
+
+We've implemented two different kinds of Neural Network. One wth R's nnet-Packe
+
+## Normalization
+
+Depending on the implementation and the specific model different standardization is used throughout  this project in order to ensure that all features have the same chance of importance fitting the model.
+
+The nnet Implementation uses it's own user-defined-function (UDF) standardizing via min-max-normalization using this formular:
+$$
+\frac{x_i-\min(x_i)}{\max(x_i)-\min(x_i)}
+$$
+
+The h2o-Implementation uses the Standard Deviation implicitly, standardazing via
+$$
+\frac{x-mean}{stddev}
+$$
 
 ### Proposed Model architecture
 
