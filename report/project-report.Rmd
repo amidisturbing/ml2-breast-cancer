@@ -268,5 +268,21 @@ Something on meeting the standards to deploy an algorithm in medical diagnosis. 
 
 \cite{otexts}
 
+#Figures I wasn'T sure were to insert
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/M1-preprocessing-options.png}
+    \caption{Preprocessing Options}
+    \label{fig:preprocessing}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/M2-feature-selection.png}
+    \caption{Feature Selection}
+    \label{fig:feature-selection}
+\end{figure}
+
 
 # References

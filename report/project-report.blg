@@ -1,0 +1,70 @@
+This is BibTeX, Version 0.99d (TeX Live 2020)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: project-report.aux
+The style file: plainnat.bst
+Database file #1: references.bib
+Warning--empty journal in logreg
+Warning--empty year in logreg
+Warning--empty year in logreg
+Warning--empty journal in otexts
+Warning--empty year in otexts
+Warning--empty year in otexts
+Warning--empty journal in ann
+Warning--empty year in ann
+Warning--empty year in ann
+Warning--empty journal in rki
+Warning--empty year in rki
+Warning--empty year in rki
+Warning--empty journal in newton
+Warning--empty year in newton
+Warning--empty year in newton
+Warning--empty journal in ucla
+Warning--empty year in ucla
+Warning--empty year in ucla
+Warning--empty publisher in h2o
+Warning--empty journal in cancer-cells-vs-normal
+Warning--empty year in cancer-cells-vs-normal
+Warning--empty journal in malignant-and-benign
+Warning--empty year in malignant-and-benign
+You've used 10 entries,
+            2773 wiz_defined-function locations,
+            637 strings with 6319 characters,
+and the built_in function-call counts, 3315 in all, are:
+= -- 284
+> -- 122
+< -- 10
++ -- 47
+- -- 36
+* -- 225
+:= -- 534
+add.period$ -- 37
+call.type$ -- 10
+change.case$ -- 42
+chr.to.int$ -- 9
+cite$ -- 43
+duplicate$ -- 192
+empty$ -- 305
+format.name$ -- 50
+if$ -- 667
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 12
+newline$ -- 65
+num.names$ -- 40
+pop$ -- 129
+preamble$ -- 1
+purify$ -- 32
+quote$ -- 0
+skip$ -- 108
+stack$ -- 0
+substring$ -- 20
+swap$ -- 4
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 100
+warning$ -- 23
+while$ -- 30
+width$ -- 0
+write$ -- 135
+(There were 23 warnings)
