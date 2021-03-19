@@ -1,40 +1,41 @@
 ---
 title: "logistic regression v1"
-author:
-- Silke Meiner
-- Rafaela Neff
+author: Silke Meiner
 output:
+  html_notebook: default
   html_document:
     toc: yes
     df_print: paged
-  html_notebook: default
   pdf_document:
     toc: yes
     fig_caption: yes
 ---
+We try to find a baseline, a simple model doing a decent job on our data.
+
 Read data without ID and empty X variables.
 ```{r}
 #change working directory to current dir
 wd = getwd()
 setwd(wd)
 #read data
-ds <- read.csv('data/data.csv')[c(-33,-1)] # exclude ID and X
+ds <- read.csv('../data/data.csv')[c(-33,-1)] # exclude ID and X
 dim(ds)
 str(ds)
+# summary(ds)
 ```
-# train / test split
-We should have a separate folder (or just a separate data frame) for the test data. This should be the same for both methods to allow for a correct comparison.
-# mathematical explanation of method
-# preprocessing
-Normalization. Scaling.
-Should we check somewhere if our data is normal (normal distribution)? Does this matter? If so, put this in the math section
+```{r}
+y <- round(apply(ds[3:31], 2, mean),3)
+x = seq(1,length(y))
+plot(x , y, main='mean values of features', xaxt='n')
+axis(1, at=x, labels=colnames(ds[3:31]), las=2)
+```
 Make diagnosis a 0/1 variable:
 ```{r}
 ds$diagnosis <- as.factor(ds$diagnosis)
 levels(ds$diagnosis) <- c('0','1')
 ```
-# Baseline Model
-Run a logistic regression.
+
+# Logistic Regression: no convergence
 ```{r}
 glm.1 <- glm(diagnosis~. , data=ds, family='binomial')
 summary(glm.1)
@@ -42,18 +43,45 @@ summary(glm.1)
 
 Error message: algorithm did not converge! That's not good.
 cf https://stackoverflow.com/questions/61418709/warning-in-glm-analysis
-The underlying problem is called complete separation or perfect prediction: The underlying problem is too simple for an advanced algorithm like logistic regression.
+The underlying problem is called complete separation or perfect prediction: The underlying problem is too simple for an advanced algorithm like logistic regression. Now what?
+
+# Linear Regression: works
+
+Logistic regression is an add on to linear regression. So we check that linear regression works for our data.
 
 ```{r}
-ds$diagnosis <- as.integer(ds$diagnosis) -1
+ds$diagnosis <- as.integer(ds$diagnosis) -1 # we need a numeric target variable
 #levels(ds$diagnosis) <- c('0','1')
 glm.2 <- lm(diagnosis~. , data=ds)
 summary(glm.2)
 ```
-The linear model works. But the result is not so good (RSE>0.2, R squared<0.8). Not exactly perfect prediction like. But the p-value in the end is real small: 2.2e-16?? wops, basically 0.
+
+The linear model works. But the result is not so good (RSE>0.2, R squared<0.8). Not exactly perfect prediction like. But the p-value in the end is real small: 2.2e-16?? wooops, basically 0.
 We would need a test set to get a decision on how good the model is?!
 
-# Feature selection
-# Metrics and HPO
-Metrics: Accuracy, F1, precision and recall separately
-Only hyperparameter: The threshold?!
+## Logistic Regression for heavily reduced number of features: converges
+
+```{r}
+ds$diagnosis <- as.factor(ds$diagnosis) # make diagnosis a factor again
+glm.3 <- glm(diagnosis~ perimeter_mean + perimeter_se + concave.points_mean , data=ds, family='binomial')
+summary(glm.3)
+```
+Large AIC (not good), small (good) p-values, low number of Fisher scoring iterations implying convergence (good).
+
+This tells us that logistic regression basically works. The full set of variables contains rather too much information for logistic regression, so feature reduction will be important. We will either select features or transform them through PCA and then select principal components explaining most of our data's variance.
+
+# R's feature selection
+
+In the following cell we suppressed 1000 warnings like this one: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+```{r message=FALSE, warning=FALSE}
+glm.4 <- step(glm.1, direction="both", trace=FALSE) # combination of forward selection and backwards elimination
+summary(glm.4)
+```
+Very good residuals, many (at least half) of them 0.
+Coefficients: lousy, Estimates and Std. Errors way too large.
+Why constant absolute values for the z-value, constant p-values?
+
+Best AIC!
+
+25 Fisher scoring iterations: maximum number, no convergence.
