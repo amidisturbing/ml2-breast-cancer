@@ -124,6 +124,19 @@ The performance of the model is determined by its coefficients / weights  $$\bet
 
 In the beginning of running a logistic regression we ran into a 'problem' hinting to perfect separation of classes in our data set. We decided to ignore the problem and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the seperability in our data.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/M1-preprocessing-options.png}
+    \caption{Preprocessing Options}
+    \label{fig:preprocessing}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/M2-feature-selection.png}
+    \caption{Feature Selection}
+    \label{fig:feature-selection}
+\end{figure}
 
 Sources:
 
@@ -261,21 +274,7 @@ We should show AUC for both methods?!
 please, see the notebook for more details.
 
 # Deployment
+
 Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/M1-preprocessing-options.png}
-    \caption{Preprocessing Options}
-    \label{fig:preprocessing}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{images/M2-feature-selection.png}
-    \caption{Feature Selection}
-    \label{fig:feature-selection}
-\end{figure}
-
 
 # References
