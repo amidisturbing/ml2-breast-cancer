@@ -10,7 +10,7 @@ output:
     citation_package: biblatex
 
 bibliography: references.bib
-#csl: vancouver.csl
+csl: vancouver.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -42,11 +42,12 @@ A typical first step when diagnosing a tumor is to do a fine needle aspirate (FN
 \end{figure}
 
 Sources : 
-* https://www.krebsdaten.de/Krebs/EN/Content/Cancer\_sites/Breast\_cancer/breast\_cancer\_node.html 
 
-* https://www.verywellhealth.com/what-does-malignant-and-benign-mean-514240
+* \cite{rki}
 
-* https://www.verywellhealth.com/cancer-cells-vs-normal-cells-2248794 
+* \cite{malignant-and-benign}
+
+* \cite{cancer-cells-vs-normal}
 
 
 # Data Sources and Data Understanding
@@ -125,11 +126,14 @@ In the beginning of running a logistic regression we ran into a 'problem' hintin
 
 
 Sources:
-Log Regression https://christophm.github.io/interpretable-ml-book/logistic.html
 
-for ignoring the problem of complete separation https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqwhat-is-complete-or-quasi-complete-separation-in-logistic-regression-and-what-are-some-strategies-to-deal-with-the-issue/
+Log Regression (\cite{logreg})
 
-Finding coefficients for logistic regression: https://stats.stackexchange.com/questions/344309/why-using-newtons-method-for-logistic-regression-optimization-is-called-iterati
+for ignoring the problem of complete separation
+(\cite{ucla})
+
+Finding coefficients for logistic regression:
+(\cite{newton})
 
 ## Artificial Neural Networks
 
@@ -158,7 +162,10 @@ ANN structure can be described as its Architecture, Activities, and Learning Rul
 
 ### Implementation
 
-We've implemented two different kinds of Neural Network. One wth R's nnet-Packe
+We've implemented two different kinds of Neural Network. One wth R's nnet-Package (\cite{nnet})
+and one using the R-Package for h2o (\cite{h2o}).
+
+Nnet is supporting one hidden layer only and comes with poor explainability. Since the results on the test-data were poor showing an accuracy below 90% we've choosen h2o over nnet and will evaluate further on h2o throughout this report. 
 
 ## Normalization
 
