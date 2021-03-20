@@ -100,6 +100,18 @@ In figure \ref{fig:normal-vs-cancer} convexity is a feature in the benign / norm
 
 When there is (positive) correlation of feature variables with the target variable, it is most prominent for features from the first and third group of correlated features. Positive correlation of target and features is maximal for concave.points_worst with a value of 0.794.
 
+In figure  \ref{fig:densities} we present two density plots of our features. Both features have a high (positive) correlation to the target. Distributions are well distinguishable for the two classes which is in advantage for the classification task.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/density2.png}
+    \includegraphics[width=0.45\textwidth]{images/density3.png}
+    \caption{Density plots for two exemplary features}
+    \label{fig:densities}
+\end{figure}
+
+For more density plots, please see our data-understanding.Rmd notebook.
+
 ## Data Visualisation, looped back after first modelling
 
 This visualisation of our data by application of PCA  was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will become important later on. 
