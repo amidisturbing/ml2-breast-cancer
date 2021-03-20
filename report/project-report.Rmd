@@ -132,7 +132,7 @@ The methodological (?) similarities of both machine learning models are in the t
 
 Given: Some numeric data, in tabular form of \(n\) rows and \(p+1\) variables. \(p\) variables are predictors and the remaining variable is the target. The target takes one of two values, interpreted as two classes, with one class defined as the positive class.
 
-Desired: The class the data point belongs to with a probability distribution over the two classes (stating the probabilities that the data point belongs to each class).
+Desired: The class the data point belongs to with a probability distribution over the two classes (stating the probabilities that the data point belongs to each class). Alternatively, the following result would be of equal value: if or if not the data point belongs to the positive class and the associated probability (single value in [0,1]).
 
 Linear regression uses a linear combination of the variables to predict another numeric target variable. logistic regression does linear regression for the log-odds of the desired probabilities.
 
@@ -169,6 +169,7 @@ Finding coefficients for logistic regression:
 First attempts to run a logistic regression are documented in log-reg-01.Rmd and log-reg-02.Rmd in the github repository's code folder. The following presentation is based on log-reg-03.Rmd and uses the caret library in R.
 
 We compared different preprocessing options for the logistic regression:
+
 * no preprocessing
 * center and scaleing
 * min-max-normalization to the interval [0,1]
@@ -203,6 +204,7 @@ We looked at different levels of correlation and reduce different numbers of var
 \end{figure}
 
 Results: 
+
 * Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
 * Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
 
@@ -223,7 +225,6 @@ Artificial Neural Networks are forecasting methods based on simple mathematical 
     \caption{Sample artificial neural network architecture (not all weights are shown) - (\cite{ann})}
     \label{fig:ann}
 \end{figure}
-
 
 Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain. Positive weights are used to excite neurons in the network and negative weights are used to inhibit other neurons.
 
@@ -259,7 +260,6 @@ $$
 $$
 
 ### Proposed Model architecture
-
 
 We arrived at the selected Hyperparameters by performing a grid-search.
 
