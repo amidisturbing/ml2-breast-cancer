@@ -206,7 +206,10 @@ We also tested if removing correlated variables improves accuracy. This can happ
 
 When looking at a group of highly correlated features all but one features of the group were removed. 
 
-We tested removing features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing.
+We tested removing features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing (cf figure \ref{fig:feature-reduction-options}) arriving at the following results:
+
+* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
+* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
 
 \begin{figure}
     \centering
@@ -215,16 +218,11 @@ We tested removing features with 99% correlation and with 97% correlation agains
     \label{fig:feature-reduction-options}
 \end{figure}
 
-Results: 
-
-* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
-* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
-
 This makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance, in descending order. High correlation with previous principal components will not help with explaining remaining variance.
 
 As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
 
-We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after 10 iterations, some of the principal components are highly significant at 1\%.
+We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after 10 iterations, some of the principal components are highly significant below 0.1\%.
 
 \begin{figure}
     \centering
@@ -234,6 +232,21 @@ We arrived at our best model: logistic regression with PCA pre-processing and th
 \end{figure}
 
 From cross validation during training we obtained a mean accuracy of 96.5% and mean sensitivity and specificity of 98.2% (same for both). In general, these are very acceptable results. In the medical domain we should aim for better results, especially better sensitivity.
+
+## Explainability
+
+Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case with PCA preprocessing we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features the all else equal condition will not generally hold / be less realistic.
+
+We state the results of the variable importance function (varImp) in R caret in figure \ref{...}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/logR_var_imp.png}
+    \caption{variable importance for logistic regression with PCA}
+    \label{fig:logR_var_imp}
+\end{figure}
+
+We try to apply black box interpretation models like variable shuffling.
 
 ## Artificial Neural Networks
 
@@ -338,14 +351,15 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
  \hline
  Model & Accuracy & Sensitivity/Recall & Specificity \\ [0.5ex] 
  \hline
+ \hline
  Logistic regression & .965 & .929 & .986 \\ 
  \hline
- Neural Network & .98 & 1 & 1 \\
+ Neural Network & .982 & .976 &  .986 \\
  \hline
 \end{tabular}
 \end{center}
 
-The neural network performs better in every criterion.
+The neural network performs better in accuracy with only 2 misclassifications on the test set whereas the logistic regression misclassifies in 4 cases. The difference in errors is due to the better sensitivity of the neural network: only 1 malignant tumor was wrongly classified, whereas the logistic regression did err in 3 cases.
 
 \begin{figure}
     \centering
