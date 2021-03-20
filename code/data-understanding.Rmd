@@ -124,8 +124,9 @@ l <- names(sc)[1:8]
 for (i in 2:8) {
 print(ggplot(ds, aes(x=get(l[i]), color=diagnosis)) +
  geom_density()+
-   labs(title='feature density grouped by diagnosis\nhigh feature target correlation',
-        x=l[i]))
+ labs(title='feature density grouped by diagnosis\nhigh feature target correlation', x=l[i]))
+save.as <- paste(c('density', as.character(i) , '.png'))
+ggsave(save.as, device = 'png')
 }
 ```
 Features with high correlation with target also show different distributions when grouped by target. This will be good for classification.
