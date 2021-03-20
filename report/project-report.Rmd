@@ -1,7 +1,7 @@
 ---
 title: "Analytics"
 author: "Silke Meiner, Rafaela Neff"
-date: "10 3 2021"
+date: "20 3 2021"
 output:
   pdf_document:
     toc: true
@@ -23,11 +23,11 @@ We present and compare machine learnt classification algorithms for diagnosing b
 
 We get reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%,  sensitivity of 1 and specificity 1 is being audited at the German Gesundheitsministerium to become a state approved diagnostic tool.
 
+The layout of this paper follows the CRISP-DM model.
+
 # Business Understanding
 
-Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016 there were 68,950 women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1 men have died of breast cancer. 
-
-The situation is similar in many other countries.
+Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016 there were 68,950 women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1 men have died of breast cancer. The situation is similar in many other countries.
 
 Tumors can build in the human body as some cells grow more than they normally should. If this growth is not limiting itself and destroys body tissue and hinders body functions the tumor is labeled malignant and called cancer. 
 
@@ -40,6 +40,8 @@ A typical first step when diagnosing a tumor is to do a fine needle aspirate (FN
     \caption{benign / normal and malignant / cancerous  cells}
     \label{fig:normal-vs-cancer}
 \end{figure}
+
+In medical diagnostics, based on human or artificial intelligence, correctness is very important. It is described in terms of sentitivity and specificity. Both are measured in percentage. Sensitivity is the true positive rate, the rate at which malignant tumors are correctly identified. Specificity is the true negative rate, the rate at which a patients concerns can correctly be relieved.
 
 Sources : 
 
@@ -58,7 +60,7 @@ The data can be downloaded from the University of California, Irvine, https://ar
 
 ## Data Understanding
 
-Our data set is mid sized with 569 observations for 30 numeric feature variables. Each observation has an additional binary diagnosis as benign or malignant. The data set is slightly unbalanced with 357 (63\%) being benign and 212 (37\%) malignant cases. We made malignant the positive class.
+Our data set is mid sized with 569 observations for 30 numeric feature variables. Each observation has an additional binary diagnosis as benign or malignant. The data set is slightly unbalanced with 357 (63\%) benign and 212 (37\%) malignant cases. We made malignant the positive class.
 
 \begin{figure}
     \centering
@@ -67,7 +69,7 @@ Our data set is mid sized with 569 observations for 30 numeric feature variables
     \label{fig:bin_class}
 \end{figure}
 
-We look at the correlation of features in figure \ref{fig:cor-1} and find some features / predictor variables highly correlated.
+In figure \ref{fig:cor-1} we present the correlation of features and find some features / predictor variables highly correlated.
 
 \begin{figure}
     \centering
@@ -112,9 +114,11 @@ In figure  \ref{fig:densities} we present two density plots of our features. Bot
 
 For more density plots, please see our data-understanding.Rmd notebook.
 
+The features in this data set seem hand crafted and contain expert domain knowledge.
+
 ## Data Visualisation, looped back after first modelling
 
-This visualisation of our data by application of PCA  was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will become important later on. 
+This visualisation of our data by application of PCA was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will also be relevant later on. 
 
 \begin{figure}
     \centering
@@ -136,7 +140,7 @@ To solve the classification task we applied two machine learning methods: Logist
 
 In classification tasks we generally have predictor variables and a target variable. In binary classification the target variable can take one of two distinct values, interpreted as the two classes on option.
 
-The methodological (?) similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points including the true values of the target variable. For evaluation a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set the algorithm predicts classes for the data points and predictions are compared with the targets. Counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity and specificity as measures of success.
+The methodological similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points including the true values of the target variable. For evaluation a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set the algorithm predicts classes for the data points and predictions are compared with the targets. Counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity and specificity as measures of success.
 
 ## Logistic Regression
 
@@ -164,7 +168,7 @@ If the probability for the positive class \( p(\bf{x}) \)  exceeds a threshold, 
 
 The performance of the model is determined by its coefficients / weights  \( \beta \). Finding the best / suitable coefficients is done in training. For logistic regression there are several training methods performed by statistical software like R.
 
-In the beginning of running a logistic regression we ran into a 'problem' hinting to perfect separation of classes in our data set. We decided to ignore the problem and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the separability in our data.
+In the beginning of running a logistic regression we ran into a 'problem' hinting at perfect separation of classes in our data set. We decided to ignore this and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the separability in our data.
 
 Sources:
 
@@ -187,9 +191,7 @@ We compared different preprocessing options for the logistic regression:
 * min-max-normalization to the interval [0,1]
 * PCA (including center and scaling)
 
-We used 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation).
-
-The following plot shows ?? WHAT ?? from the 500 validations with mean and extreme values for accuracy. THIS IS NOT OK: printing the results we get maximum values of 1 for some options. The plot never shows that. Not even the mean from the summary is recognisable in the plot.
+Using 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation) we obtained the following plot \ref{fig:pre-proc-options} for accuracies for the different prepocessing options.
 
 \begin{figure}
     \centering
@@ -198,15 +200,13 @@ The following plot shows ?? WHAT ?? from the 500 validations with mean and extre
     \label{fig:pre-proc-options}
 \end{figure}
 
-We got the best result for PCA as pre-processing.
+Principal component analysis (pca) shows by far the best result.
 
 We also tested if removing correlated variables improves accuracy. This can happen because removing highly correlated variables can be seen as removing noise making it easier for the model to pick up relevant structures in the data.
 
 When looking at a group of highly correlated features all but one features of the group were removed. 
 
-We tested removin features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing.
-
-We looked at different levels of correlation and reduce different numbers of variables accordingly.
+We tested removing features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing.
 
 \begin{figure}
     \centering
@@ -347,10 +347,6 @@ We should show AUC for both methods?!
     \label{fig:h2o_model_performance}
 \end{figure}
 
-please, see the notebook for more details.
-
-# Deployment
-
-Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
+please, see the notebooks (of specific model) for more details.
 
 # References
