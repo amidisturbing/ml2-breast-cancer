@@ -166,6 +166,52 @@ Finding coefficients for logistic regression:
 
 ### Modelling in R
 
+First attempts to run a logistic regression are documented in log-reg-01.Rmd and log-reg-02.Rmd in the github repository's code folder. The following presentation is based on log-reg-03.Rmd and uses the caret library in R.
+
+We compared different preprocessing options for the logistic regression:
+* no preprocessing
+* center and scaleing
+* min-max-normalization to the interval [0,1]
+* PCA (including center and scaling)
+
+We used 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation).
+
+The following plot shows ?? WHAT ?? from the 500 validations with mean and extreme values for accuracy. THIS IS NOT OK: printing the results we get maximum values of 1 for some options. The plot never shows that. Not even the mean from the summary is recognisable in the plot.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/preprocessing-options.png}
+    \caption{accuracy for different pre-processing options}
+    \label{fig:pre-proc-options}
+\end{figure}
+
+We got the best result for PCA as pre-processing.
+
+We also tested if removing correlated variables improves accuracy. This can happen because removing highly correlated variables can be seen as removing noise making it easier for the model to pick up relevant structures in the data.
+
+When looking at a group of highly correlated features all but one features of the group were removed. 
+
+We tested removin features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing.
+
+We looked at different levels of correlation and reduce different numbers of variables accordingly.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/feature-selection.png}
+    \caption{accuracy for different reduced feature number}
+    \label{fig:feature-reduction-options}
+\end{figure}
+
+Results: 
+* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
+* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
+
+This makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance, in descending order. High correlation with previous principal components will not help with explaining remaining variance.
+
+As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
+
+We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data.
+
 ## Artificial Neural Networks
 
 ### Model overview
