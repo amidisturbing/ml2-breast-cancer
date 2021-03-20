@@ -241,7 +241,7 @@ We state the results of the variable importance function (varImp) in R caret in 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{images/logR_var_imp.png}
+    \includegraphics[width=0.6\textwidth]{images/logR_varImportance.png}
     \caption{variable importance for logistic regression with PCA}
     \label{fig:logR_var_imp}
 \end{figure}
