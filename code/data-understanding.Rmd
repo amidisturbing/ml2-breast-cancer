@@ -1,0 +1,159 @@
+---
+title: 'ML2 project: breast cancer'
+author:
+- Silke Meiner
+- Rafaela Neff
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  html_notebook: default
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+---
+
+This notebook works with the original data. With the full data that will later be split into training and test set. This is necessary for detection of missing values and doubles (spoiler: none found), and also for stratification in the train / test split.
+
+# Data understanding , data exploration
+
+```{r}
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+#read data
+ds <- read.csv('data/data.csv')
+dim(ds)
+str(ds)
+# summary(ds)
+```
+
+```{r fig.height=3, fig.width=3}
+barplot(table(ds$diagnosis), main='balance of target variable')
+```
+exact numbers
+```{r}
+# ds %>% count(diagnosis)
+table(ds$diagnosis)
+sum(table(ds$diagnosis))
+```
+No missing values in the diagnosis, the target value.
+
+Our data is not exactly fully balanced but it could be much worse. We are not in an unbalanced situation as in the usual fraud detection setting.
+
+# Checking for missing data
+```{r}
+library(mice)
+md.pattern(ds, rotate.names = TRUE)
+```
+For the variable X all data is missing. We will remove this variable. 
+There are no further missing values. 
+
+# Checking for duplicates
+```{r}
+table(duplicated(ds))
+```
+There are no duplicates in the data set
+
+# Correlation
+
+## correlation of all variables, predictor and target
+```{r fig.height=8, fig.width=8}
+# install.packages("ggcorrplot")
+library(ggplot2)
+library(ggcorrplot)
+
+ds$diagnosis <- as.numeric(as.factor(ds$diagnosis))-1
+
+corr <- round(cor(ds[,2:32]), 3)
+# ggcorrplot(corr)
+ggcorrplot(corr, hc.order = TRUE, outline.col = "white") + # uses hierarchical clustering to order variables
+        ggtitle('correlation of target and predictor variables') +
+        theme(
+plot.title = element_text(size=14, face="bold.italic"))
+```
+
+```{r}
+sc <- sort(corr['diagnosis',], decreasing=TRUE )
+sc
+```
+
+## correlation only for predictors
+
+```{r fig.height=8, fig.width=8}
+# install.packages("ggcorrplot")
+library(ggplot2)
+library(ggcorrplot)
+corr <- round(cor(ds[,3:32]), 3)
+# ggcorrplot(corr)
+ggcorrplot(corr, hc.order = TRUE, outline.col = "white") + # uses hierarchical clustering to order variables
+        ggtitle('correlation of feature variables') +
+        theme(
+plot.title = element_text(size=14, face="bold.italic"))
+
+ggsave('correlation-features.png', width=8, height=8 )
+```
+Some variables seem highly (pos.) correlated and the number of variables can maybe be reduced.
+
+# Density plots 
+
+## for all features
+
+Uncomment the header (with eval=F, include=F) if you want to plot 30 density plots
+```{r eval=FALSE, include=FALSE}
+#```{r}
+ds$diagnosis <- as.factor(ds$diagnosis)
+
+#ggplot(ds, aes(x=get(l[i]), color=diagnosis)) +
+# geom_density()
+for (i in 3:32) {
+print(ggplot(ds, aes(x=ds[,i], color=diagnosis)) +
+ geom_density()+
+   labs(title='feature density grouped by diagnosis',
+        x=colnames(ds)[i]))
+}
+```
+
+## for features that are highly correlated with the diagnosis
+```{r}
+
+ds$diagnosis <- as.factor(ds$diagnosis)
+
+l <- names(sc)[1:8]
+
+for (i in 2:8) {
+print(ggplot(ds, aes(x=get(l[i]), color=diagnosis)) +
+ geom_density()+
+   labs(title='feature density grouped by diagnosis\nhigh feature target correlation',
+        x=l[i]))
+}
+```
+Features with high correlation with target also show different distributions when grouped by target. This will be good for classification.
+
+# Scaling
+ Our variables are at very different scalings (orders of magnitude).
+
+```{r}
+boxplot(ds[,3:32])
+```
+ Look into variables with the largest medians:
+
+```{r}
+# get a closer look at the variables with a large median
+
+# apply(ds[,3:32], 2, mean)
+vars1 <- which(apply(ds[,3:32], 2, median) > 300)
+#vars1
+boxplot(ds[,2+vars1],main='highest median variables') # 2+ because we initially removed the first variable
+```
+
+ and look into the variables with the smallest maximal values
+
+```{r}
+# and the small medians only
+# apply(ds[,3:32], 2, median)
+vars1 <- which(apply(ds[,3:32], 2, max) < 0.1)
+#vars1
+boxplot(ds[,2+vars1],main='variables with the smallest maximal values') # 2+ because we initially removed the first 2 variables
+colnames(ds)[2+vars1]
+```
