@@ -277,7 +277,7 @@ In the model the weighted combination of input signals \( \alpha =\sum_{i=1}^n w
     \centering
     \includegraphics[width=0.8\textwidth]{images/weights-and-bias.png}
     \caption{One single neuron with weights, bias and its activation}
-    \label{fig:ann}
+    \label{fig:weights-and-bias}
 \end{figure}
 
 We will be focusing on the feedforward architecture used by H2o.
@@ -407,7 +407,7 @@ Why we think there is a connection between logistic regression and neural networ
     \centering
     \includegraphics[width=0.8\textwidth]{images/logistic_regression_and_neural_network.jpeg}
     \caption{Connection of Logistic Regression and Artificial Neural Network}
-    \label{fig:h2o_model_performance}
+    \label{fig:logReg+NN}
 \end{figure}
 (\cite{nn-better-logReg})
 

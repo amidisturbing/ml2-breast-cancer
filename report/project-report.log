@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.20)  21 MAR 2021 20:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.20)  22 MAR 2021 00:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -341,8 +341,11 @@ ftex.def
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count279
 \l__pdf_internal_box=\box49
+) (./project-report.aux
+
+LaTeX Warning: Label `fig:h2o_model_performance' multiply defined.
+
 )
-No file project-report.aux.
 \openout1 = `project-report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
@@ -378,6 +381,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 74.
 LaTeX Info: Redefining \pageref on input line 74.
 LaTeX Info: Redefining \nameref on input line 74.
+(./project-report.out) (./project-report.out)
 \@outlinefile=\write3
 \openout3 = `project-report.out'.
 
@@ -462,11 +466,22 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 76.
 
 (/Users/rafaelaneff/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (./project-report.toc
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 4.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 4.
 )
 \tf@toc=\write4
 \openout4 = `project-report.toc'.
 
-<images/normal-vs-cancerous-cells.png, id=4, 1506.62875pt x 1003.75pt>
+[1
+
+{/Users/rafaelaneff/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.ma
+p}]
+<images/normal-vs-cancerous-cells.png, id=70, 1506.62875pt x 1003.75pt>
 File: images/normal-vs-cancerous-cells.png Graphic file (type png)
 <use images/normal-vs-cancerous-cells.png>
 Package pdftex.def Info: images/normal-vs-cancerous-cells.png  used on input li
@@ -476,87 +491,221 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
 34.
 (/Users/rafaelaneff/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-
-Package natbib Warning: Citation `rki' on page 1 undefined on input line 134.
-
-
-Package natbib Warning: Citation `malignant-and-benign' on page 1 undefined on 
-input line 136.
-
-
-Package natbib Warning: Citation `cancer-cells-vs-normal' on page 1 undefined o
-n input line 138.
-
-[1
-
-{/Users/rafaelaneff/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.ma
-p}]
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 149.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 149.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 149.
-<images/binary-classification.png, id=20, 266.9975pt x 237.88875pt>
+) [2 <./images/normal-vs-cancerous-cells.png>]
+<images/binary-classification.png, id=87, 266.9975pt x 237.88875pt>
 File: images/binary-classification.png Graphic file (type png)
 <use images/binary-classification.png>
 Package pdftex.def Info: images/binary-classification.png  used on input line 1
 61.
 (pdftex.def)             Requested size: 187.90732pt x 167.42119pt.
-
-LaTeX Warning: Reference `fig:cor-1' on page 2 undefined on input line 166.
-
-<images/correlation-features.png, id=22, 2407.99625pt x 2407.99625pt>
+<images/correlation-features.png, id=90, 2407.99625pt x 2407.99625pt>
 File: images/correlation-features.png Graphic file (type png)
 <use images/correlation-features.png>
 Package pdftex.def Info: images/correlation-features.png  used on input line 17
 1.
 (pdftex.def)             Requested size: 375.80757pt x 375.80757pt.
-
-LaTeX Warning: Reference `fig:normal-vs-cancer' on page 2 undefined on input li
-ne 180.
-
-[2 <./images/normal-vs-cancerous-cells.png>] [3 <./images/binary-classification
-.png> <./images/correlation-features.png>]
-
-LaTeX Warning: Reference `fig:normal-vs-cancer' on page 4 undefined on input li
-ne 220.
-
-
-LaTeX Warning: Reference `fig:densities' on page 4 undefined on input line 229.
-
-
-<images/density2.png, id=40, 1875.005pt x 1158.3275pt>
+[3 <./images/binary-classification.png>] [4 <./images/correlation-features.png>
+]
+<images/density2.png, id=107, 1875.005pt x 1158.3275pt>
 File: images/density2.png Graphic file (type png)
 <use images/density2.png>
 Package pdftex.def Info: images/density2.png  used on input line 236.
 (pdftex.def)             Requested size: 211.37242pt x 130.58017pt.
-<images/density3.png, id=41, 1875.005pt x 1158.3275pt>
+<images/density3.png, id=108, 1875.005pt x 1158.3275pt>
 File: images/density3.png Graphic file (type png)
 <use images/density3.png>
 Package pdftex.def Info: images/density3.png  used on input line 237.
 (pdftex.def)             Requested size: 211.37242pt x 130.58017pt.
-<images/A-training-full-PCA.png, id=42, 2195.20125pt x 1356.06625pt>
+<images/A-training-full-PCA.png, id=109, 2195.20125pt x 1356.06625pt>
 File: images/A-training-full-PCA.png Graphic file (type png)
 <use images/A-training-full-PCA.png>
 Package pdftex.def Info: images/A-training-full-PCA.png  used on input line 256
 .
 (pdftex.def)             Requested size: 375.79196pt x 232.14218pt.
-[4 <./images/density2.png> <./images/density3.png>] [5 <./images/A-training-ful
-l-PCA.png>]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.326 \bf{x}= ( x_
-                  1, \dots, x_p) \) , \( p(\bf{x}) = \mathbf{P}\left(\text{t...
- 
+[5 <./images/density2.png> <./images/density3.png> <./images/A-training-full-PC
+A.png>]
+<images/preprocessing-options.png, id=123, 1656.1875pt x 903.375pt>
+File: images/preprocessing-options.png Graphic file (type png)
+<use images/preprocessing-options.png>
+Package pdftex.def Info: images/preprocessing-options.png  used on input line 3
+34.
+(pdftex.def)             Requested size: 375.8103pt x 204.98743pt.
+[6]
+<images/feature-selection.png, id=135, 1656.1875pt x 903.375pt>
+File: images/feature-selection.png Graphic file (type png)
+<use images/feature-selection.png>
+Package pdftex.def Info: images/feature-selection.png  used on input line 369.
+(pdftex.def)             Requested size: 375.8103pt x 204.98743pt.
+<images/logR_final_model.png, id=137, 477.785pt x 532.99126pt>
+File: images/logR_final_model.png Graphic file (type png)
+<use images/logR_final_model.png>
+Package pdftex.def Info: images/logR_final_model.png  used on input line 393.
+(pdftex.def)             Requested size: 281.85425pt x 314.42145pt.
+[7 <./images/preprocessing-options.png>] [8 <./images/feature-selection.png> <.
+/images/logR_final_model.png>]
+<images/logR_varImportance.png, id=154, 573.14125pt x 369.38pt>
+File: images/logR_varImportance.png Graphic file (type png)
+<use images/logR_varImportance.png>
+Package pdftex.def Info: images/logR_varImportance.png  used on input line 419.
+
+(pdftex.def)             Requested size: 281.85614pt x 181.65158pt.
+<images/ann.jpg, id=156, 661.47125pt x 395.4775pt>
+File: images/ann.jpg Graphic file (type jpg)
+<use images/ann.jpg>
+Package pdftex.def Info: images/ann.jpg  used on input line 436.
+(pdftex.def)             Requested size: 375.80106pt x 224.68227pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 437--437
+[]\T1/lmr/m/n/10 Figure 10: []Sample ar-ti-fi-cial neu-ral net-work ar-chi-tec-
+ture (not all weights are shown) -
+ []
+
+[9 <./images/logR_varImportance.png> <./images/ann.jpg>]
+<images/weights-and-bias.png, id=170, 475.7775pt x 294.09875pt>
+File: images/weights-and-bias.png Graphic file (type png)
+<use images/weights-and-bias.png>
+Package pdftex.def Info: images/weights-and-bias.png  used on input line 461.
+(pdftex.def)             Requested size: 375.82379pt x 232.31302pt.
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+75.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+75.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+76.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+76.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+77.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+77.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+85.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+85.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+85.
+
+
+LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 4
+85.
+
+[10 <./images/weights-and-bias.png>]
+<images/model_details.png, id=190, 1404.24625pt x 319.1925pt>
+File: images/model_details.png Graphic file (type png)
+<use images/model_details.png>
+Package pdftex.def Info: images/model_details.png  used on input line 535.
+(pdftex.def)             Requested size: 469.7451pt x 106.7755pt.
+<images/variable_importance.png, id=191, 1674.255pt x 895.84688pt>
+File: images/variable_importance.png Graphic file (type png)
+<use images/variable_importance.png>
+Package pdftex.def Info: images/variable_importance.png  used on input line 542
+.
+(pdftex.def)             Requested size: 375.79698pt x 201.07841pt.
+<images/pd_plot.png, id=192, 1676.2625pt x 929.4725pt>
+File: images/pd_plot.png Graphic file (type png)
+<use images/pd_plot.png>
+Package pdftex.def Info: images/pd_plot.png  used on input line 559.
+(pdftex.def)             Requested size: 375.78717pt x 208.3706pt.
+<images/ice_plot.png, id=193, 1680.2775pt x 911.90688pt>
+File: images/ice_plot.png Graphic file (type png)
+<use images/ice_plot.png>
+Package pdftex.def Info: images/ice_plot.png  used on input line 566.
+(pdftex.def)             Requested size: 375.7899pt x 203.94571pt.
+[11 <./images/model_details.png (PNG copy)>] [12 <./images/variable_importance.
+png (PNG copy)> <./images/pd_plot.png>]
+<images/h2o_model_performance.png, id=210, 593.21625pt x 620.3175pt>
+File: images/h2o_model_performance.png Graphic file (type png)
+<use images/h2o_model_performance.png>
+Package pdftex.def Info: images/h2o_model_performance.png  used on input line 5
+97.
+(pdftex.def)             Requested size: 375.81917pt x 392.98857pt.
+<images/logistic_regression_and_neural_network.jpeg, id=211, 677.53125pt x 380.
+92313pt>
+File: images/logistic_regression_and_neural_network.jpeg Graphic file (type jpg
+)
+<use images/logistic_regression_and_neural_network.jpeg>
+Package pdftex.def Info: images/logistic_regression_and_neural_network.jpeg  us
+ed on input line 637.
+(pdftex.def)             Requested size: 375.81718pt x 211.29277pt.
+[13 <./images/ice_plot.png (PNG copy)>] [14 <./images/h2o_model_performance.png
+>] (./project-report.bbl
+Underfull \hbox (badness 1688) in paragraph at lines 26--30
+[]\T1/lmr/m/n/10 James D. Mc-Caf-frey.  Why a neu-ral net-work is al-ways bet-t
+er than lo-gis-tic re-gres-sion.  URL
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--30
+[]$\T1/lmr/m/n/10 https : / / jamesmcca^^[rey . wordpress . com / 2018 / 07 / 0
+7 / why -[] a -[] neural -[] network -[] is -[] always -[] better -[] than -[] 
+logistic -[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--51
+\T1/lmr/m/n/10 complete -[] or -[] quasi -[] complete -[] separation -[] in -[]
+ logistic -[] regression -[] and -[] what -[] are -[] some -[] strategies -[] t
+o -[] deal -[] with -[]
+ []
+
+) [15 <./images/logistic_regression_and_neural_network.jpeg>] (./project-report
+.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `project-report.out' has not changed.
+(rerunfilecheck)             Checksum: C1117B542BA97E08A5F85EA4E98CD7D0;1733.
+ ) 
 Here is how much of TeX's memory you used:
- 9824 strings out of 480962
- 144255 string characters out of 5906341
- 443183 words of memory out of 5000000
- 26858 multiletter control sequences out of 15000+600000
- 463874 words of font info for 71 fonts, out of 8000000 for 9000
+ 10023 strings out of 480962
+ 148335 string characters out of 5906341
+ 451272 words of memory out of 5000000
+ 26991 multiletter control sequences out of 15000+600000
+ 453343 words of font info for 67 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,6n,74p,248b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 71i,9n,74p,377b,390s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{
+/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}
+{/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
+}{/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/
+Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{
+/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</U
+sers/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></
+Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><
+/Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb>
+</Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb>
+</Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb
+></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pf
+b></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pf
+b></Users/rafaelaneff/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pf
+b>
+Output written on project-report.pdf (15 pages, 4746459 bytes).
+PDF statistics:
+ 320 PDF objects out of 1000 (max. 8388607)
+ 254 compressed objects within 3 object streams
+ 64 named destinations out of 1000 (max. 500000)
+ 179 words of extra memory for PDF output out of 10000 (max. 10000000)
+
