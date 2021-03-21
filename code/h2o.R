@@ -19,19 +19,20 @@ test $diagnosis <- as.factor(test$diagnosis)
 levels(test$diagnosis) <- list("0"="B", "1"="M")
 
 #load data with h2o and create stratified cross validation split
-training <- h2o.importFile('../data/train80.csv')[c(-1)]
+train <- h2o.importFile('../data/train80.csv')[c(-1)]
 
 #Change column diagnosis to factor:
 #0 for benign, 1 for malignant
-training$diagnosis <- as.factor(training$diagnosis)
-levels(training$diagnosis) <- list("0"="B", "1"="M")
+train$diagnosis <- as.factor(train$diagnosis)
+levels(train$diagnosis) <- list("0"="B", "1"="M")
 
+## Model Parameters
+target = names(train)[1]
+predictors = names(train)[2:31]
 # try using the fold_assignment parameter:
 # note you must set nfolds to use this parameter
 assignment_type <- 'Stratified'
-
-target = names(training)[1]
-predictors = names(training)[2:31]
+activation_opt <- c("TanhWithDropout", "RectifierWithDropout", "MaxoutWithDropout")
 
 #Preprocessing is done implicitly by h2o
 #before even training your net it computes mean and standard deviation
@@ -44,15 +45,15 @@ timer <- proc.time()
 hidden_opt <- list(c(32,32,32), c(5,25,75), c(100,100,100))
 l1_opt     <- c(1e-5, 1e-4,1e-3)
 hidden_drpoutRatios <- list(c(0.5,0.5,0.5), c(0.5,0.3,0.2), c(0.1,0.2,0.8))
-hyper_pars <- list(hidden = hidden_opt, hidden_dropout_ratios = hidden_drpoutRatios, l1 = l1_opt)
+hyper_pars <- list(hidden = hidden_opt, hidden_dropout_ratios = hidden_drpoutRatios, l1 = l1_opt, activation = activation_opt)
 #Building Grid models:
 model_grid <- h2o.grid(
   algorithm = "deeplearning",
-  activation = "RectifierWithDropout",
   hyper_params = hyper_pars,
   x = predictors,
   y = target,
-  training_frame = training,
+  training_frame = train,
+  fold_assignment = assignment_type,
   input_dropout_ratio = 0.2,
   balance_classes = T,
   momentum_stable = 0.99,
@@ -76,13 +77,14 @@ for (model_id in model_grid@model_ids) {
   print("-----------------------------------")
 }
 #preparing best model
-#best_model = h2o.getModel("Grid_DeepLearning_RTMP_sid_a746_15_model_R_1615916806869_10538_model_15")
+best_model = h2o.getModel("Grid_DeepLearning_RTMP_sid_a746_15_model_R_1615916806869_10538_model_15")
 #save model to file
-#model_path <- h2o.saveModel(object = best_model, path = getwd(), force = TRUE)
+model_path <- h2o.saveModel(object = best_model, path = getwd(), force = TRUE)
 # load the model
 model_path = "../models/Grid_DeepLearning_RTMP_sid_a746_15_model_R_1615916806869_10538_model_15"
 saved_model <- h2o.loadModel(model_path)
-best_model = saved_model
+#best_model = saved_model
+
 # Get fitted values of breast cancer dataset
 cancer.fit = h2o.predict(object = best_model, newdata = test)
 summary(cancer.fit)

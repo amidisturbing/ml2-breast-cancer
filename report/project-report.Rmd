@@ -100,7 +100,7 @@ In figure \ref{fig:normal-vs-cancer} convexity is a feature in the benign / norm
 
 When there is (positive) correlation of feature variables with the target variable, it is most prominent for features from the first and third group of correlated features. Positive correlation of target and features is maximal for concave.points_worst with a value of 0.794.
 
-## Data Visualisation, looped back after first modelling
+## Data Visualisation, looped back after first modeling
 
 This visualisation of our data by application of PCA  was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will become important later on. 
 
@@ -140,7 +140,7 @@ $$
 \text{log-odds} = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p     
 $$
 
-The log-odds are transformed into (conditional) probabilities for the positive class through the logistic function \( \sigma(.)  \), also called sigmoid.
+The log-odds are transformed into (conditional) probabilities for the positive class through the logistic function $$\sigma(.)$$, also called sigmoid.
 
 $$
 p(\bf{x}) = \sigma(\text{log-odds}) = \sigma(\beta_0 + \beta_1 x_1 + \dots + \beta_p x_p ) 
@@ -164,7 +164,7 @@ for ignoring the problem of complete separation
 Finding coefficients for logistic regression:
 (\cite{newton})
 
-### Modelling in R
+### Modeling in R
 
 First attempts to run a logistic regression are documented in log-reg-01.Rmd and log-reg-02.Rmd in the github repository's code folder. The following presentation is based on log-reg-03.Rmd and uses the caret library in R.
 
@@ -261,13 +261,19 @@ $$
 
 ### Proposed Model architecture
 
-We arrived at the selected Hyperparameters by performing a grid-search.
+We arrived at the selected Hyperparameters by performing a grid-search:
 
-**hidden_dropout_ratios**: (Activation type: **RectifierWithDropout**) Specify the hidden layer dropout ratio to improve generalization. Specify one value per hidden layer. The range is >= 0 to <1, and the default is 0.5.
+Activation function: Rectified Linear
+Input drop out ratio: 0.2
+Hidden layers : 3 sets each consisting of 3 layers
+Epoch: 500
+Nfolds: 10
 
-The amount of dropout on the input layer can be specified for all activation functions, but hidden layer dropout is only supported is set to WithDropout. The default hidden dropout is 50%, so you don’t need to specify anything but the activation type to get good results, but you can set the hidden dropout values for each layer separately.
+We've also tried Tanh and Maxout as activation function, with comparable results.
 
-Performing a grid-search we've chosen the model with the highest auc-value which isn't 1. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
+Since we are training our model rather small dataset the classes were balanced during training using the balance_class parameter of the h2o-package. Internal validation is done using 10-fold cross-validation with stratified assignment. 
+
+We've chosen the model with the highest AUC-value which isn't 1. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
 
 Considering all this we did arrive at the following architecture:
 
