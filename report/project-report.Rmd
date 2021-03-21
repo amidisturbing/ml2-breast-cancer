@@ -407,7 +407,7 @@ Why we think there is a connection between logistic regression and neural networ
     \centering
     \includegraphics[width=0.8\textwidth]{images/logistic_regression_and_neural_network.jpeg}
     \caption{Connection of Logistic Regression and Artificial Neural Network}
-    \label{fig:logReg+NN}
+    \label{fig:logReg-NN}
 \end{figure}
 (\cite{nn-better-logReg})
 
