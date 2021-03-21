@@ -250,7 +250,8 @@ We try to apply black box interpretation models like variable shuffling.
 
 ## Artificial Neural Networks
 
-### Model overview
+### Mathematical Background
+
 Artificial Neural Networks are forecasting methods based on simple mathematical models of the brain. They allow complex nonlinear relationships between the response variable and its predictors. (\cite{otexts}) 
 
 \begin{figure}
@@ -272,14 +273,37 @@ Connections between neurons are weighted to represent the connection strength. I
 
 ANN structure can be described as its Architecture, Activities, and Learning Rule.
 
-### Implementation
+In the model the weighted combination of input signals \(α =\sum_{i=1}^n w_ix_i+b\) is aggregated and the output \(f(α)\) is transmitted by the neurons. The function \(f\) is non-linear. The neuron's activation threshohold is represented by the bias \(b\) as shown in figure  \ref{fig:weights-and-bias}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/weights-and-bias.png}
+    \caption{One single neuron with weights, bias and its activation}
+    \label{fig:ann}
+\end{figure}
+
+For each training example a loss function is minimized, so the error on the labled training data gets smaller. 
+
+(\cite{h2oDL})
+
+### Modeling in R
+
+First attempts to run a fit a Neural Network in R are documented in nnet.R and nnetCV.R, the GitHub repository’s code folder. The following presentation is based on h2o.R and uses the R-Package h2o.
+
+We compared different preprocessing options for the Neural Network:
+
+* no preprocessing for nnet
+* min-max-normalization to the interval [0,1]  for nnet
+* Standardization for h2o
+
+#### Implementation
 
 We've implemented two different kinds of Neural Network. One wth R's nnet-Package (\cite{nnet})
 and one using the R-Package for h2o (\cite{h2o}).
 
 Nnet is supporting one hidden layer only and comes with poor explainability. Since the results on the test-data were poor showing an accuracy below 90% we've choosen h2o over nnet and will evaluate further on h2o throughout this report. 
 
-## Normalization
+### Normalization
 
 Depending on the implementation and the specific model different standardization is used throughout  this project in order to ensure that all features have the same chance of importance fitting the model.
 
