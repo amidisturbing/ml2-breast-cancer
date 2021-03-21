@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We present and compare machine-learned classification algorithms for diagnosing breast tumor cells as benign or malignant. We have trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates/biopsies.
 
-We got reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%, a sensitivity of 1, and a specificity of 1 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
+We got reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 0.982 (\98%), a sensitivity of 0.976, and a specificity of 0.986 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
 
 The layout of this paper follows the CRISP-DM model. 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.20)  21 MAR 2021 13:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.20)  21 MAR 2021 20:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -466,42 +466,38 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write4
 \openout4 = `project-report.toc'.
 
-
-LaTeX Warning: Reference `fig:normal-vs-cancer' on page 1 undefined on input li
-ne 111.
-
 <images/normal-vs-cancerous-cells.png, id=4, 1506.62875pt x 1003.75pt>
 File: images/normal-vs-cancerous-cells.png Graphic file (type png)
 <use images/normal-vs-cancerous-cells.png>
 Package pdftex.def Info: images/normal-vs-cancerous-cells.png  used on input li
-ne 119.
+ne 118.
 (pdftex.def)             Requested size: 375.78267pt x 250.35487pt.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-35.
+34.
 (/Users/rafaelaneff/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package natbib Warning: Citation `rki' on page 1 undefined on input line 135.
+Package natbib Warning: Citation `rki' on page 1 undefined on input line 134.
 
 
 Package natbib Warning: Citation `malignant-and-benign' on page 1 undefined on 
-input line 137.
+input line 136.
 
 
 Package natbib Warning: Citation `cancer-cells-vs-normal' on page 1 undefined o
-n input line 139.
+n input line 138.
 
 [1
 
 {/Users/rafaelaneff/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.ma
 p}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 150.
+(Font)              <10> on input line 149.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 150.
+(Font)              <7> on input line 149.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 150.
+(Font)              <5> on input line 149.
 <images/binary-classification.png, id=20, 266.9975pt x 237.88875pt>
 File: images/binary-classification.png Graphic file (type png)
 <use images/binary-classification.png>
@@ -528,35 +524,39 @@ LaTeX Warning: Reference `fig:normal-vs-cancer' on page 4 undefined on input li
 ne 220.
 
 
-LaTeX Warning: Reference `fig:densities' on page 4 undefined on input line 231.
+LaTeX Warning: Reference `fig:densities' on page 4 undefined on input line 229.
 
 
 <images/density2.png, id=40, 1875.005pt x 1158.3275pt>
 File: images/density2.png Graphic file (type png)
 <use images/density2.png>
-Package pdftex.def Info: images/density2.png  used on input line 238.
+Package pdftex.def Info: images/density2.png  used on input line 236.
 (pdftex.def)             Requested size: 211.37242pt x 130.58017pt.
 <images/density3.png, id=41, 1875.005pt x 1158.3275pt>
 File: images/density3.png Graphic file (type png)
 <use images/density3.png>
-Package pdftex.def Info: images/density3.png  used on input line 239.
+Package pdftex.def Info: images/density3.png  used on input line 237.
 (pdftex.def)             Requested size: 211.37242pt x 130.58017pt.
-
-! LaTeX Error: Too deeply nested.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.258 \begin{quote}
-                    
+<images/A-training-full-PCA.png, id=42, 2195.20125pt x 1356.06625pt>
+File: images/A-training-full-PCA.png Graphic file (type png)
+<use images/A-training-full-PCA.png>
+Package pdftex.def Info: images/A-training-full-PCA.png  used on input line 256
+.
+(pdftex.def)             Requested size: 375.79196pt x 232.14218pt.
+[4 <./images/density2.png> <./images/density3.png>] [5 <./images/A-training-ful
+l-PCA.png>]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.326 \bf{x}= ( x_
+                  1, \dots, x_p) \) , \( p(\bf{x}) = \mathbf{P}\left(\text{t...
+ 
 Here is how much of TeX's memory you used:
- 9800 strings out of 480962
- 144004 string characters out of 5906341
- 442887 words of memory out of 5000000
- 26848 multiletter control sequences out of 15000+600000
- 449080 words of font info for 66 fonts, out of 8000000 for 9000
+ 9824 strings out of 480962
+ 144255 string characters out of 5906341
+ 443183 words of memory out of 5000000
+ 26858 multiletter control sequences out of 15000+600000
+ 463874 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  71i,6n,74p,248b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
-
 !  ==> Fatal error occurred, no output PDF file produced!

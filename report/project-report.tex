@@ -24,7 +24,7 @@
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
 \usepackage[unicode=true]{hyperref}
 \hypersetup{
-            pdftitle={Machine Learning 2 Project},
+            pdftitle={Machine Learning 2 Project: Breast cancer prediction from tabular data},
             pdfauthor={Silke Meiner, Rafaela Neff},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -67,9 +67,9 @@
 \makeatother
 
 
-\title{Machine Learning 2 Project}
+\title{Machine Learning 2 Project: Breast cancer prediction from tabular data}
 \author{Silke Meiner, Rafaela Neff}
-\date{20 3 2021}
+\date{Winter Semester 2020/21}
 
 \begin{document}
 \maketitle
@@ -80,39 +80,38 @@
 }
 \section{Abstract}\label{abstract}
 
-We present and compare machine learnt classification algorithms for
-diagnosing breast tumor cells as benign or malignant. The algorithms
-were trained on tabular data consisting of features extracted from
-microscopic images of fine-needle aspirates / biopsies.
+We present and compare machine-learned classification algorithms for
+diagnosing breast tumor cells as benign or malignant. We have trained on
+tabular data consisting of features extracted from microscopic images of
+fine-needle aspirates/biopsies.
 
-We get reasonably good results from Logistic regression and were able to
+We got reasonably good results from Logistic regression and were able to
 improve these results through single and multi-layer neural networks.
-The final neural network with an accuracy of 98\%, sensitivity of 1 and
-specificity 1 is being audited at the German Gesundheitsministerium to
-become a state approved diagnostic tool.
+The final neural network with an accuracy of 98\%, a sensitivity of 1,
+and a specificity of 1 is being audited at the German
+Gesundheitsministerium to become a state-approved diagnostic tool.
 
 The layout of this paper follows the CRISP-DM model.
 
 \section{Business Understanding}\label{business-understanding}
 
 Breast cancer is the most common cancer for women and ranks highest for
-cancer-related deaths in women in Germany: In 2016 there were 68,950
-women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020
-18,570 women and 1 men have died of breast cancer. The situation is
-similar in many other countries.
+cancer-related deaths in women in Germany: In 2016, there were 68,950
+women and 710 men who have Breast Cancer (ICD-10 C50). In 2020 18,570
+women and 1,1 men have died of breast cancer. The situation is similar
+in many other countries.
 
 Tumors can build in the human body as some cells grow more than they
-normally should. If this growth is not limiting itself and destroys body
-tissue and hinders body functions the tumor is labeled malignant and
+usually should. If this growth is not limiting itself and destroys body
+tissue, and hinders body functions, the tumor is labeled malignant and
 called cancer.
 
 Tumors are classified in a binary fashion as either malignant or benign.
-Their difference in microscopic imagery are shown in figure
-\ref{fig:normal-vs-cancer}. A typical first step when diagnosing a tumor
-is to do a fine needle aspirate (FNA) of a breast mass and looking at
-the cells through a microscope, describing characteristics of the cell
-nuclei. Further treatment differs according to the tumor diagnosis as
-benign or malignant.
+Their difference in microscopic imagery is shown in figure 1. A typical
+first step when diagnosing a tumor is to do a fine needle aspirate (FNA)
+of a breast mass and looking at the cells through a microscope,
+describing the characteristics of the cell nuclei. Further treatment
+differs according to the tumor diagnosis as benign or malignant.
 
 \begin{figure}
     \centering
@@ -122,11 +121,11 @@ benign or malignant.
 \end{figure}
 
 In medical diagnostics, based on human or artificial intelligence,
-correctness is very important. It is described in terms of sentitivity
+correctness is very important. It is described in terms of sensitivity
 and specificity. Both are measured in percentage. Sensitivity is the
 true positive rate, the rate at which malignant tumors are correctly
 identified. Specificity is the true negative rate, the rate at which a
-patients concerns can correctly be relieved.
+patient's concerns can correctly be relieved.
 
 Sources :
 
@@ -151,10 +150,11 @@ The data can be downloaded from the University of California, Irvine,
 
 \subsection{Data Understanding}\label{data-understanding}
 
-Our data set is mid sized with 569 observations for 30 numeric feature
-variables. Each observation has an additional binary diagnosis as benign
-or malignant. The data set is slightly unbalanced with 357 (63\%) benign
-and 212 (37\%) malignant cases. We made malignant the positive class.
+Our data set is mid-sized with 569 observations for 30 numeric feature
+variables. In addition, each observation has a binary diagnosis as
+benign or malignant. The data set is slightly unbalanced, with 357
+(63\%) benign and 212 (37\%) malignant cases. We made malignant the
+positive class.
 
 \begin{figure}
     \centering
@@ -204,7 +204,7 @@ the group of most highly correlated features.
   area\_se
 \end{itemize}
 
-A third group of high to mild positive correlation is for features
+The third group of high to mild positive correlation is for features
 related to concavity and compactness.
 
 \begin{itemize}
@@ -221,17 +221,15 @@ In figure \ref{fig:normal-vs-cancer} convexity is a feature in the
 benign / normal cells. Its opposite, concavity, can easily be associated
 with the malignant / cancerous cells.
 
-When there is (positive) correlation of feature variables with the
+When there is a (positive) correlation of feature variables with the
 target variable, it is most prominent for features from the first and
-third group of correlated features. Positive correlation of target and
+third group of correlated features. A positive correlation of target and
 features is maximal for concave.points\_worst with a value of 0.794.
 
-\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}\textless{}
-HEAD \#\# Data Visualisation, looped back after first modeling =======
 In figure \ref{fig:densities} we present two density plots of our
 features. Both features have a high (positive) correlation to the
-target. Distributions are well distinguishable for the two classes which
-is in advantage for the classification task.
+target. Distributions are well distinguishable for the two classes,
+which is an advantage for the classification task.
 
 \begin{figure}
     \centering
@@ -243,31 +241,15 @@ is in advantage for the classification task.
 
 For more density plots, please see our data-understanding.Rmd notebook.
 
-The features in this data set seem hand crafted and contain expert
-domain knowledge.
+The features in this data set seem handcrafted and contain expert domain
+knowledge.
 
-\subsection{Data Visualisation, looped back after first
-modelling}\label{data-visualisation-looped-back-after-first-modelling}
+\subsection{Data Visualization looped back after first
+modeling}\label{data-visualization-looped-back-after-first-modeling}
 
-\begin{quote}
-\begin{quote}
-\begin{quote}
-\begin{quote}
-\begin{quote}
-\begin{quote}
-\begin{quote}
-4619ece6a083a2817838dfd53a5af13f72ff76ff
-\end{quote}
-\end{quote}
-\end{quote}
-\end{quote}
-\end{quote}
-\end{quote}
-\end{quote}
-
-This visualisation of our data by application of PCA was developed after
-a first loop in the CRISP model. In sequential reading this serves as a
-general visualisation now and will also be relevant later on.
+This visualization of our data by applying PCA was developed after a
+first loop in the CRISP model. In sequential reading, this serves as a
+general visualization now and will also be relevant later on.
 
 \begin{figure}
     \centering
@@ -278,7 +260,7 @@ general visualisation now and will also be relevant later on.
 
 \section{Data Preparation}\label{data-preparation}
 
-Since there were no missing data in our set we did not impute anything.
+Since there were no missing data in our set, we did not impute anything.
 Data was used as delivered.
 
 Data was separated into training and test sets, each with a separate
@@ -290,23 +272,23 @@ For further details, please look into our notebook data-preparation.Rmd
 
 \section{Modeling}\label{modeling}
 
-To solve the classification task we applied two machine learning
+To solve the classification task, we applied two machine learning
 methods: Logistic regression and neural networks.
 
-In classification tasks we generally have predictor variables and a
-target variable. In binary classification the target variable can take
+In classification tasks, we generally have predictor variables and a
+target variable. In binary classification, the target variable can take
 one of two distinct values, interpreted as the two classes on option.
 
 The methodological similarities of both machine learning models are in
 the training and evaluation of the model. The training requires a
-training set of observed data points including the true values of the
-target variable. For evaluation a test set of observed data points
+training set of observed data points, including the true values of the
+target variable. For evaluation, a test set of observed data points
 including the true values of the target variable is required. Training
-and test set need to be disjoint. On the test set the algorithm predicts
-classes for the data points and predictions are compared with the
-targets. Counting correct and not correct classifications and setting
-them in relation results in accuracy, sensitivity and specificity as
-measures of success.
+and test set need to be disjoint. On the test set, the algorithm
+predicts classes for the data points, and predictions are compared with
+the targets. We are counting correct and not correct classifications and
+setting them in relation results in accuracy, sensitivity, and
+specificity as measures of success.
 
 \subsection{Logistic Regression}\label{logistic-regression}
 
@@ -463,7 +445,7 @@ From cross validation during training we obtained a mean accuracy of
 In general, these are very acceptable results. In the medical domain we
 should aim for better results, especially better sensitivity.
 
-\subsection{Explainability}\label{explainability}
+\subsubsection{Explainability}\label{explainability}
 
 Logistic regression is a well explainable model. The ( \beta )
 coefficients show the change in the log-odds for each feature variable
@@ -488,7 +470,7 @@ We try to apply black box interpretation models like variable shuffling.
 \subsection{Artificial Neural
 Networks}\label{artificial-neural-networks}
 
-\subsubsection{Model overview}\label{model-overview}
+\subsubsection{Mathematical Background}\label{mathematical-background-1}
 
 Artificial Neural Networks are forecasting methods based on simple
 mathematical models of the brain. They allow complex nonlinear
@@ -520,32 +502,59 @@ regarding the input, output, and error-rate.
 ANN structure can be described as its Architecture, Activities, and
 Learning Rule.
 
-\subsubsection{Implementation}\label{implementation}
+In the model the weighted combination of input signals
+\(α =\sum_{i=1}^n w_ix_i+b\) is aggregated and the output \(f(α)\) is
+transmitted by the neurons. The function \(f\) is non-linear. The
+neuron's activation threshohold is represented by the bias \(b\) as
+shown in figure \ref{fig:weights-and-bias}.
 
-We've implemented two different kinds of Neural Network. One wth R's
-nnet-Package (\cite{nnet}) and one using the R-Package for h2o
-(\cite{h2o}).
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/weights-and-bias.png}
+    \caption{One single neuron with weights, bias and its activation}
+    \label{fig:ann}
+\end{figure}
 
-Nnet is supporting one hidden layer only and comes with poor
-explainability. Since the results on the test-data were poor showing an
-accuracy below 90\% we've choosen h2o over nnet and will evaluate
-further on h2o throughout this report.
+We will focusing on the feedforward architecture used by H2o.
 
-\subsection{Normalization}\label{normalization}
+\begin{center}
+Activation Functions in H2o
+ \begin{tabular}{| c |  c | c|} 
+ \hline
+ Function & Formula & Range \\ [0.5ex] 
+ \hline
+ \hline
+Tanh &  \(f(α) =\frac{e^α−e^{−^α}} {eα+e−α}\) & \(f(·) ∈ [−1, 1]\) \\ 
+Rectified Linear & \(f(α) = max(0, α)\) & \(f(·) ∈ R_+\) \\ 
+Maxout & \(f(α_1, α_2) = max(α_1, α_2)\) &  \(f(·) ∈ R\) \\
+ \hline
+\end{tabular}
+\end{center}
 
-Depending on the implementation and the specific model different
-standardization is used throughout this project in order to ensure that
-all features have the same chance of importance fitting the model.
+For each training example a loss function is minimized, so the error on
+the labled training data gets smaller. For our classification task we
+are using H2o's Cross Entropy Loss denotated with the following formula:
+\[
+L(W, B|j) = − \sum_{y∈O} ln(o^{(j)}_y)) · t^{(j)}_y + ln(1 - o^{(j)}_y)· (1 - t^{(j)}_y)
+\] (\cite{h2oDL})
 
-The nnet Implementation uses it's own user-defined-function (UDF)
-standardizing via min-max-normalization using this formular: \[
-\frac{x_i-\min(x_i)}{\max(x_i)-\min(x_i)}
-\]
+\subsubsection{Modeling in R}\label{modeling-in-r-1}
 
-The h2o-Implementation uses the Standard Deviation implicitly,
-standardazing via \[
-\frac{x-mean}{stddev}
-\]
+First attempts to run a fit a Neural Network in R are documented in
+nnet.R and nnetCV.R, the GitHub repository's code folder. The following
+presentation is based on h2o.R and uses the R-Package h2o.
+
+We compared different preprocessing options for the Neural Network:
+
+\begin{itemize}
+\tightlist
+\item
+  no preprocessing for nnet
+\item
+  min-max-normalization to the interval {[}0,1{]} for nnet
+\item
+  Standardization for h2o
+\end{itemize}
 
 \subsubsection{Proposed Model
 architecture}\label{proposed-model-architecture}
@@ -555,26 +564,29 @@ We arrived at the selected Hyperparameters by performing a grid-search:
 Activation function: Rectified Linear Input drop out ratio: 0.2 Hidden
 layers : 3 sets each consisting of 3 layers Epoch: 500 Nfolds: 10
 
-We've also tried Tanh and Maxout as activation function, with comparable
-results.
+We've also tried Tanh and Maxout as activation function in the last
+iteration of our project. Both activation functions didn't imporve the
+model's performance significantly but are shown in the source code in
+file \emph{h2o.R}.
 
-Since we are training our model rather small dataset the classes were
+Since we are training our model on a mid-size dataset, the classes were
 balanced during training using the balance\_class parameter of the
 h2o-package. Internal validation is done using 10-fold cross-validation
 with stratified assignment.
 
-We've chosen the model with the highest AUC-value which isn't 1. This
-decision is based on preventing overfitting. The False-Negatives were
-examined manually to get a grip on the real-world-value of our model.
-What we are trying to prevent is our model telling that a person doesn't
-have breast-cancer, when in fact he or she does.
+We've chosen the model with the highest AUC-value which isn't 1 for the
+training loop. This decision is based on preventing overfitting. The
+False-Negatives were examined manually to get a grip on the
+real-world-value of our model. What we are trying to prevent is our
+model telling that a person doesn't have breast-cancer, when in fact he
+or she does.
 
 Considering all this we did arrive at the following architecture:
 
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{images/model_details.png}
-    \caption{Summary of the choosen Artificial Neural Network}
+    \caption{Summary of the choosen Artificial Neural Network after training}
     \label{fig:model_details}
 \end{figure}
 
@@ -585,9 +597,7 @@ Considering all this we did arrive at the following architecture:
     \label{fig:variable_importance}
 \end{figure}
 
-\subsubsection{Criteria}\label{criteria}
-
-\paragraph{Explainibility}\label{explainibility}
+\subsubsection{Explainibility}\label{explainibility}
 
 We did choose the R-Package h2o over nnet for it's great explainability.
 
@@ -674,6 +684,15 @@ meaningful way (if all logistic regressions did the same, there would be
 no improvement). This task has to be solved by the network, through
 optimization with respect to the final classification. We would like to
 further investigate this.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/logistic_regression_and_neural_network.jpeg}
+    \caption{Metrices of the choosen Artificial Neural Network}
+    \label{fig:h2o_model_performance}
+\end{figure}
+
+(\cite{nn-better-logReg})
 
 Interpretation and explanations for logistic regression are already
 available. We would start applying them to our task.
