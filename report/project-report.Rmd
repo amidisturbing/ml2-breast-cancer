@@ -233,7 +233,7 @@ We arrived at our best model: logistic regression with PCA pre-processing and th
 
 From cross validation during training we obtained a mean accuracy of 96.5% and mean sensitivity and specificity of 98.2% (same for both). In general, these are very acceptable results. In the medical domain we should aim for better results, especially better sensitivity.
 
-## Explainability
+### Explainability
 
 Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case with PCA preprocessing we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features the all else equal condition will not generally hold / be less realistic.
 
@@ -282,8 +282,26 @@ In the model the weighted combination of input signals \(α =\sum_{i=1}^n w_ix_i
     \label{fig:ann}
 \end{figure}
 
-For each training example a loss function is minimized, so the error on the labled training data gets smaller. 
+We will focusing on the feedforward architecture used by H2o.
 
+\begin{center}
+Activation Functions in H2o
+ \begin{tabular}{| c |  c | c|} 
+ \hline
+ Function & Formula & Range \\ [0.5ex] 
+ \hline
+ \hline
+Tanh &  \(f(α) =\frac{e^α−e^{−^α}} {eα+e−α}\) & \(f(·) ∈ [−1, 1]\) \\ 
+Rectified Linear & \(f(α) = max(0, α)\) & \(f(·) ∈ R_+\) \\ 
+Maxout & \(f(α_1, α_2) = max(α_1, α_2)\) &  \(f(·) ∈ R\) \\
+ \hline
+\end{tabular}
+\end{center}
+
+For each training example a loss function is minimized, so the error on the labled training data gets smaller. For our classification task we are using H2o's Cross Entropy Loss denotated with the following formula:
+$$
+L(W, B|j) = − \sum_{y∈O} ln(o^{(j)}_y)) · t^{(j)}_y + ln(1 - o^{(j)}_y)· (1 - t^{(j)}_y)
+$$
 (\cite{h2oDL})
 
 ### Modeling in R
@@ -296,27 +314,6 @@ We compared different preprocessing options for the Neural Network:
 * min-max-normalization to the interval [0,1]  for nnet
 * Standardization for h2o
 
-#### Implementation
-
-We've implemented two different kinds of Neural Network. One wth R's nnet-Package (\cite{nnet})
-and one using the R-Package for h2o (\cite{h2o}).
-
-Nnet is supporting one hidden layer only and comes with poor explainability. Since the results on the test-data were poor showing an accuracy below 90% we've choosen h2o over nnet and will evaluate further on h2o throughout this report. 
-
-### Normalization
-
-Depending on the implementation and the specific model different standardization is used throughout  this project in order to ensure that all features have the same chance of importance fitting the model.
-
-The nnet Implementation uses it's own user-defined-function (UDF) standardizing via min-max-normalization using this formular:
-$$
-\frac{x_i-\min(x_i)}{\max(x_i)-\min(x_i)}
-$$
-
-The h2o-Implementation uses the Standard Deviation implicitly, standardazing via
-$$
-\frac{x-mean}{stddev}
-$$
-
 ### Proposed Model architecture
 
 We arrived at the selected Hyperparameters by performing a grid-search:
@@ -327,18 +324,18 @@ Hidden layers : 3 sets each consisting of 3 layers
 Epoch: 500
 Nfolds: 10
 
-We've also tried Tanh and Maxout as activation function, with comparable results.
+We've also tried Tanh and Maxout as activation function in the last iteration of our project. Both activation functions didn't imporve the model's performance significantly but are shown in the source code in file _h2o.R_.
 
-Since we are training our model rather small dataset the classes were balanced during training using the balance_class parameter of the h2o-package. Internal validation is done using 10-fold cross-validation with stratified assignment. 
+Since we are training our model on a mid-size dataset, the classes were balanced during training using the balance_class parameter of the h2o-package. Internal validation is done using 10-fold cross-validation with stratified assignment. 
 
-We've chosen the model with the highest AUC-value which isn't 1. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
+We've chosen the model with the highest AUC-value which isn't 1 for the training loop. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
 
 Considering all this we did arrive at the following architecture:
 
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{images/model_details.png}
-    \caption{Summary of the choosen Artificial Neural Network}
+    \caption{Summary of the choosen Artificial Neural Network after training}
     \label{fig:model_details}
 \end{figure}
 
@@ -349,8 +346,8 @@ Considering all this we did arrive at the following architecture:
     \label{fig:variable_importance}
 \end{figure}
 
-### Criteria
-#### Explainibility
+
+### Explainibility
 
 We did choose the R-Package h2o over nnet for it's great explainability.
 
@@ -407,6 +404,14 @@ Interpretation and explainability are important topics in machine learning and a
 Shifting the focus in logistic regression from performance to interpretability we would drop the PCA preprocessing. Insted of feature reduction by PCA we would start with the features the neural network output as important variables.
 
 Why we think there is a connection between logistic regression and neural networks: A neural network with sigmoid activation is basically a collection of logistic regression models: Every node in the first hidden layer is a logistic regression. Would we connect the hidden layer node with the suitable loss function we would obtain a classification algorithm. The neural network can be more powerful since it uses several nodes in its (first) hidden layeer. Additional power requires these individual regressions to act differently and to be combined in a meaningful way (if all logistic regressions did the same, there would be no improvement). This task has to be solved by the network, through optimization with respect to the final classification. We would like to further investigate this. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/logistic_regression_and_neural_network.jpeg}
+    \caption{Metrices of the choosen Artificial Neural Network}
+    \label{fig:h2o_model_performance}
+\end{figure}
+(\cite{nn-better-logReg})
 
 Interpretation and explanations for logistic regression are already available. We would start applying them to our task.
 
