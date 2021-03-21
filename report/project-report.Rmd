@@ -1,7 +1,7 @@
 ---
-title: "Machine Learning 2 Project"
+title: "Machine Learning 2 Project: Breast cancer prediction from tabular data"
 author: "Silke Meiner, Rafaela Neff"
-date: "20 3 2021"
+date: "Winter Semester 2020/21"
 output:
   pdf_document:
     toc: true
@@ -18,21 +18,21 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# Abstract 
-We present and compare machine learnt classification algorithms for diagnosing breast tumor cells as benign or malignant. The algorithms were trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates / biopsies.
+# Abstract
 
-We get reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%,  sensitivity of 1 and specificity 1 is being audited at the German Gesundheitsministerium to become a state approved diagnostic tool.
+We present and compare machine-learned classification algorithms for diagnosing breast tumor cells as benign or malignant. We have trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates/biopsies.
 
-The layout of this paper follows the CRISP-DM model.
+We got reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%, a sensitivity of 1, and a specificity of 1 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
+
+The layout of this paper follows the CRISP-DM model. 
 
 # Business Understanding
 
-Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016 there were 68,950 women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1 men have died of breast cancer. The situation is similar in many other countries.
+Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016, there were 68,950 women and 710 men who have Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1,1 men have died of breast cancer. The situation is similar in many other countries.
 
-Tumors can build in the human body as some cells grow more than they normally should. If this growth is not limiting itself and destroys body tissue and hinders body functions the tumor is labeled malignant and called cancer. 
+Tumors can build in the human body as some cells grow more than they usually should. If this growth is not limiting itself and destroys body tissue, and hinders body functions, the tumor is labeled malignant and called cancer.
 
-Tumors are classified in a binary fashion as either malignant or benign. Their difference in microscopic imagery are shown in figure \ref{fig:normal-vs-cancer}.
-A typical first step when diagnosing a tumor is to do a fine needle aspirate (FNA) of a breast mass and looking at the cells through a microscope, describing characteristics of the cell nuclei. Further treatment differs according to the tumor diagnosis as benign or malignant.
+Tumors are classified in a binary fashion as either malignant or benign. Their difference in microscopic imagery is shown in figure 1. A typical first step when diagnosing a tumor is to do a fine needle aspirate (FNA) of a breast mass and looking at the cells through a microscope, describing the characteristics of the cell nuclei. Further treatment differs according to the tumor diagnosis as benign or malignant. 
 
 \begin{figure}
     \centering
@@ -41,7 +41,7 @@ A typical first step when diagnosing a tumor is to do a fine needle aspirate (FN
     \label{fig:normal-vs-cancer}
 \end{figure}
 
-In medical diagnostics, based on human or artificial intelligence, correctness is very important. It is described in terms of sentitivity and specificity. Both are measured in percentage. Sensitivity is the true positive rate, the rate at which malignant tumors are correctly identified. Specificity is the true negative rate, the rate at which a patients concerns can correctly be relieved.
+In medical diagnostics, based on human or artificial intelligence, correctness is very important. It is described in terms of sensitivity and specificity. Both are measured in percentage. Sensitivity is the true positive rate, the rate at which malignant tumors are correctly identified. Specificity is the true negative rate, the rate at which a patient’s concerns can correctly be relieved.
 
 Sources : 
 
@@ -60,7 +60,7 @@ The data can be downloaded from the University of California, Irvine, https://ar
 
 ## Data Understanding
 
-Our data set is mid sized with 569 observations for 30 numeric feature variables. Each observation has an additional binary diagnosis as benign or malignant. The data set is slightly unbalanced with 357 (63\%) benign and 212 (37\%) malignant cases. We made malignant the positive class.
+Our data set is mid-sized with 569 observations for 30 numeric feature variables. In addition, each observation has a binary diagnosis as benign or malignant. The data set is slightly unbalanced, with 357 (63\%) benign and 212 (37\%) malignant cases. We made malignant the positive class. 
 
 \begin{figure}
     \centering
@@ -92,7 +92,7 @@ The second most highly (and positively) correlated group of features are the sta
 * radius_se
 * area_se
 
-A third group of high to mild positive correlation is for features related to concavity and compactness.
+The third group of high to mild positive correlation is for features related to concavity and compactness. 
 
 * concave.points_mean, concave.points_worst
 * concavity_mean, concavity_worst
@@ -100,12 +100,9 @@ A third group of high to mild positive correlation is for features related to co
 
 In figure \ref{fig:normal-vs-cancer} convexity is a feature in the benign / normal cells. Its opposite, concavity, can easily be associated with the malignant / cancerous cells.
 
-When there is (positive) correlation of feature variables with the target variable, it is most prominent for features from the first and third group of correlated features. Positive correlation of target and features is maximal for concave.points_worst with a value of 0.794.
+When there is a (positive) correlation of feature variables with the target variable, it is most prominent for features from the first and third group of correlated features. A positive correlation of target and features is maximal for concave.points_worst with a value of 0.794.
 
-<<<<<<< HEAD
-## Data Visualisation, looped back after first modeling
-=======
-In figure  \ref{fig:densities} we present two density plots of our features. Both features have a high (positive) correlation to the target. Distributions are well distinguishable for the two classes which is in advantage for the classification task.
+In figure  \ref{fig:densities} we present two density plots of our features. Both features have a high (positive) correlation to the target. Distributions are well distinguishable for the two classes, which is an advantage for the classification task.
 
 \begin{figure}
     \centering
@@ -117,12 +114,11 @@ In figure  \ref{fig:densities} we present two density plots of our features. Bot
 
 For more density plots, please see our data-understanding.Rmd notebook.
 
-The features in this data set seem hand crafted and contain expert domain knowledge.
+The features in this data set seem handcrafted and contain expert domain knowledge.
 
-## Data Visualisation, looped back after first modelling
->>>>>>> 4619ece6a083a2817838dfd53a5af13f72ff76ff
+## Data Visualization looped back after first modeling
 
-This visualisation of our data by application of PCA was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will also be relevant later on. 
+This visualization of our data by applying PCA was developed after a first loop in the CRISP model. In sequential reading, this serves as a general visualization now and will also be relevant later on. 
 
 \begin{figure}
     \centering
@@ -133,18 +129,18 @@ This visualisation of our data by application of PCA was developed after a first
 
 # Data Preparation
 
-Since there were no missing data in our set we did not impute anything. Data was used as delivered.
+Since there were no missing data in our set, we did not impute anything. Data was used as delivered.
 
 Data was separated into training and test sets, each with a separate file. The data was split 80/20 and with stratification wrt to the diagnosis.
 
 For further details, please look into our notebook data-preparation.Rmd .
 
 # Modeling
-To solve the classification task we applied two machine learning methods: Logistic regression and neural networks.
+To solve the classification task, we applied two machine learning methods: Logistic regression and neural networks.
 
-In classification tasks we generally have predictor variables and a target variable. In binary classification the target variable can take one of two distinct values, interpreted as the two classes on option.
+In classification tasks, we generally have predictor variables and a target variable. In binary classification, the target variable can take one of two distinct values, interpreted as the two classes on option.
 
-The methodological similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points including the true values of the target variable. For evaluation a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set the algorithm predicts classes for the data points and predictions are compared with the targets. Counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity and specificity as measures of success.
+The methodological similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points, including the true values of the target variable. For evaluation, a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set, the algorithm predicts classes for the data points, and predictions are compared with the targets. We are counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity, and specificity as measures of success.
 
 ## Logistic Regression
 

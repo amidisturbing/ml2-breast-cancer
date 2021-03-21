@@ -77,7 +77,7 @@ for (model_id in model_grid@model_ids) {
   print("-----------------------------------")
 }
 #preparing best model
-best_model = h2o.getModel("Grid_DeepLearning_RTMP_sid_a746_15_model_R_1615916806869_10538_model_15")
+best_model = h2o.getModel("Grid_DeepLearning_RTMP_sid_bce4_15_model_R_1616271021357_21251_model_81")
 #save model to file
 model_path <- h2o.saveModel(object = best_model, path = getwd(), force = TRUE)
 # load the model
