@@ -237,7 +237,7 @@ From cross validation during training we obtained a mean accuracy of 96.5% and m
 
 Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case with PCA preprocessing we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features the all else equal condition will not generally hold / be less realistic.
 
-We state the results of the variable importance function (varImp) in R caret in figure \ref{...}
+We state the results of the variable importance function (varImp) in R caret in figure \ref{fig:logR_var_imp}
 
 \begin{figure}
     \centering
