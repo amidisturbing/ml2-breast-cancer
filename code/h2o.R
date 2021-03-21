@@ -69,11 +69,11 @@ for (model_id in model_grid@model_ids) {
   auc <- h2o.auc(h2o.getModel(model_id))
   # aucPR (Area Under PRECISION RECALL Curve)
   aucpr <- h2o.aucpr(h2o.getModel(model_id))
-  #performance <-  h2o.performance(h2o.getModel(model_id))
+  performance <-  h2o.performance(h2o.getModel(model_id))
   print(model_id)
   print(sprintf('CV set auc: %f', auc))
   print(aucpr)
-  #print(performance)
+  print(performance)
   print("-----------------------------------")
 }
 #preparing best model
