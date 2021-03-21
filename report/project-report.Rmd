@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We present and compare machine-learned classification algorithms for diagnosing breast tumor cells as benign or malignant. We have trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates/biopsies.
 
-We got reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 0.982 (\98%), a sensitivity of 0.976, and a specificity of 0.986 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
+We got reasonably good results from Logistic Regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 0.982 (\98%), a sensitivity of 0.976, and a specificity of 0.986 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
 
 The layout of this paper follows the CRISP-DM model. 
 
@@ -136,7 +136,7 @@ Data was separated into training and test sets, each with a separate file. The d
 For further details, please look into our notebook data-preparation.Rmd .
 
 # Modeling
-To solve the classification task, we applied two machine learning methods: Logistic regression and neural networks.
+To solve the classification task, we applied two machine learning methods: Logistic Regression and neural networks.
 
 In classification tasks, we generally have predictor variables and a target variable. In binary classification, the target variable can take one of two distinct values, interpreted as the two classes on option.
 
@@ -146,11 +146,11 @@ The methodological similarities of both machine learning models are in the train
 
 ### Mathematical Background
 
-Given: Some numeric data, in tabular form of \(n\) rows and \(p+1\) variables. \(p\) variables are predictors and the remaining variable is the target. The target takes one of two values, interpreted as two classes, with one class defined as the positive class.
+**Given**: Some numeric data, in tabular form of \(n\) rows and \(p+1\) variables. \(p\) variables are predictors, and the remaining variable is the target. The target takes one of two values, interpreted as two classes, with one class defined as the positive class.
 
-Desired: The class the data point belongs to with a probability distribution over the two classes (stating the probabilities that the data point belongs to each class). Alternatively, the following result would be of equal value: if or if not the data point belongs to the positive class and the associated probability (single value in [0,1]).
+**Desired**: The class a particular data point belongs to with a probability distribution over the two classes (stating the probabilities that the data point belongs to each class). Alternatively, the following result would be of equal value: if or if not, the data point belongs to the positive class and the associated probability (single value in [0,1]).
 
-Linear regression uses a linear combination of the variables to predict another numeric target variable. logistic regression does linear regression for the log-odds of the desired probabilities.
+Linear regression uses a linear combination of the variables to predict another numeric target variable. Logistic Regression does linear regression for the log-odds of the desired probabilities.
 
 $$
 \text{log-odds} = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p     
@@ -166,9 +166,9 @@ with \( \bf{x}= ( x_1, \dots, x_p) \) , \( p(\bf{x}) = \mathbf{P}\left(\text{tar
 
 If the probability for the positive class \( p(\bf{x}) \)  exceeds a threshold, the data point is classified as the positive class.
 
-The performance of the model is determined by its coefficients / weights  \( \beta \). Finding the best / suitable coefficients is done in training. For logistic regression there are several training methods performed by statistical software like R.
+The performance of the model is determined by its coefficients/weights \( \beta \). Finding the best / suitable coefficients is done in training. For Logistic Regression, there are several training methods performed by statistical software like R.
 
-In the beginning of running a logistic regression we ran into a 'problem' hinting at perfect separation of classes in our data set. We decided to ignore this and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the separability in our data.
+At the beginning of running a Logistic Regression, we ran into a 'problem' hinting at a perfect separation of classes in our data set. We decided to ignore this and try to get the best possible results from Logistic Regression. Another option would have been changing to support vector machines that could directly exploit our data's separability.
 
 Sources:
 
@@ -177,21 +177,21 @@ Log Regression (\cite{logreg})
 for ignoring the problem of complete separation
 (\cite{ucla})
 
-Finding coefficients for logistic regression:
+Finding coefficients for Logistic Regression:
 (\cite{newton})
 
 ### Modeling in R
 
-First attempts to run a logistic regression are documented in log-reg-01.Rmd and log-reg-02.Rmd in the github repository's code folder. The following presentation is based on log-reg-03.Rmd and uses the caret library in R.
+First attempts to run a Logistic Regression are documented in log-reg-01.Rmd and log-reg-02.Rmd in the GitHub repository's code folder. The following presentation is based on log-reg-03.Rmd and uses the caret library in R.
 
-We compared different preprocessing options for the logistic regression:
+We compared different preprocessing options for the Logistic Regression:
 
 * no preprocessing
-* center and scaleing
+* center and scaling
 * min-max-normalization to the interval [0,1]
 * PCA (including center and scaling)
 
-Using 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation) we obtained the following plot \ref{fig:pre-proc-options} for accuracies for the different prepocessing options.
+Using 10-fold cross-validation, which was repeated 50 times (with new and different separation of the training data into ten subsets/folds, one of which would be used for validation), we obtained the following plot \ref{fig:pre-proc-options} for accuracies for the different preprocessing options.
 
 \begin{figure}
     \centering
@@ -200,16 +200,16 @@ Using 10 fold cross validation which was repeated 50 times (with new and differe
     \label{fig:pre-proc-options}
 \end{figure}
 
-Principal component analysis (pca) shows by far the best result.
+Principal component analysis (PCA) shows by far the best result.
 
-We also tested if removing correlated variables improves accuracy. This can happen because removing highly correlated variables can be seen as removing noise making it easier for the model to pick up relevant structures in the data.
+We also tested if removing correlated variables improves accuracy. That can happen because removing highly correlated variables can eliminate noise, making it easier for the model to pick up relevant structures in the data.
 
-When looking at a group of highly correlated features all but one features of the group were removed. 
+When looking at a group of highly correlated features, all but one feature of the group was removed. 
 
-We tested removing features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing (cf figure \ref{fig:feature-reduction-options}) arriving at the following results:
+We tested removing features with 99% correlation and with 97% correlation against the complete feature set. We tried this for the Logistic Regression with PCA preprocessing and the Logistic Regression with no preprocessing (cf figure \ref{fig:feature-reduction-options}), arriving at the following results:
 
-* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
-* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
+* Removing highly correlated variables seems to improve the Logistic Regression algorithm's accuracy on data that has not been preprocessed.
+* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the Logistic Regression algorithm on data that has been preprocessed with PCA.
 
 \begin{figure}
     \centering
@@ -218,36 +218,35 @@ We tested removing features with 99% correlation and with 97% correlation agains
     \label{fig:feature-reduction-options}
 \end{figure}
 
-This makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance, in descending order. High correlation with previous principal components will not help with explaining remaining variance.
+That makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance in descending order. High correlation with previous principal components will not help with explaining the remaining variance.
 
-As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
+As the overall best model, we keep the best model from Logistic Regression with a PCA as preprocessing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
 
-We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after 10 iterations, some of the principal components are highly significant below 0.1\%.
+We arrived at our best model: logistic regression with PCA preprocessing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after ten iterations; some of the principal components are highly significant below 0.1\%.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{images/logR_final_model.png}
-    \caption{Final model for logistic regression}
+    \caption{Final model for Logistic Regression}
     \label{fig:logR-final-model}
 \end{figure}
 
-From cross validation during training we obtained a mean accuracy of 96.5% and mean sensitivity and specificity of 98.2% (same for both). In general, these are very acceptable results. In the medical domain we should aim for better results, especially better sensitivity.
+During cross-validation, we obtained a mean accuracy of 96.5% during training and a mean sensitivity and specificity of 98.2% (same for both). In general, these are very acceptable results. In the medical domain, we should aim for better results, most important, a better sensitivity.
 
 ### Explainability
 
-Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case with PCA preprocessing we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features the all else equal condition will not generally hold / be less realistic.
+Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case, with PCA preprocessing, we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features, the all else equal condition will not generally hold/be less realistic.
 
 We state the results of the variable importance function (varImp) in R caret in figure \ref{fig:logR_var_imp}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{images/logR_varImportance.png}
-    \caption{variable importance for logistic regression with PCA}
+    \caption{variable importance for Logistic Regression with PCA}
     \label{fig:logR_var_imp}
 \end{figure}
 
 We try to apply black box interpretation models like variable shuffling.
-
 ## Artificial Neural Networks
 
 ### Mathematical Background
@@ -261,11 +260,11 @@ Artificial Neural Networks are forecasting methods based on simple mathematical 
     \label{fig:ann}
 \end{figure}
 
-Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain. Positive weights are used to excite neurons in the network and negative weights are used to inhibit other neurons.
+Connections between neurons are weighted to represent the connection strength. It's the artificial pendant of the synapses in the brain. Positive weights are used to excite neurons in the network, and negative weights are used to inhibit other neurons.
 
 **Architecture**: Topology of the network
 
-**Activities**: How do ANNs Neurons respond to one another to produce a certain behavior.
+**Activities**: How do ANNs Neurons respond to one another to produce a particular behavior.
 
 **Learning Rule**: How should weights and connections change regarding the input, output, and error-rate.
 
@@ -282,7 +281,7 @@ In the model the weighted combination of input signals \(α =\sum_{i=1}^n w_ix_i
     \label{fig:ann}
 \end{figure}
 
-We will focusing on the feedforward architecture used by H2o.
+We will be focusing on the feedforward architecture used by H2o.
 
 \begin{center}
 Activation Functions in H2o
@@ -298,7 +297,7 @@ Maxout & \(f(α_1, α_2) = max(α_1, α_2)\) &  \(f(·) ∈ R\) \\
 \end{tabular}
 \end{center}
 
-For each training example a loss function is minimized, so the error on the labled training data gets smaller. For our classification task we are using H2o's Cross Entropy Loss denotated with the following formula:
+For each training example, a loss function is minimized, so the labeled training data's error gets smaller. For our classification task, we are using H2o's Cross-Entropy Loss denoted with the following formula:
 $$
 L(W, B|j) = − \sum_{y∈O} ln(o^{(j)}_y)) · t^{(j)}_y + ln(1 - o^{(j)}_y)· (1 - t^{(j)}_y)
 $$
@@ -306,7 +305,7 @@ $$
 
 ### Modeling in R
 
-First attempts to run a fit a Neural Network in R are documented in nnet.R and nnetCV.R, the GitHub repository’s code folder. The following presentation is based on h2o.R and uses the R-Package h2o.
+First attempts to run a fit a Neural Network in R are documented in nnet.R and nnetCV.R, the GitHub repository's code folder. The following presentation is based on h2o.R and uses the R-Package h2o.
 
 We compared different preprocessing options for the Neural Network:
 
@@ -324,11 +323,11 @@ Hidden layers : 3 sets each consisting of 3 layers
 Epoch: 500
 Nfolds: 10
 
-We've also tried Tanh and Maxout as activation function in the last iteration of our project. Both activation functions didn't imporve the model's performance significantly but are shown in the source code in file _h2o.R_.
+We've also tried Tanh and Maxout as the activation function in the last iteration of our project. Both activation functions didn't improve the model's performance significantly but are shown in the source code in file _h2o.R_.
 
-Since we are training our model on a mid-size dataset, the classes were balanced during training using the balance_class parameter of the h2o-package. Internal validation is done using 10-fold cross-validation with stratified assignment. 
+The classes were balanced during training using the balance_class parameter of the h2o-package. The balancing is done by oversampling the minority class. We've validated our models using 10-fold cross-validation with a stratified assignment to keep the classes' proportion as they were in the original dataset. 
 
-We've chosen the model with the highest AUC-value which isn't 1 for the training loop. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  What we are trying to prevent is our model telling that a person doesn't have breast-cancer, when in fact he or she does.  
+We've chosen the model with the highest AUC-value, which isn't 1 for the training loop. This decision is based on preventing overfitting. The False-Negatives were examined manually to get a grip on the real-world-value of our model.  We are trying to avoid that our model tells us that a person doesn't have breast cancer when he or she does.  
 
 Considering all this we did arrive at the following architecture:
 
@@ -347,13 +346,13 @@ Considering all this we did arrive at the following architecture:
 \end{figure}
 
 
-### Explainibility
+### Explainability
 
-We did choose the R-Package h2o over nnet for it's great explainability.
+We did choose the R-Package h2o over nnet for its great explainability.
 
 #### Expert Plots
 
-A deeper understanding of a fittet model can be gained with a variety of plots. For an ANN a Partial Dependence Plot or the Individual Conditional Expectation Plot of a given column can be visualized.
+A deeper understanding of a fitted model can be gained with a variety of plots. For an ANN, a Partial Dependence Plot or the Individual Conditional Expectation Plot of a given column can be visualized.
 
 \begin{figure}
     \centering
@@ -386,7 +385,7 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
 \end{tabular}
 \end{center}
 
-The neural network performs better in accuracy with only 2 misclassifications on the test set whereas the logistic regression misclassifies in 4 cases. The difference in errors is due to the better sensitivity of the neural network: only 1 malignant tumor was wrongly classified, whereas the logistic regression did err in 3 cases.
+The neural network performs better regarding accuracy with only two misclassifications on the test set, whereas the logistic regression misclassifies in four cases. The error difference is due to the neural network's better sensitivity: only one malignant tumor was wrongly classified, whereas the logistic regression did err in three cases.
 
 \begin{figure}
     \centering
@@ -395,15 +394,15 @@ The neural network performs better in accuracy with only 2 misclassifications on
     \label{fig:h2o_model_performance}
 \end{figure}
 
-please, see the notebooks (of specific model) for more details.
+Please, see the notebooks (of the specific model) for more details.
 
 # Future Work
 
-Interpretation and explainability are important topics in machine learning and a fundamental requirement in the medical domain. We would like to, on one hand improve accuracy and especially sensitivity of the neural network model we have build. On the other hand, we would like to investigate (and improve) the connection between the logistic regression and the neural network and use the logistic regression to obtain interpretation and explanations. If we can find and point out connections of logistic regression and neural network interpretation and explanation from logistic regression can be meaningful for the neural network, too. 
+Interpretation and explainability are essential topics in machine learning and a fundamental requirement in the medical domain. On the one hand, we would like to improve the accuracy and especially the neural network model's sensitivity. On the other hand, we would like to investigate (and improve) the connection between the logistic regression and the neural network and use the logistic regression to obtain interpretation and explanations. If we can find and point out connections of logistic regression and neural network interpretation and explanation from logistic regression can be meaningful for the neural network, too. 
 
-Shifting the focus in logistic regression from performance to interpretability we would drop the PCA preprocessing. Insted of feature reduction by PCA we would start with the features the neural network output as important variables.
+Shifting the focus in logistic regression from performance to interpretability, we would drop the PCA preprocessing. Instead of feature reduction by PCA, we would start with the neural network output features as important variables.
 
-Why we think there is a connection between logistic regression and neural networks: A neural network with sigmoid activation is basically a collection of logistic regression models: Every node in the first hidden layer is a logistic regression. Would we connect the hidden layer node with the suitable loss function we would obtain a classification algorithm. The neural network can be more powerful since it uses several nodes in its (first) hidden layeer. Additional power requires these individual regressions to act differently and to be combined in a meaningful way (if all logistic regressions did the same, there would be no improvement). This task has to be solved by the network, through optimization with respect to the final classification. We would like to further investigate this. 
+Why we think there is a connection between logistic regression and neural networks: A neural network with sigmoid activation is a collection of logistic regression models: Every node in the first hidden layer is a Logistic Regression. We will obtain a classification algorithm if we connect the hidden layer node with the suitable loss function. The neural network can be more powerful since it uses several nodes in its (first) hidden layer. Additional power requires these individual regressions to act differently and be combined in a meaningful way (if all logistic regressions did the same, there would be no improvement). This task has to be solved by the network through optimization concerning the final classification. We want to investigate this further. 
 
 \begin{figure}
     \centering
@@ -416,3 +415,5 @@ Why we think there is a connection between logistic regression and neural networ
 Interpretation and explanations for logistic regression are already available. We would start applying them to our task.
 
 # References
+
+
