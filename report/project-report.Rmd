@@ -1,5 +1,5 @@
 ---
-title: "Analytics"
+title: "Machine Learning 2 Project"
 author: "Silke Meiner, Rafaela Neff"
 date: "20 3 2021"
 output:
@@ -369,5 +369,15 @@ The neural network performs better in accuracy with only 2 misclassifications on
 \end{figure}
 
 please, see the notebooks (of specific model) for more details.
+
+# Future Work
+
+Interpretation and explainability are important topics in machine learning and a fundamental requirement in the medical domain. We would like to, on one hand improve accuracy and especially sensitivity of the neural network model we have build. On the other hand, we would like to investigate (and improve) the connection between the logistic regression and the neural network and use the logistic regression to obtain interpretation and explanations. If we can find and point out connections of logistic regression and neural network interpretation and explanation from logistic regression can be meaningful for the neural network, too. 
+
+Shifting the focus in logistic regression from performance to interpretability we would drop the PCA preprocessing. Insted of feature reduction by PCA we would start with the features the neural network output as important variables.
+
+Why we think there is a connection between logistic regression and neural networks: A neural network with sigmoid activation is basically a collection of logistic regression models: Every node in the first hidden layer is a logistic regression. Would we connect the hidden layer node with the suitable loss function we would obtain a classification algorithm. The neural network can be more powerful since it uses several nodes in its (first) hidden layeer. Additional power requires these individual regressions to act differently and to be combined in a meaningful way (if all logistic regressions did the same, there would be no improvement). This task has to be solved by the network, through optimization with respect to the final classification. We would like to further investigate this. 
+
+Interpretation and explanations for logistic regression are already available. We would start applying them to our task.
 
 # References
