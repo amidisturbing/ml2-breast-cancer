@@ -1,0 +1,67 @@
+---
+title: "PCA as pre-processing for logistic regression"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# preparation
+
+Reading the data and doing the basic transforms. Creating train and test (val, actually) sets
+```{r}
+#change working directory to current dir
+wd = getwd()
+setwd(wd)
+#read data
+ds <- read.csv('../data/train80.csv')[c(-33,-1)] # exclude ID and X
+
+ds$diagnosis <- as.factor(ds$diagnosis)
+levels(ds$diagnosis) <- list("0"="B", "1"="M")
+```
+```{r}
+library(caTools)
+# seed should result in the same splitting as in the other R-norebook
+set.seed(0)
+train_rows = sample.split(ds$diagnosis, SplitRatio=0.7)
+train = ds[ train_rows,]
+test  = ds[!train_rows,]
+```
+
+# PCA
+
+```{r}
+# pca <- prcomp(ds[-1], center=TRUE, scale=TRUE) # PCA on full training data, nothing set aside for validation
+pca <- prcomp(train[-1], center=TRUE, scale=TRUE)
+#pca <- prcomp(train[-1], center=TRUE, scale=FALSE)
+```
+
+Reverse PCA
+```{r}
+prcomp.recon <- function(pca, pcs=NULL){
+  if(is.null(pcs)) pcs <- seq(pca$sdev) # sequence of length pca$sdev, values of pca$sdev do not matter
+  recon <- as.matrix(pca$x[,pcs]) %*% t(as.matrix(pca$rotation[,pcs]))
+  if(pca$scale[1] != FALSE){
+  	recon <- scale(recon , center=FALSE, scale=1/pca$scale)
+  }
+  if(pca$center[1] != FALSE){
+	recon <- scale(recon , center=-pca$center, scale=FALSE)
+  }
+  recon
+}
+max(prcomp.recon(pca) - train[-1])
+```
+
+```{r}
+dim(train[-1])
+length(pca$scale)
+#scale(x=train[-1][3,], pca$center, pca$scale) %*% pca$rotation
+
+recon <- as.matrix((seq(5)))
+c(seq(recon))
+# recon <-  t(recon) %*% t(pca$rotation[,seq(recon)])
+recon <-  t(recon) %*% t(pca$rotation[,c(1,2,4,5,6)]) # selected 5 columns from the rottion matrix, same number as length of input data in pca-space (=recon)
+recon <- scale(recon, center= -pca$center , scale = 1/pca$scale)
+t(recon)
+```

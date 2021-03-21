@@ -1,7 +1,7 @@
 ---
-title: "Analytics"
+title: "Machine Learning 2 Project"
 author: "Silke Meiner, Rafaela Neff"
-date: "10 3 2021"
+date: "20 3 2021"
 output:
   pdf_document:
     toc: true
@@ -23,11 +23,11 @@ We present and compare machine learnt classification algorithms for diagnosing b
 
 We get reasonably good results from Logistic regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 98%,  sensitivity of 1 and specificity 1 is being audited at the German Gesundheitsministerium to become a state approved diagnostic tool.
 
+The layout of this paper follows the CRISP-DM model.
+
 # Business Understanding
 
-Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016 there were 68,950 women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1 men have died of breast cancer. 
-
-The situation is similar in many other countries.
+Breast cancer is the most common cancer for women and ranks highest for cancer-related deaths in women in Germany: In 2016 there were 68,950 women and 710 men suffering from Breast Cancer (ICD-10 C50). In 2020 18,570 women and 1 men have died of breast cancer. The situation is similar in many other countries.
 
 Tumors can build in the human body as some cells grow more than they normally should. If this growth is not limiting itself and destroys body tissue and hinders body functions the tumor is labeled malignant and called cancer. 
 
@@ -40,6 +40,8 @@ A typical first step when diagnosing a tumor is to do a fine needle aspirate (FN
     \caption{benign / normal and malignant / cancerous  cells}
     \label{fig:normal-vs-cancer}
 \end{figure}
+
+In medical diagnostics, based on human or artificial intelligence, correctness is very important. It is described in terms of sentitivity and specificity. Both are measured in percentage. Sensitivity is the true positive rate, the rate at which malignant tumors are correctly identified. Specificity is the true negative rate, the rate at which a patients concerns can correctly be relieved.
 
 Sources : 
 
@@ -58,7 +60,7 @@ The data can be downloaded from the University of California, Irvine, https://ar
 
 ## Data Understanding
 
-Our data set is mid sized with 569 observations for 30 numeric feature variables. Each observation has an additional binary diagnosis as benign or malignant. The data set is slightly unbalanced with 357 (63\%) being benign and 212 (37\%) malignant cases. We made malignant the positive class.
+Our data set is mid sized with 569 observations for 30 numeric feature variables. Each observation has an additional binary diagnosis as benign or malignant. The data set is slightly unbalanced with 357 (63\%) benign and 212 (37\%) malignant cases. We made malignant the positive class.
 
 \begin{figure}
     \centering
@@ -67,7 +69,7 @@ Our data set is mid sized with 569 observations for 30 numeric feature variables
     \label{fig:bin_class}
 \end{figure}
 
-We look at the correlation of features in figure \ref{fig:cor-1} and find some features / predictor variables highly correlated.
+In figure \ref{fig:cor-1} we present the correlation of features and find some features / predictor variables highly correlated.
 
 \begin{figure}
     \centering
@@ -100,9 +102,27 @@ In figure \ref{fig:normal-vs-cancer} convexity is a feature in the benign / norm
 
 When there is (positive) correlation of feature variables with the target variable, it is most prominent for features from the first and third group of correlated features. Positive correlation of target and features is maximal for concave.points_worst with a value of 0.794.
 
+<<<<<<< HEAD
 ## Data Visualisation, looped back after first modeling
+=======
+In figure  \ref{fig:densities} we present two density plots of our features. Both features have a high (positive) correlation to the target. Distributions are well distinguishable for the two classes which is in advantage for the classification task.
 
-This visualisation of our data by application of PCA  was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will become important later on. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/density2.png}
+    \includegraphics[width=0.45\textwidth]{images/density3.png}
+    \caption{Density plots for two exemplary features}
+    \label{fig:densities}
+\end{figure}
+
+For more density plots, please see our data-understanding.Rmd notebook.
+
+The features in this data set seem hand crafted and contain expert domain knowledge.
+
+## Data Visualisation, looped back after first modelling
+>>>>>>> 4619ece6a083a2817838dfd53a5af13f72ff76ff
+
+This visualisation of our data by application of PCA was developed after a first loop in the CRISP model. In sequential reading this serves as a general visualisation now and will also be relevant later on. 
 
 \begin{figure}
     \centering
@@ -124,7 +144,7 @@ To solve the classification task we applied two machine learning methods: Logist
 
 In classification tasks we generally have predictor variables and a target variable. In binary classification the target variable can take one of two distinct values, interpreted as the two classes on option.
 
-The methodological (?) similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points including the true values of the target variable. For evaluation a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set the algorithm predicts classes for the data points and predictions are compared with the targets. Counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity and specificity as measures of success.
+The methodological similarities of both machine learning models are in the training and evaluation of the model. The training requires a training set of observed data points including the true values of the target variable. For evaluation a test set of observed  data points including the true values of the target variable is required. Training and test set need to be disjoint. On the test set the algorithm predicts classes for the data points and predictions are compared with the targets. Counting correct and not correct classifications and setting them in relation results in accuracy, sensitivity and specificity as measures of success.
 
 ## Logistic Regression
 
@@ -152,7 +172,7 @@ If the probability for the positive class \( p(\bf{x}) \)  exceeds a threshold, 
 
 The performance of the model is determined by its coefficients / weights  \( \beta \). Finding the best / suitable coefficients is done in training. For logistic regression there are several training methods performed by statistical software like R.
 
-In the beginning of running a logistic regression we ran into a 'problem' hinting to perfect separation of classes in our data set. We decided to ignore the problem and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the separability in our data.
+In the beginning of running a logistic regression we ran into a 'problem' hinting at perfect separation of classes in our data set. We decided to ignore this and try to get the best possible results from logistic regression. Another option would have been: change to support vector machines which could directly exploit the separability in our data.
 
 Sources:
 
@@ -175,9 +195,7 @@ We compared different preprocessing options for the logistic regression:
 * min-max-normalization to the interval [0,1]
 * PCA (including center and scaling)
 
-We used 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation).
-
-The following plot shows ?? WHAT ?? from the 500 validations with mean and extreme values for accuracy. THIS IS NOT OK: printing the results we get maximum values of 1 for some options. The plot never shows that. Not even the mean from the summary is recognisable in the plot.
+Using 10 fold cross validation which was repeated 50 times (with new and different sepatation of the training data into 10 subsets / folds one of which would be used for validation) we obtained the following plot \ref{fig:pre-proc-options} for accuracies for the different prepocessing options.
 
 \begin{figure}
     \centering
@@ -186,15 +204,16 @@ The following plot shows ?? WHAT ?? from the 500 validations with mean and extre
     \label{fig:pre-proc-options}
 \end{figure}
 
-We got the best result for PCA as pre-processing.
+Principal component analysis (pca) shows by far the best result.
 
 We also tested if removing correlated variables improves accuracy. This can happen because removing highly correlated variables can be seen as removing noise making it easier for the model to pick up relevant structures in the data.
 
 When looking at a group of highly correlated features all but one features of the group were removed. 
 
-We tested removin features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing.
+We tested removing features with 99% correlation and with 97% correlation against the full feature set. We tested this for the logistic regression with PCA pre-processing and for the logistic regression with no pre-processing (cf figure \ref{fig:feature-reduction-options}) arriving at the following results:
 
-We looked at different levels of correlation and reduce different numbers of variables accordingly.
+* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
+* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
 
 \begin{figure}
     \centering
@@ -203,16 +222,35 @@ We looked at different levels of correlation and reduce different numbers of var
     \label{fig:feature-reduction-options}
 \end{figure}
 
-Results: 
-
-* Removing highly correlated variables seems to improve accuracy for the logistic regression algorithm on data that has not been pre-processed.
-* Removing highly correlated variables may or may not have an effect or a positive effect on accuracy for the logistic regression algorithm on data that has been pre-processed with pca. 
-
 This makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance, in descending order. High correlation with previous principal components will not help with explaining remaining variance.
 
 As the over all best model we keep the best model from Logistic Regression with a PCA as pre processing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
 
-We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data.
+We arrived at our best model: logistic regression with PCA pre-processing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after 10 iterations, some of the principal components are highly significant below 0.1\%.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/logR_final_model.png}
+    \caption{Final model for logistic regression}
+    \label{fig:logR-final-model}
+\end{figure}
+
+From cross validation during training we obtained a mean accuracy of 96.5% and mean sensitivity and specificity of 98.2% (same for both). In general, these are very acceptable results. In the medical domain we should aim for better results, especially better sensitivity.
+
+## Explainability
+
+Logistic regression is a well explainable model. The \( \beta \) coefficients show the change in the log-odds for each feature variable under the condition of all else equal. In our case with PCA preprocessing we get coefficients that show the change in the log-odds for each principal component. Since principal components are linear combinations of the original features the all else equal condition will not generally hold / be less realistic.
+
+We state the results of the variable importance function (varImp) in R caret in figure \ref{fig:logR_var_imp}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/logR_varImportance.png}
+    \caption{variable importance for logistic regression with PCA}
+    \label{fig:logR_var_imp}
+\end{figure}
+
+We try to apply black box interpretation models like variable shuffling.
 
 ## Artificial Neural Networks
 
@@ -323,16 +361,15 @@ We compare the logistic regression and the neural networks wrt accuracy and sens
  \hline
  Model & Accuracy & Sensitivity/Recall & Specificity \\ [0.5ex] 
  \hline
- Logistic regression & .95 & .95 & .95 \\ 
  \hline
- Neural Network & .98 & 1 & 1 \\
+ Logistic regression & .965 & .929 & .986 \\ 
+ \hline
+ Neural Network & .982 & .976 &  .986 \\
  \hline
 \end{tabular}
 \end{center}
 
-The neural network performs better in every criterion.
-
-We should show AUC for both methods?!
+The neural network performs better in accuracy with only 2 misclassifications on the test set whereas the logistic regression misclassifies in 4 cases. The difference in errors is due to the better sensitivity of the neural network: only 1 malignant tumor was wrongly classified, whereas the logistic regression did err in 3 cases.
 
 \begin{figure}
     \centering
@@ -341,10 +378,16 @@ We should show AUC for both methods?!
     \label{fig:h2o_model_performance}
 \end{figure}
 
-please, see the notebook for more details.
+please, see the notebooks (of specific model) for more details.
 
-# Deployment
+# Future Work
 
-Something on meeting the standards to deploy an algorithm in medical diagnosis. Who decides? What are the criteria.
+Interpretation and explainability are important topics in machine learning and a fundamental requirement in the medical domain. We would like to, on one hand improve accuracy and especially sensitivity of the neural network model we have build. On the other hand, we would like to investigate (and improve) the connection between the logistic regression and the neural network and use the logistic regression to obtain interpretation and explanations. If we can find and point out connections of logistic regression and neural network interpretation and explanation from logistic regression can be meaningful for the neural network, too. 
+
+Shifting the focus in logistic regression from performance to interpretability we would drop the PCA preprocessing. Insted of feature reduction by PCA we would start with the features the neural network output as important variables.
+
+Why we think there is a connection between logistic regression and neural networks: A neural network with sigmoid activation is basically a collection of logistic regression models: Every node in the first hidden layer is a logistic regression. Would we connect the hidden layer node with the suitable loss function we would obtain a classification algorithm. The neural network can be more powerful since it uses several nodes in its (first) hidden layeer. Additional power requires these individual regressions to act differently and to be combined in a meaningful way (if all logistic regressions did the same, there would be no improvement). This task has to be solved by the network, through optimization with respect to the final classification. We would like to further investigate this. 
+
+Interpretation and explanations for logistic regression are already available. We would start applying them to our task.
 
 # References
