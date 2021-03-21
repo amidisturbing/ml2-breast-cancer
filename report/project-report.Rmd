@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We present and compare machine-learned classification algorithms for diagnosing breast tumor cells as benign or malignant. We have trained on tabular data consisting of features extracted from microscopic images of fine-needle aspirates/biopsies.
 
-We got reasonably good results from Logistic Regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 0.982 (\98%), a sensitivity of 0.976, and a specificity of 0.986 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
+We got reasonably good results from Logistic Regression and were able to improve these results through single and multi-layer neural networks. The final neural network with an accuracy of 0.982, a sensitivity of 0.976, and a specificity of 0.986 is being audited at the German Gesundheitsministerium to become a state-approved diagnostic tool.
 
 The layout of this paper follows the CRISP-DM model. 
 
@@ -80,7 +80,7 @@ In figure \ref{fig:cor-1} we present the correlation of features and find some f
 
 We point out three groups of correlated features:
 
-The group of most highly (and positively) correlated features correspond to the description of malignant / cancerous cells given in \ref{fig:normal-vs-cancer}: They describe cells wit a large and irregular perimeter, radius and area:
+The group of most highly (and positively) correlated features correspond to the description of malignant / cancerous cells given in figure \ref{fig:normal-vs-cancer}: They describe cells wit a large and irregular perimeter, radius and area:
 
 * perimeter_mean, perimeter_worst
 * radius_mean, radius_worst
@@ -156,13 +156,13 @@ $$
 \text{log-odds} = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p     
 $$
 
-The log-odds are transformed into (conditional) probabilities for the positive class through the logistic function $$\sigma(.)$$, also called sigmoid.
+The log-odds are transformed into (conditional) probabilities for the positive class through the logistic function \( \sigma(.) \), also called sigmoid.
 
 $$
 p(\bf{x}) = \sigma(\text{log-odds}) = \sigma(\beta_0 + \beta_1 x_1 + \dots + \beta_p x_p ) 
 $$
 
-with \( \bf{x}= ( x_1, \dots, x_p) \) , \( p(\bf{x}) = \mathbf{P}\left(\text{target = positive class} | \text{predictors } = \bf{x} \right) \) and  \( \sigma(a) = \frac{1}{1+e^{-a}} \).
+with \( \bf{x}= \) \( ( x_1, \dots, x_p) \) , \( p(\bf{x}) = \mathbf{P}\left(\text{target = positive class} | \text{predictors } = \bf{x} \right) \) and  \( \sigma(a) = \frac{1}{1+e^{-a}} \).
 
 If the probability for the positive class \( p(\bf{x}) \)  exceeds a threshold, the data point is classified as the positive class.
 
@@ -220,7 +220,7 @@ We tested removing features with 99% correlation and with 97% correlation agains
 
 That makes sense, as the PCA is a transformation of the data that creates new variables that explain the data's variance in descending order. High correlation with previous principal components will not help with explaining the remaining variance.
 
-As the overall best model, we keep the best model from Logistic Regression with a PCA as preprocessing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
+As the overall best model, we keep the best model from Logistic Regression with a PCA as pre-processing and the full set of variables (mainly, we don't have a good enough reason to reduce features and throw away information, especially when the PCA reduces information in a reasonable, statistically approved way).
 
 We arrived at our best model: logistic regression with PCA preprocessing and the whole feature set. We then trained the model again on the full training data. summary of the model is shown in figure \ref{fig:logR-final-model}. The model did converge after ten iterations; some of the principal components are highly significant below 0.1\%.
 
@@ -246,7 +246,6 @@ We state the results of the variable importance function (varImp) in R caret in 
     \label{fig:logR_var_imp}
 \end{figure}
 
-We try to apply black box interpretation models like variable shuffling.
 ## Artificial Neural Networks
 
 ### Mathematical Background
@@ -272,7 +271,7 @@ Connections between neurons are weighted to represent the connection strength. I
 
 ANN structure can be described as its Architecture, Activities, and Learning Rule.
 
-In the model the weighted combination of input signals \(α =\sum_{i=1}^n w_ix_i+b\) is aggregated and the output \(f(α)\) is transmitted by the neurons. The function \(f\) is non-linear. The neuron's activation threshohold is represented by the bias \(b\) as shown in figure  \ref{fig:weights-and-bias}.
+In the model the weighted combination of input signals \( \alpha =\sum_{i=1}^n w_ix_i+b\) is aggregated and the output \(f(\alpha)\) is transmitted by the neurons. The function \(f\) is non-linear. The neuron's activation threshohold is represented by the bias \(b\) as shown in figure  \ref{fig:weights-and-bias}.
 
 \begin{figure}
     \centering
@@ -290,16 +289,16 @@ Activation Functions in H2o
  Function & Formula & Range \\ [0.5ex] 
  \hline
  \hline
-Tanh &  \(f(α) =\frac{e^α−e^{−^α}} {eα+e−α}\) & \(f(·) ∈ [−1, 1]\) \\ 
-Rectified Linear & \(f(α) = max(0, α)\) & \(f(·) ∈ R_+\) \\ 
-Maxout & \(f(α_1, α_2) = max(α_1, α_2)\) &  \(f(·) ∈ R\) \\
+Tanh &  \(f(\alpha) =\frac{e^\alpha -e^{-\alpha}} {e^\alpha+e^{-\alpha}}\) & \(f(·) \in [-1, 1]\) \\ 
+Rectified Linear & \(f(\alpha) = max(0, \alpha)\) & \(f(·) \in R_+\) \\ 
+Maxout & \(f(\alpha_1, \alpha_2) = max(\alpha_1, \alpha_2)\) &  \(f(·) \in R\) \\
  \hline
 \end{tabular}
 \end{center}
 
 For each training example, a loss function is minimized, so the labeled training data's error gets smaller. For our classification task, we are using H2o's Cross-Entropy Loss denoted with the following formula:
 $$
-L(W, B|j) = − \sum_{y∈O} ln(o^{(j)}_y)) · t^{(j)}_y + ln(1 - o^{(j)}_y)· (1 - t^{(j)}_y)
+L(W, B|j) = - \sum_{y \in O} ln(o^{(j)}_y)) · t^{(j)}_y + ln(1 - o^{(j)}_y)· (1 - t^{(j)}_y)
 $$
 (\cite{h2oDL})
 
@@ -407,7 +406,7 @@ Why we think there is a connection between logistic regression and neural networ
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{images/logistic_regression_and_neural_network.jpeg}
-    \caption{Metrices of the choosen Artificial Neural Network}
+    \caption{Connection of Logistic Regression and Artificial Neural Network}
     \label{fig:h2o_model_performance}
 \end{figure}
 (\cite{nn-better-logReg})
@@ -415,5 +414,3 @@ Why we think there is a connection between logistic regression and neural networ
 Interpretation and explanations for logistic regression are already available. We would start applying them to our task.
 
 # References
-
-
